@@ -1,0 +1,10 @@
+{
+  "fx_rmb_to_twd": 5,
+  "fee_8591": 0.06,
+  "min_net_rate": 0.025,
+  "ref_cache_hours": 1,
+  "dd_cheapest_n": 3,
+  "http_timeout": 25,
+  "max_workers": 8,
+  "game_tax": 0.03
+}

@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f4f1ea">
+  <title>天堂經典版 天幣監測</title>
+  <style>
+    :root {
+      --bg: #f4f1ea;
+      --card: #fffdf8;
+      --ink: #1c1917;
+      --muted: #78716c;
+      --line: #e7e0d6;
+      --teal: #0f766e;
+      --teal-soft: #ccfbf1;
+      --green: #15803d;
+      --green-bg: #dcfce7;
+      --amber: #b45309;
+      --amber-bg: #fef3c7;
+      --red: #b91c1c;
+      --red-bg: #fee2e2;
+      --shadow: 0 1px 2px rgba(28, 25, 23, .06), 0 8px 24px rgba(28, 25, 23, .05);
+      --radius: 16px;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: "PingFang TC", "Noto Sans TC", "Source Han Sans TC", "Microsoft JhengHei", ui-sans-serif, system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.55;
+      font-size: 16px;
+      padding: 20px 16px calc(32px + env(safe-area-inset-bottom));
+    }
+    .wrap { max-width: 880px; margin: 0 auto; }
+    header { margin-bottom: 18px; }
+    h1 {
+      font-size: 1.45rem;
+      font-weight: 700;
+      letter-spacing: .02em;
+      margin: 0 0 6px;
+    }
+    .sub {
+      color: var(--muted);
+      font-size: .92rem;
+    }
+    .sub strong { color: var(--ink); font-weight: 600; }
+    .stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 14px 0 16px;
+    }
+    .chip {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: .86rem;
+      color: var(--muted);
+    }
+    .chip b { color: var(--ink); font-weight: 650; }
+    .banner {
+      border-radius: var(--radius);
+      padding: 12px 14px;
+      margin-bottom: 14px;
+      font-size: .95rem;
+    }
+    .banner.error { background: var(--red-bg); color: var(--red); }
+    .banner.warn { background: var(--amber-bg); color: var(--amber); }
+    .banner ul { margin: 6px 0 0; padding-left: 1.15em; }
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 0 0 16px;
+    }
+    .controls label {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: .78rem;
+      color: var(--muted);
+      flex: 1 1 160px;
+    }
+    select {
+      appearance: none;
+      background: var(--card) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path fill='%2378716c' d='M1 1l5 5 5-5'/></svg>") no-repeat right 12px center;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 10px 36px 10px 12px;
+      font-size: 1rem;
+      color: var(--ink);
+      font-family: inherit;
+      width: 100%;
+    }
+    .group { margin-bottom: 22px; }
+    .group-title {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 8px;
+      margin: 0 0 8px 2px;
+      font-size: 1.02rem;
+      font-weight: 700;
+    }
+    .group-title span { color: var(--muted); font-weight: 500; font-size: .86rem; }
+    .cards {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+    @media (min-width: 700px) {
+      .cards { grid-template-columns: 1fr 1fr; }
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 14px 16px 12px;
+    }
+    .card-top {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .rate {
+      font-variant-numeric: tabular-nums;
+      font-weight: 750;
+      font-size: 1.2rem;
+      color: var(--ink);
+      white-space: nowrap;
+    }
+    .rate.hot { color: var(--green); }
+    .prices {
+      font-variant-numeric: tabular-nums;
+      font-size: .98rem;
+    }
+    .prices b { font-weight: 700; }
+    .meta {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: .9rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 10px;
+      align-items: center;
+    }
+    .meta a {
+      color: var(--teal);
+      font-weight: 650;
+      text-underline-offset: 2px;
+    }
+    .empty {
+      text-align: center;
+      color: var(--muted);
+      padding: 36px 12px;
+    }
+    details.refs {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 4px 16px 8px;
+      margin-top: 8px;
+    }
+    details.refs > summary {
+      cursor: pointer;
+      font-weight: 700;
+      padding: 12px 0;
+      list-style: none;
+    }
+    details.refs > summary::-webkit-details-marker { display: none; }
+    details.refs > summary::after {
+      content: "展開";
+      float: right;
+      font-weight: 500;
+      color: var(--muted);
+      font-size: .86rem;
+    }
+    details.refs[open] > summary::after { content: "收合"; }
+    .ref-item {
+      border-top: 1px solid var(--line);
+      padding: 12px 0;
+    }
+    .ref-item h3 {
+      margin: 0 0 6px;
+      font-size: .98rem;
+    }
+    .ref-item .median {
+      color: var(--muted);
+      font-size: .9rem;
+      margin-bottom: 6px;
+    }
+    .ref-item table {
+      width: 100%;
+      border-collapse: collapse;
+      font-variant-numeric: tabular-nums;
+      font-size: .9rem;
+    }
+    .ref-item th, .ref-item td {
+      text-align: left;
+      padding: 4px 8px 4px 0;
+    }
+    .ref-item th { color: var(--muted); font-weight: 500; }
+    .note-wide {
+      display: inline-block;
+      margin-top: 6px;
+      background: var(--amber-bg);
+      color: var(--amber);
+      border-radius: 8px;
+      padding: 4px 8px;
+      font-size: .82rem;
+    }
+    footer {
+      margin-top: 28px;
+      color: var(--muted);
+      font-size: .82rem;
+    }
+    .refresh {
+      position: fixed;
+      right: 16px;
+      bottom: calc(16px + env(safe-area-inset-bottom));
+      background: var(--ink);
+      color: #fff;
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: .78rem;
+      opacity: .88;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>天堂經典版 天幣監測</h1>
+      <div class="sub" id="updated">資料載入中…</div>
+    </header>
+    <div class="stats" id="stats"></div>
+    <div id="banners"></div>
+    <div class="controls">
+      <label>伺服器
+        <select id="serverFilter"></select>
+      </label>
+      <label>排序
+        <select id="sortBy">
+          <option value="desc">淨利率高到低</option>
+          <option value="asc">淨利率低到高</option>
+        </select>
+      </label>
+    </div>
+    <div id="list"></div>
+    <details class="refs" id="refsBox">
+      <summary>8591 參考價明細</summary>
+      <div id="refs"></div>
+    </details>
+    <footer>
+      價格單位：台幣／萬。成本已含 3% 交易稅，淨利已扣 8591 的 6% 手續費。下單前請核對伺服器與收貨資訊。<br>
+      頁面每 60 秒自動更新資料。這台電腦閒置時可能會休眠，休眠期間監測與網站都會暫停。
+    </footer>
+  </div>
+  <div class="refresh" id="tick">60 秒後更新</div>
+  <script>
+    const DATA_URL = "data.json";
+    const STALE_SEC = 25 * 60;
+    let data = null;
+    let remain = 60;
+
+    const $ = (id) => document.getElementById(id);
+
+    function fmtNum(v, n) {
+      if (typeof v !== "number" || Number.isNaN(v)) return "—";
+      return v.toFixed(n == null ? 2 : n);
+    }
+    function fmtStock(v) {
+      if (typeof v !== "number" || Number.isNaN(v)) return "—";
+      if (Math.abs(v - Math.round(v)) < 1e-6) return String(Math.round(v));
+      return String(v);
+    }
+    function minBuyText(h) {
+      if (h["部分結算"] === false) return "";
+      const label = h["最少要買"];
+      if (!label || label === "整批" || label === "—") return "";
+      return "最少 " + label + " 萬";
+    }
+    function escapeHtml(s) {
+      return String(s == null ? "" : s)
+        .replace(/&/g, "&amp;").replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    }
+    function relTime(ts) {
+      if (!ts) return "";
+      const sec = Math.max(0, (Date.now() / 1000) - ts);
+      if (sec < 30) return "剛剛";
+      if (sec < 60) return Math.floor(sec) + " 秒前";
+      if (sec < 3600) return Math.floor(sec / 60) + " 分鐘前";
+      return Math.floor(sec / 3600) + " 小時前";
+    }
+
+    function currentHits() {
+      const hits = (data && data.hits ? data.hits.slice() : []);
+      const server = $("serverFilter").value;
+      const desc = $("sortBy").value !== "asc";
+      const filtered = server ? hits.filter((h) => h["伺服器"] === server) : hits;
+      filtered.sort((a, b) => desc ? b["淨利率"] - a["淨利率"] : a["淨利率"] - b["淨利率"]);
+      const groups = [];
+      const map = new Map();
+      for (const h of filtered) {
+        const name = h["伺服器"];
+        if (!map.has(name)) {
+          const g = { name, hits: [] };
+          map.set(name, g);
+          groups.push(g);
+        }
+        map.get(name).hits.push(h);
+      }
+      return groups;
+    }
+
+    function renderBanners() {
+      const el = $("banners");
+      const parts = [];
+      const errors = (data && data.errors) || [];
+      if (errors.length) {
+        parts.push(
+          '<div class="banner error"><b>這一輪抓取有狀況</b><ul>' +
+          errors.map((e) => "<li>" + escapeHtml(e) + "</li>").join("") +
+          "</ul></div>"
+        );
+      }
+      if (data && data.updated_at_ts) {
+        const age = (Date.now() / 1000) - data.updated_at_ts;
+        if (age > STALE_SEC) {
+          parts.push('<div class="banner warn">資料已超過 25 分鐘未更新，監測電腦可能正在休眠，網站在這段期間也會暫停。</div>');
+        }
+      } else if (data && !data.updated_at) {
+        parts.push('<div class="banner warn">還沒有完整結果，正在等監測跑完第一輪。</div>');
+      }
+      el.innerHTML = parts.join("");
+    }
+
+    function renderStats() {
+      const fee = data ? Number(data.fee_8591 || 0) * 100 : 6;
+      const tax = data ? Number(data.game_tax || 0) * 100 : 3;
+      const min = data ? Number(data.min_net_rate || 0) * 100 : 2.5;
+      const hits = data ? data.hit_count || 0 : 0;
+      const servers = data ? data.server_count || 0 : 0;
+      $("stats").innerHTML = [
+        '<div class="chip">符合 <b>' + hits + "</b> 張</div>",
+        '<div class="chip">伺服器 <b>' + servers + "</b> 區</div>",
+        '<div class="chip">門檻 <b>' + fmtNum(min, 1) + "%</b></div>",
+        '<div class="chip">已扣 8591 <b>' + fmtNum(fee, 0) + "%</b>、含稅 <b>" + fmtNum(tax, 0) + "%</b></div>",
+      ].join("");
+    }
+
+    function renderFilter() {
+      const sel = $("serverFilter");
+      const prev = sel.value;
+      const names = new Set();
+      for (const h of (data && data.hits) || []) names.add(h["伺服器"]);
+      const list = Array.from(names).sort(function (a, b) { return a.localeCompare(b, "zh-Hant"); });
+      const opts = ['<option value="">全部伺服器</option>']
+        .concat(list.map((n) => '<option value="' + escapeHtml(n) + '">' + escapeHtml(n) + "</option>"));
+      sel.innerHTML = opts.join("");
+      if (prev && list.indexOf(prev) >= 0) sel.value = prev;
+    }
+
+    function renderList() {
+      const groups = currentHits();
+      const box = $("list");
+      if (!data || !data.updated_at) {
+        box.innerHTML = '<div class="empty">尚無資料，請稍候再看。</div>';
+        return;
+      }
+      if (!groups.length) {
+        box.innerHTML = '<div class="empty">這一輪沒有達到門檻的單。</div>';
+        return;
+      }
+      box.innerHTML = groups.map(function (g) {
+        const cards = g.hits.map(function (h) {
+          const rate = Number(h["淨利率"] || 0);
+          const hot = rate > 30;
+          const mid = minBuyText(h);
+          const url = h["網址"] || "";
+          const link = url
+            ? '<a href="' + escapeHtml(url) + '" target="_blank" rel="noopener noreferrer">連結</a>'
+            : "";
+          const bits = ["庫存 " + fmtStock(h["庫存_萬金"]) + " 萬"];
+          if (mid) bits.push(mid);
+          if (link) bits.push(link);
+          return (
+            '<article class="card">' +
+              '<div class="card-top">' +
+                '<div class="prices">成本 <b>' + fmtNum(h["含稅成本_TWD每萬"]) +
+                "</b> → 8591 <b>" + fmtNum(h["8591參考價_TWD每萬"]) + "</b></div>" +
+                '<div class="rate' + (hot ? " hot" : "") + '">' +
+                  (hot ? "🟢 " : "") + fmtNum(rate, 1) + "%</div>" +
+              "</div>" +
+              '<div class="prices">每萬淨利 <b>' + fmtNum(h["每萬淨利_TWD"]) + "</b></div>" +
+              '<div class="meta">' + bits.join("｜") + "</div>" +
+            "</article>"
+          );
+        }).join("");
+        return (
+          '<section class="group">' +
+            '<div class="group-title">' + escapeHtml(g.name) +
+              "<span>" + g.hits.length + " 張</span></div>" +
+            '<div class="cards">' + cards + "</div>" +
+          "</section>"
+        );
+      }).join("");
+    }
+
+    function renderRefs() {
+      const refs = (data && data.refs) || {};
+      const names = Object.keys(refs).sort(function (a, b) { return a.localeCompare(b, "zh-Hant"); });
+      const src = data && data.ref_source ? escapeHtml(data.ref_source) : "";
+      const when = data && data.ref_fetched_at ? escapeHtml(data.ref_fetched_at) + "（台北時間）" : "—";
+      if (!names.length) {
+        $("refs").innerHTML = '<p class="sub">尚無參考價資料。</p>';
+        return;
+      }
+      const items = names.map(function (name) {
+        const r = refs[name] || {};
+        const top = r.top || [];
+        const twds = top.map(function (x) { return Number(x.twd); }).filter(function (n) { return !Number.isNaN(n); });
+        let warn = "";
+        if (twds.length >= 2) {
+          const mx = Math.max.apply(null, twds), mn = Math.min.apply(null, twds);
+          if (mn > 0 && mx / mn >= 1.2) {
+            warn = '<div class="note-wide">這區前三名價差較大，參考價可能被較貴的賣家拉高，下單前請再到 8591 核對。</div>';
+          }
+        }
+        const rows = top.map(function (x) {
+          return "<tr><td>" + fmtNum(x.rate, 0) + " 幣/元</td><td>每萬 " +
+            fmtNum(x.twd) + "</td><td>銷量 " + fmtStock(x.sell_count) + "</td></tr>";
+        }).join("");
+        return (
+          '<div class="ref-item"><h3>' + escapeHtml(name) + "</h3>" +
+          '<div class="median">中間價每萬 <b>' + fmtNum(r.ref_twd) + "</b></div>" +
+          "<table><thead><tr><th>比值</th><th>台幣</th><th>銷量</th></tr></thead><tbody>" +
+          rows + "</tbody></table>" + warn + "</div>"
+        );
+      }).join("");
+      $("refs").innerHTML =
+        '<p class="sub">更新：' + when + (src ? "｜" + src : "") + "</p>" + items;
+    }
+
+    function render() {
+      if (data && data.updated_at) {
+        $("updated").innerHTML = "更新時間 <strong>" + escapeHtml(data.updated_at) +
+          "</strong>（台北時間）· " + relTime(data.updated_at_ts);
+      } else {
+        $("updated").textContent = "尚無更新時間";
+      }
+      renderBanners();
+      renderStats();
+      renderFilter();
+      renderList();
+      renderRefs();
+    }
+
+    async function load() {
+      try {
+        const res = await fetch(DATA_URL + "?t=" + Date.now(), { cache: "no-store" });
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        data = await res.json();
+        render();
+      } catch (err) {
+        $("banners").innerHTML =
+          '<div class="banner error">無法載入最新資料（' + escapeHtml(err.message) + "），仍顯示上次內容。</div>" +
+          $("banners").innerHTML;
+      }
+      remain = 60;
+    }
+
+    $("serverFilter").addEventListener("change", renderList);
+    $("sortBy").addEventListener("change", renderList);
+    setInterval(function () {
+      remain -= 1;
+      if (remain <= 0) {
+        remain = 60;
+        load();
+      }
+      $("tick").textContent = remain + " 秒後更新";
+    }, 1000);
+    load();
+  </script>
+</body>
+</html>

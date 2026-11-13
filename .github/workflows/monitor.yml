@@ -1,0 +1,48 @@
+name: monitor
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+concurrency:
+  group: monitor
+  cancel-in-progress: false
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: scrape (website only, no Discord)
+        env: {TZ: Asia/Taipei}
+        run: |
+          python -u monitor.py > out.txt 2>&1 || true
+          tail -n 5 out.txt | cut -c1-300
+          python - <<'PY'
+          import json
+          d=json.load(open('site/data.json'))
+          print("SUMMARY", d['updated_at'], "hits", d['hit_count'], "servers", d['server_count'], "errors", len(d['errors']))
+          PY
+      - name: guard against secrets
+        run: |
+          if grep -Eiq 'discord(app)?\.com/api/webhooks|ghp_|gho_|ghs_|github_pat_' site/data.json site/index.html ref_8591.json; then echo "secret-like text found"; exit 1; fi
+      - name: commit data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add site/data.json ref_8591.json
+          git diff --cached --quiet || git commit -q -m "data $(TZ=Asia/Taipei date '+%F %T')"
+          git push -q || (git pull -q --rebase -X theirs && git push -q) || true
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with: {path: site}
+      - id: deploy
+        uses: actions/deploy-pages@v4
