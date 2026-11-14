@@ -30,6 +30,9 @@ jobs:
           import json
           d=json.load(open('site/data.json'))
           print("SUMMARY", d['updated_at'], "hits", d['hit_count'], "servers", d['server_count'], "errors", len(d['errors']))
+          import time, sys
+          if time.time() - float(d.get('updated_at_ts') or 0) > 600:
+              print("ERROR: monitor.py did not refresh data.json"); sys.exit(1)
           PY
       - name: guard against secrets
         run: |

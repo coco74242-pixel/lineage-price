@@ -329,6 +329,7 @@ def fetch_8591_server(sid: int, name: str, timeout: int) -> dict:
 
 
 REF_CLOSE_RATIO = 0.9
+REF_SOURCE = "8591 sell_sort=1, 銷量第一名（銷量相近≥90% 時取匯率較差）"
 def load_or_refresh_8591(cfg: dict) -> tuple[dict, list[str]]:
     """Return ({name: ref_twd, ...} plus meta), errors."""
     errors: list[str] = []
