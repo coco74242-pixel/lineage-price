@@ -303,7 +303,8 @@ def fetch_8591_server(sid: int, name: str, timeout: int) -> dict:
         "ok": True,
         "name": name,
         "sid": sid,
-        "ref_twd": statistics.median(twds),
+        # 參考價 = 銷量第一名的賣單（前三名只做對照顯示）
+        "ref_twd": twds[0],
         "mean_twd": statistics.mean(twds),
         "top": [
             {
@@ -316,6 +317,9 @@ def fetch_8591_server(sid: int, name: str, timeout: int) -> dict:
     }
 
 
+REF_SOURCE = "8591 sell_sort=1, 銷量第一名有效賣單"
+
+
 def load_or_refresh_8591(cfg: dict) -> tuple[dict, list[str]]:
     """Return ({name: ref_twd, ...} plus meta), errors."""
     errors: list[str] = []
@@ -324,7 +328,8 @@ def load_or_refresh_8591(cfg: dict) -> tuple[dict, list[str]]:
         try:
             cache = json.loads(REF_PATH.read_text(encoding="utf-8"))
             fetched = cache.get("fetched_at_ts")
-            if fetched and (time.time() - float(fetched)) < hours * 3600:
+            # 參考價規則改過時（source 不同）就強制重抓
+            if fetched and cache.get("source") == REF_SOURCE and (time.time() - float(fetched)) < hours * 3600:
                 refs = cache.get("servers") or {}
                 if len(refs) >= 15:
                     return cache, errors
@@ -358,7 +363,7 @@ def load_or_refresh_8591(cfg: dict) -> tuple[dict, list[str]]:
     cache = {
         "fetched_at": iso_now(),
         "fetched_at_ts": time.time(),
-        "source": "8591 sell_sort=1, 銷量前3有效賣單中位數",
+        "source": REF_SOURCE,
         "servers": servers,
         "top": top_map,
     }
