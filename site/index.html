@@ -92,7 +92,7 @@
     <div id="banners"></div>
     <div id="list"></div>
     <details class="refs" id="refsBox">
-      <summary>8591 參考價明細（銷量第一名）</summary>
+      <summary>8591 參考價明細（銷量第一名；銷量相近時取匯率較差）</summary>
       <div id="refs"></div>
     </details>
     <footer>
@@ -271,16 +271,18 @@
         if (twds.length >= 2) {
           const mx = Math.max.apply(null, twds), mn = Math.min.apply(null, twds);
           if (mn > 0 && mx / mn >= 1.2) {
-            warn = '<div class="note-wide">這區前三名價差較大，參考價採銷量第一名，下單前請再到 8591 核對。</div>';
+            warn = '<div class="note-wide">這區前三名價差較大，下單前請再到 8591 核對。</div>';
           }
         }
+        const hasChosen = top.some(function (x) { return x.chosen; });
         const rows = top.map(function (x, i) {
-          return "<tr" + (i === 0 ? ' style="font-weight:700;color:#15803d"' : "") + "><td>" + (i === 0 ? "★ " : "") + fmtNum(x.rate, 0) + " 幣/元</td><td>每萬 " +
+          const pick = hasChosen ? !!x.chosen : i === 0;
+          return "<tr" + (pick ? ' style="font-weight:700;color:#15803d"' : "") + "><td>" + (pick ? "★ " : "") + fmtNum(x.rate, 0) + " 幣/元</td><td>每萬 " +
             fmtNum(x.twd) + "</td><td>銷量 " + fmtStock(x.sell_count) + "</td></tr>";
         }).join("");
         return (
           '<div class="ref-item"><h3>' + escapeHtml(name) + "</h3>" +
-          '<div class="median">參考價（銷量第一）每萬 <b>' + fmtNum(r.ref_twd) + "</b></div>" +
+          '<div class="median">參考價每萬 <b>' + fmtNum(r.ref_twd) + "</b>（" + escapeHtml(r.reason || "銷量第一名") + "）</div>" +
           "<table><thead><tr><th>比值</th><th>台幣</th><th>銷量</th></tr></thead><tbody>" +
           rows + "</tbody></table>" + warn + "</div>"
         );

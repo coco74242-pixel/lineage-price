@@ -298,28 +298,37 @@ def fetch_8591_server(sid: int, name: str, timeout: int) -> dict:
     top = items[:3]
     if not top:
         return {"ok": False, "error": f"{name} 無有效賣單", "name": name, "sid": sid}
+    # 參考價 = 銷量第一名；若有其他賣單銷量與第一名差不多（>= 第一名的 90%），
+    # 取其中匯率較差（每萬台幣較低）的那張，比較保守。
+    best_sc = top[0]["sell_count"]
+    close = [x for x in items if x["sell_count"] >= REF_CLOSE_RATIO * best_sc]
+    chosen = min(close, key=lambda x: x["twd_per_wan"])
+    reason = "銷量第一名"
+    if chosen is not top[0]:
+        reason = "銷量相近，取匯率較差"
+        if chosen not in top:
+            top = top + [chosen]
     twds = [x["twd_per_wan"] for x in top]
     return {
         "ok": True,
         "name": name,
         "sid": sid,
-        # 參考價 = 銷量第一名的賣單（前三名只做對照顯示）
-        "ref_twd": twds[0],
+        "ref_twd": chosen["twd_per_wan"],
         "mean_twd": statistics.mean(twds),
+        "reason": reason,
         "top": [
             {
                 "rate": round(x["rate"], 2),
                 "twd": round(x["twd_per_wan"], 4),
                 "sell_count": x["sell_count"],
+                "chosen": x is chosen,
             }
             for x in top
         ],
     }
 
 
-REF_SOURCE = "8591 sell_sort=1, 銷量第一名有效賣單"
-
-
+REF_CLOSE_RATIO = 0.9
 def load_or_refresh_8591(cfg: dict) -> tuple[dict, list[str]]:
     """Return ({name: ref_twd, ...} plus meta), errors."""
     errors: list[str] = []
@@ -353,10 +362,12 @@ def load_or_refresh_8591(cfg: dict) -> tuple[dict, list[str]]:
 
     servers = {}
     top_map = {}
+    reason_map = {}
     for name, r in results.items():
         if r.get("ok"):
             servers[name] = round(r["ref_twd"], 4)
             top_map[name] = r.get("top") or []
+            reason_map[name] = r.get("reason") or ""
         else:
             errors.append(r.get("error") or f"{name} 抓取失敗")
 
@@ -366,6 +377,7 @@ def load_or_refresh_8591(cfg: dict) -> tuple[dict, list[str]]:
         "source": REF_SOURCE,
         "servers": servers,
         "top": top_map,
+        "reason": reason_map,
     }
     REF_PATH.write_text(json.dumps(cache, ensure_ascii=False, indent=2), encoding="utf-8")
     if not servers:
@@ -644,9 +656,11 @@ def write_site_snapshot(hits: list[dict], errors: list[str], ref_cache: dict, cf
     refs_out: dict = {}
     servers = ref_cache.get("servers") or {}
     top_map = ref_cache.get("top") or {}
+    reason_map = ref_cache.get("reason") or {}
     for name, ref in servers.items():
         refs_out[name] = {
             "ref_twd": ref,
+            "reason": reason_map.get(name) or "",
             "top": top_map.get(name) or [],
         }
     public = []
