@@ -1,37 +1,37 @@
 {
-  "updated_at": "2026-11-15 17:57:55 +0800",
-  "updated_at_ts": 1794736675.1698616,
+  "updated_at": "2026-11-15 18:55:46 +0800",
+  "updated_at_ts": 1794740146.4239275,
   "timezone": "Asia/Taipei",
   "fx_rmb_to_twd": 5,
   "fee_8591": 0.06,
   "game_tax": 0.03,
   "min_net_rate": 0.025,
-  "hit_count": 36,
-  "server_count": 12,
+  "hit_count": 32,
+  "server_count": 11,
   "errors": [],
-  "ref_fetched_at": "2026-11-15 17:00:18 +0800",
+  "ref_fetched_at": "2026-11-15 18:55:44 +0800",
   "ref_source": "8591 sell_sort=1, 銷量第一名（銷量相近≥90% 時取匯率較差）",
   "refs": {
-    "太陽神阿波羅": {
+    "勝利女神雅典娜": {
       "ref_twd": 6.25,
-      "reason": "銷量第一名",
+      "reason": "銷量相近，取匯率較差",
       "top": [
         {
-          "rate": 1600.0,
-          "twd": 6.25,
-          "sell_count": 59,
-          "chosen": true
-        },
-        {
-          "rate": 1500.0,
-          "twd": 6.6667,
-          "sell_count": 51,
+          "rate": 1380.0,
+          "twd": 7.2464,
+          "sell_count": 258,
           "chosen": false
         },
         {
-          "rate": 1500.0,
-          "twd": 6.6667,
-          "sell_count": 49,
+          "rate": 1600.0,
+          "twd": 6.25,
+          "sell_count": 245,
+          "chosen": true
+        },
+        {
+          "rate": 1640.0,
+          "twd": 6.0976,
+          "sell_count": 67,
           "chosen": false
         }
       ]
@@ -60,6 +60,54 @@
         }
       ]
     },
+    "太陽神阿波羅": {
+      "ref_twd": 6.25,
+      "reason": "銷量第一名",
+      "top": [
+        {
+          "rate": 1600.0,
+          "twd": 6.25,
+          "sell_count": 59,
+          "chosen": true
+        },
+        {
+          "rate": 1500.0,
+          "twd": 6.6667,
+          "sell_count": 51,
+          "chosen": false
+        },
+        {
+          "rate": 1500.0,
+          "twd": 6.6667,
+          "sell_count": 49,
+          "chosen": false
+        }
+      ]
+    },
+    "飛馬珀伽索斯": {
+      "ref_twd": 6.1728,
+      "reason": "銷量第一名",
+      "top": [
+        {
+          "rate": 1620.0,
+          "twd": 6.1728,
+          "sell_count": 61,
+          "chosen": true
+        },
+        {
+          "rate": 1700.0,
+          "twd": 5.8824,
+          "sell_count": 12,
+          "chosen": false
+        },
+        {
+          "rate": 1600.0,
+          "twd": 6.25,
+          "sell_count": 11,
+          "chosen": false
+        }
+      ]
+    },
     "公牛克里特": {
       "ref_twd": 5.618,
       "reason": "銷量第一名",
@@ -80,78 +128,6 @@
           "rate": 1900.0,
           "twd": 5.2632,
           "sell_count": 15,
-          "chosen": false
-        }
-      ]
-    },
-    "獅子涅墨亞": {
-      "ref_twd": 6.3291,
-      "reason": "銷量第一名",
-      "top": [
-        {
-          "rate": 1580.0,
-          "twd": 6.3291,
-          "sell_count": 70,
-          "chosen": true
-        },
-        {
-          "rate": 1480.0,
-          "twd": 6.7568,
-          "sell_count": 11,
-          "chosen": false
-        },
-        {
-          "rate": 1600.0,
-          "twd": 6.25,
-          "sell_count": 9,
-          "chosen": false
-        }
-      ]
-    },
-    "勝利女神雅典娜": {
-      "ref_twd": 6.25,
-      "reason": "銷量相近，取匯率較差",
-      "top": [
-        {
-          "rate": 1380.0,
-          "twd": 7.2464,
-          "sell_count": 258,
-          "chosen": false
-        },
-        {
-          "rate": 1600.0,
-          "twd": 6.25,
-          "sell_count": 245,
-          "chosen": true
-        },
-        {
-          "rate": 1640.0,
-          "twd": 6.0976,
-          "sell_count": 67,
-          "chosen": false
-        }
-      ]
-    },
-    "獨眼巨人庫克羅普斯": {
-      "ref_twd": 6.25,
-      "reason": "銷量第一名",
-      "top": [
-        {
-          "rate": 1600.0,
-          "twd": 6.25,
-          "sell_count": 289,
-          "chosen": true
-        },
-        {
-          "rate": 1650.0,
-          "twd": 6.0606,
-          "sell_count": 33,
-          "chosen": false
-        },
-        {
-          "rate": 1550.0,
-          "twd": 6.4516,
-          "sell_count": 17,
           "chosen": false
         }
       ]
@@ -180,26 +156,50 @@
         }
       ]
     },
-    "飛馬珀伽索斯": {
-      "ref_twd": 6.1728,
+    "獨眼巨人庫克羅普斯": {
+      "ref_twd": 6.25,
       "reason": "銷量第一名",
       "top": [
         {
-          "rate": 1620.0,
-          "twd": 6.1728,
-          "sell_count": 61,
+          "rate": 1600.0,
+          "twd": 6.25,
+          "sell_count": 289,
           "chosen": true
         },
         {
-          "rate": 1700.0,
-          "twd": 5.8824,
-          "sell_count": 12,
+          "rate": 1650.0,
+          "twd": 6.0606,
+          "sell_count": 33,
+          "chosen": false
+        },
+        {
+          "rate": 1550.0,
+          "twd": 6.4516,
+          "sell_count": 17,
+          "chosen": false
+        }
+      ]
+    },
+    "獅子涅墨亞": {
+      "ref_twd": 6.3291,
+      "reason": "銷量第一名",
+      "top": [
+        {
+          "rate": 1580.0,
+          "twd": 6.3291,
+          "sell_count": 70,
+          "chosen": true
+        },
+        {
+          "rate": 1480.0,
+          "twd": 6.7568,
+          "sell_count": 11,
           "chosen": false
         },
         {
           "rate": 1600.0,
           "twd": 6.25,
-          "sell_count": 11,
+          "sell_count": 9,
           "chosen": false
         }
       ]
@@ -252,30 +252,6 @@
         }
       ]
     },
-    "天后海拉": {
-      "ref_twd": 8.0645,
-      "reason": "銷量第一名",
-      "top": [
-        {
-          "rate": 1240.0,
-          "twd": 8.0645,
-          "sell_count": 63,
-          "chosen": true
-        },
-        {
-          "rate": 1610.0,
-          "twd": 6.2112,
-          "sell_count": 39,
-          "chosen": false
-        },
-        {
-          "rate": 1600.0,
-          "twd": 6.25,
-          "sell_count": 35,
-          "chosen": false
-        }
-      ]
-    },
     "戰神馬爾斯": {
       "ref_twd": 6.25,
       "reason": "銷量第一名",
@@ -324,78 +300,6 @@
         }
       ]
     },
-    "火神赫發斯特斯": {
-      "ref_twd": 6.0976,
-      "reason": "銷量第一名",
-      "top": [
-        {
-          "rate": 1640.0,
-          "twd": 6.0976,
-          "sell_count": 45,
-          "chosen": true
-        },
-        {
-          "rate": 1452.83,
-          "twd": 6.8831,
-          "sell_count": 22,
-          "chosen": false
-        },
-        {
-          "rate": 1220.0,
-          "twd": 8.1967,
-          "sell_count": 16,
-          "chosen": false
-        }
-      ]
-    },
-    "牛人彌諾陶洛斯": {
-      "ref_twd": 5.9524,
-      "reason": "銷量第一名",
-      "top": [
-        {
-          "rate": 1680.0,
-          "twd": 5.9524,
-          "sell_count": 209,
-          "chosen": true
-        },
-        {
-          "rate": 1200.0,
-          "twd": 8.3333,
-          "sell_count": 18,
-          "chosen": false
-        },
-        {
-          "rate": 1310.0,
-          "twd": 7.6336,
-          "sell_count": 12,
-          "chosen": false
-        }
-      ]
-    },
-    "半人馬涅索斯": {
-      "ref_twd": 6.25,
-      "reason": "銷量第一名",
-      "top": [
-        {
-          "rate": 1600.0,
-          "twd": 6.25,
-          "sell_count": 88,
-          "chosen": true
-        },
-        {
-          "rate": 1640.0,
-          "twd": 6.0976,
-          "sell_count": 48,
-          "chosen": false
-        },
-        {
-          "rate": 900.0,
-          "twd": 11.1111,
-          "sell_count": 41,
-          "chosen": false
-        }
-      ]
-    },
     "水蛇許德拉": {
       "ref_twd": 6.1728,
       "reason": "銷量第一名",
@@ -413,33 +317,33 @@
           "chosen": false
         },
         {
-          "rate": 1700.0,
-          "twd": 5.8824,
+          "rate": 1800.0,
+          "twd": 5.5556,
           "sell_count": 154,
           "chosen": false
         }
       ]
     },
-    "收獲女神蒂蜜特": {
-      "ref_twd": 9.6154,
+    "天后海拉": {
+      "ref_twd": 8.0645,
       "reason": "銷量第一名",
       "top": [
         {
-          "rate": 1040.0,
-          "twd": 9.6154,
-          "sell_count": 175,
+          "rate": 1240.0,
+          "twd": 8.0645,
+          "sell_count": 63,
           "chosen": true
+        },
+        {
+          "rate": 1610.0,
+          "twd": 6.2112,
+          "sell_count": 39,
+          "chosen": false
         },
         {
           "rate": 1600.0,
           "twd": 6.25,
-          "sell_count": 41,
-          "chosen": false
-        },
-        {
-          "rate": 1509.43,
-          "twd": 6.625,
-          "sell_count": 20,
+          "sell_count": 35,
           "chosen": false
         }
       ]
@@ -468,30 +372,6 @@
         }
       ]
     },
-    "蛇髮女墨杜沙": {
-      "ref_twd": 6.0606,
-      "reason": "銷量第一名",
-      "top": [
-        {
-          "rate": 1650.0,
-          "twd": 6.0606,
-          "sell_count": 60,
-          "chosen": true
-        },
-        {
-          "rate": 1210.0,
-          "twd": 8.2645,
-          "sell_count": 56,
-          "chosen": false
-        },
-        {
-          "rate": 1600.0,
-          "twd": 6.25,
-          "sell_count": 32,
-          "chosen": false
-        }
-      ]
-    },
     "冥王黑帝斯": {
       "ref_twd": 6.4103,
       "reason": "銷量第一名",
@@ -512,6 +392,102 @@
           "rate": 1540.0,
           "twd": 6.4935,
           "sell_count": 28,
+          "chosen": false
+        }
+      ]
+    },
+    "火神赫發斯特斯": {
+      "ref_twd": 6.0976,
+      "reason": "銷量第一名",
+      "top": [
+        {
+          "rate": 1640.0,
+          "twd": 6.0976,
+          "sell_count": 45,
+          "chosen": true
+        },
+        {
+          "rate": 1452.83,
+          "twd": 6.8831,
+          "sell_count": 22,
+          "chosen": false
+        },
+        {
+          "rate": 1220.0,
+          "twd": 8.1967,
+          "sell_count": 16,
+          "chosen": false
+        }
+      ]
+    },
+    "收獲女神蒂蜜特": {
+      "ref_twd": 9.6154,
+      "reason": "銷量第一名",
+      "top": [
+        {
+          "rate": 1040.0,
+          "twd": 9.6154,
+          "sell_count": 175,
+          "chosen": true
+        },
+        {
+          "rate": 1600.0,
+          "twd": 6.25,
+          "sell_count": 41,
+          "chosen": false
+        },
+        {
+          "rate": 1509.43,
+          "twd": 6.625,
+          "sell_count": 20,
+          "chosen": false
+        }
+      ]
+    },
+    "牛人彌諾陶洛斯": {
+      "ref_twd": 5.9524,
+      "reason": "銷量第一名",
+      "top": [
+        {
+          "rate": 1680.0,
+          "twd": 5.9524,
+          "sell_count": 209,
+          "chosen": true
+        },
+        {
+          "rate": 1200.0,
+          "twd": 8.3333,
+          "sell_count": 18,
+          "chosen": false
+        },
+        {
+          "rate": 1310.0,
+          "twd": 7.6336,
+          "sell_count": 12,
+          "chosen": false
+        }
+      ]
+    },
+    "蛇髮女墨杜沙": {
+      "ref_twd": 6.0606,
+      "reason": "銷量第一名",
+      "top": [
+        {
+          "rate": 1650.0,
+          "twd": 6.0606,
+          "sell_count": 60,
+          "chosen": true
+        },
+        {
+          "rate": 1210.0,
+          "twd": 8.2645,
+          "sell_count": 56,
+          "chosen": false
+        },
+        {
+          "rate": 1600.0,
+          "twd": 6.25,
+          "sell_count": 32,
           "chosen": false
         }
       ]
@@ -539,9 +515,59 @@
           "chosen": false
         }
       ]
+    },
+    "半人馬涅索斯": {
+      "ref_twd": 6.25,
+      "reason": "銷量第一名",
+      "top": [
+        {
+          "rate": 1600.0,
+          "twd": 6.25,
+          "sell_count": 88,
+          "chosen": true
+        },
+        {
+          "rate": 1640.0,
+          "twd": 6.0976,
+          "sell_count": 48,
+          "chosen": false
+        },
+        {
+          "rate": 900.0,
+          "twd": 11.1111,
+          "sell_count": 41,
+          "chosen": false
+        }
+      ]
     }
   },
   "hits": [
+    {
+      "伺服器": "收獲女神蒂蜜特",
+      "DD373_RMB每萬": 1.17,
+      "DD373_TWD每萬": 5.85,
+      "含稅成本_TWD每萬": 6.0255,
+      "8591參考價_TWD每萬": 9.6154,
+      "每萬淨利_TWD": 3.013,
+      "淨利率": 50.0,
+      "庫存_萬金": 2100.0,
+      "最少要買": "整批",
+      "部分結算": false,
+      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261115185519-19140&goodsNum=2100&goodsVersion=0"
+    },
+    {
+      "伺服器": "收獲女神蒂蜜特",
+      "DD373_RMB每萬": 1.1769,
+      "DD373_TWD每萬": 5.8845,
+      "含稅成本_TWD每萬": 6.061,
+      "8591參考價_TWD每萬": 9.6154,
+      "每萬淨利_TWD": 2.9774,
+      "淨利率": 49.12,
+      "庫存_萬金": 283.0,
+      "最少要買": "整批",
+      "部分結算": false,
+      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261115181511-63243&goodsNum=283&goodsVersion=0"
+    },
     {
       "伺服器": "收獲女神蒂蜜特",
       "DD373_RMB每萬": 1.177,
@@ -550,36 +576,10 @@
       "8591參考價_TWD每萬": 9.6154,
       "每萬淨利_TWD": 2.9769,
       "淨利率": 49.11,
-      "庫存_萬金": 1000.0,
+      "庫存_萬金": 840.0,
       "最少要買": "整批",
       "部分結算": false,
       "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261115175440-59793&goodsNum=100&goodsVersion=1"
-    },
-    {
-      "伺服器": "收獲女神蒂蜜特",
-      "DD373_RMB每萬": 1.178,
-      "DD373_TWD每萬": 5.89,
-      "含稅成本_TWD每萬": 6.0667,
-      "8591參考價_TWD每萬": 9.6154,
-      "每萬淨利_TWD": 2.9718,
-      "淨利率": 48.99,
-      "庫存_萬金": 130.0,
-      "最少要買": "整批",
-      "部分結算": false,
-      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261115152041-10719&goodsNum=130&goodsVersion=2"
-    },
-    {
-      "伺服器": "收獲女神蒂蜜特",
-      "DD373_RMB每萬": 1.1989,
-      "DD373_TWD每萬": 5.9945,
-      "含稅成本_TWD每萬": 6.1743,
-      "8591參考價_TWD每萬": 9.6154,
-      "每萬淨利_TWD": 2.8641,
-      "淨利率": 46.39,
-      "庫存_萬金": 1000.0,
-      "最少要買": "整批",
-      "部分結算": false,
-      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261115171030-75479&goodsNum=1000&goodsVersion=2"
     },
     {
       "伺服器": "天后海拉",
@@ -622,42 +622,42 @@
     },
     {
       "伺服器": "美神維納斯",
-      "DD373_RMB每萬": 1.1321,
-      "DD373_TWD每萬": 5.6605,
-      "含稅成本_TWD每萬": 5.8303,
+      "DD373_RMB每萬": 1.142,
+      "DD373_TWD每萬": 5.71,
+      "含稅成本_TWD每萬": 5.8813,
       "8591參考價_TWD每萬": 7.4627,
-      "每萬淨利_TWD": 1.1846,
-      "淨利率": 20.32,
-      "庫存_萬金": 750.0,
-      "最少要買": "整批",
-      "部分結算": false,
-      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261115173056-83640&goodsNum=750&goodsVersion=0"
-    },
-    {
-      "伺服器": "美神維納斯",
-      "DD373_RMB每萬": 1.1322,
-      "DD373_TWD每萬": 5.661,
-      "含稅成本_TWD每萬": 5.8308,
-      "8591參考價_TWD每萬": 7.4627,
-      "每萬淨利_TWD": 1.1841,
-      "淨利率": 20.31,
-      "庫存_萬金": 620.0,
-      "最少要買": "整批",
-      "部分結算": false,
-      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261115140701-74896&goodsNum=620&goodsVersion=1"
-    },
-    {
-      "伺服器": "美神維納斯",
-      "DD373_RMB每萬": 1.1322,
-      "DD373_TWD每萬": 5.661,
-      "含稅成本_TWD每萬": 5.8308,
-      "8591參考價_TWD每萬": 7.4627,
-      "每萬淨利_TWD": 1.1841,
-      "淨利率": 20.31,
+      "每萬淨利_TWD": 1.1336,
+      "淨利率": 19.28,
       "庫存_萬金": 106.0,
       "最少要買": "整批",
       "部分結算": false,
-      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261115134729-89367&goodsNum=106&goodsVersion=1"
+      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261115134729-89367&goodsNum=106&goodsVersion=3"
+    },
+    {
+      "伺服器": "美神維納斯",
+      "DD373_RMB每萬": 1.1421,
+      "DD373_TWD每萬": 5.7105,
+      "含稅成本_TWD每萬": 5.8818,
+      "8591參考價_TWD每萬": 7.4627,
+      "每萬淨利_TWD": 1.1331,
+      "淨利率": 19.26,
+      "庫存_萬金": 210.0,
+      "最少要買": "整批",
+      "部分結算": false,
+      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261115104500-90942&goodsNum=210&goodsVersion=0"
+    },
+    {
+      "伺服器": "美神維納斯",
+      "DD373_RMB每萬": 1.1436,
+      "DD373_TWD每萬": 5.718,
+      "含稅成本_TWD每萬": 5.8895,
+      "8591參考價_TWD每萬": 7.4627,
+      "每萬淨利_TWD": 1.1254,
+      "淨利率": 19.11,
+      "庫存_萬金": 800.0,
+      "最少要買": "整批",
+      "部分結算": false,
+      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261114121906-30472&goodsNum=800&goodsVersion=1"
     },
     {
       "伺服器": "公牛克里特",
@@ -674,107 +674,29 @@
     },
     {
       "伺服器": "公牛克里特",
+      "DD373_RMB每萬": 0.8995,
+      "DD373_TWD每萬": 4.4975,
+      "含稅成本_TWD每萬": 4.6324,
+      "8591參考價_TWD每萬": 5.618,
+      "每萬淨利_TWD": 0.6485,
+      "淨利率": 14.0,
+      "庫存_萬金": 35.0,
+      "最少要買": "整批",
+      "部分結算": false,
+      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261115182009-54001&goodsNum=35&goodsVersion=0"
+    },
+    {
+      "伺服器": "公牛克里特",
       "DD373_RMB每萬": 0.8996,
       "DD373_TWD每萬": 4.498,
       "含稅成本_TWD每萬": 4.6329,
       "8591參考價_TWD每萬": 5.618,
       "每萬淨利_TWD": 0.648,
       "淨利率": 13.99,
-      "庫存_萬金": 1000.0,
+      "庫存_萬金": 2000.0,
       "最少要買": "整批",
       "部分結算": false,
-      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261113230731-52531&goodsNum=1000&goodsVersion=7"
-    },
-    {
-      "伺服器": "公牛克里特",
-      "DD373_RMB每萬": 0.8997,
-      "DD373_TWD每萬": 4.4985,
-      "含稅成本_TWD每萬": 4.6335,
-      "8591參考價_TWD每萬": 5.618,
-      "每萬淨利_TWD": 0.6475,
-      "淨利率": 13.97,
-      "庫存_萬金": 1400.0,
-      "最少要買": "整批",
-      "部分結算": false,
-      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261115153115-67180&goodsNum=1400&goodsVersion=0"
-    },
-    {
-      "伺服器": "戰神馬爾斯",
-      "DD373_RMB每萬": 1.0585,
-      "DD373_TWD每萬": 5.2925,
-      "含稅成本_TWD每萬": 5.4513,
-      "8591參考價_TWD每萬": 6.25,
-      "每萬淨利_TWD": 0.4237,
-      "淨利率": 7.77,
-      "庫存_萬金": 135.0,
-      "最少要買": "整批",
-      "部分結算": false,
-      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20260909190344-98320&goodsNum=135&goodsVersion=138"
-    },
-    {
-      "伺服器": "戰神馬爾斯",
-      "DD373_RMB每萬": 1.0587,
-      "DD373_TWD每萬": 5.2935,
-      "含稅成本_TWD每萬": 5.4523,
-      "8591參考價_TWD每萬": 6.25,
-      "每萬淨利_TWD": 0.4227,
-      "淨利率": 7.75,
-      "庫存_萬金": 154.0,
-      "最少要買": "整批",
-      "部分結算": false,
-      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20260310090512-62762&goodsNum=154&goodsVersion=277"
-    },
-    {
-      "伺服器": "戰神馬爾斯",
-      "DD373_RMB每萬": 1.0589,
-      "DD373_TWD每萬": 5.2945,
-      "含稅成本_TWD每萬": 5.4533,
-      "8591參考價_TWD每萬": 6.25,
-      "每萬淨利_TWD": 0.4217,
-      "淨利率": 7.73,
-      "庫存_萬金": 115.0,
-      "最少要買": "整批",
-      "部分結算": false,
-      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261115154934-33519&goodsNum=115&goodsVersion=0"
-    },
-    {
-      "伺服器": "半人馬涅索斯",
-      "DD373_RMB每萬": 1.0797,
-      "DD373_TWD每萬": 5.3985,
-      "含稅成本_TWD每萬": 5.5605,
-      "8591參考價_TWD每萬": 6.25,
-      "每萬淨利_TWD": 0.3145,
-      "淨利率": 5.66,
-      "庫存_萬金": 532.0,
-      "最少要買": "整批",
-      "部分結算": false,
-      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261115131459-67859&goodsNum=532&goodsVersion=1"
-    },
-    {
-      "伺服器": "半人馬涅索斯",
-      "DD373_RMB每萬": 1.0798,
-      "DD373_TWD每萬": 5.399,
-      "含稅成本_TWD每萬": 5.561,
-      "8591參考價_TWD每萬": 6.25,
-      "每萬淨利_TWD": 0.314,
-      "淨利率": 5.65,
-      "庫存_萬金": 390.0,
-      "最少要買": "整批",
-      "部分結算": false,
-      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261115091221-66315&goodsNum=390&goodsVersion=4"
-    },
-    {
-      "伺服器": "半人馬涅索斯",
-      "DD373_RMB每萬": 1.0799,
-      "DD373_TWD每萬": 5.3995,
-      "含稅成本_TWD每萬": 5.5615,
-      "8591參考價_TWD每萬": 6.25,
-      "每萬淨利_TWD": 0.3135,
-      "淨利率": 5.64,
-      "庫存_萬金": 352.0,
-      "最少要買": "整批",
-      "部分結算": false,
-      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261115084347-14123&goodsNum=352&goodsVersion=6"
+      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261113230731-52531&goodsNum=1000&goodsVersion=8"
     },
     {
       "伺服器": "海神波塞頓",
@@ -817,68 +739,146 @@
     },
     {
       "伺服器": "獨眼巨人庫克羅普斯",
-      "DD373_RMB每萬": 1.0884,
-      "DD373_TWD每萬": 5.442,
-      "含稅成本_TWD每萬": 5.6053,
+      "DD373_RMB每萬": 1.088,
+      "DD373_TWD每萬": 5.44,
+      "含稅成本_TWD每萬": 5.6032,
       "8591參考價_TWD每萬": 6.25,
-      "每萬淨利_TWD": 0.2697,
-      "淨利率": 4.81,
-      "庫存_萬金": 404.0,
-      "最少要買": "整批",
-      "部分結算": false,
-      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261115131340-64683&goodsNum=404&goodsVersion=1"
-    },
-    {
-      "伺服器": "獨眼巨人庫克羅普斯",
-      "DD373_RMB每萬": 1.0885,
-      "DD373_TWD每萬": 5.4425,
-      "含稅成本_TWD每萬": 5.6058,
-      "8591參考價_TWD每萬": 6.25,
-      "每萬淨利_TWD": 0.2692,
-      "淨利率": 4.8,
-      "庫存_萬金": 169.0,
-      "最少要買": "整批",
-      "部分結算": false,
-      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261115172055-46795&goodsNum=169&goodsVersion=0"
-    },
-    {
-      "伺服器": "獨眼巨人庫克羅普斯",
-      "DD373_RMB每萬": 1.0886,
-      "DD373_TWD每萬": 5.443,
-      "含稅成本_TWD每萬": 5.6063,
-      "8591參考價_TWD每萬": 6.25,
-      "每萬淨利_TWD": 0.2687,
-      "淨利率": 4.79,
+      "每萬淨利_TWD": 0.2718,
+      "淨利率": 4.85,
       "庫存_萬金": 1050.0,
       "最少要買": "整批",
       "部分結算": false,
-      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261115152022-97659&goodsNum=1050&goodsVersion=0"
+      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261115152022-97659&goodsNum=1050&goodsVersion=1"
+    },
+    {
+      "伺服器": "獨眼巨人庫克羅普斯",
+      "DD373_RMB每萬": 1.0883,
+      "DD373_TWD每萬": 5.4415,
+      "含稅成本_TWD每萬": 5.6047,
+      "8591參考價_TWD每萬": 6.25,
+      "每萬淨利_TWD": 0.2703,
+      "淨利率": 4.82,
+      "庫存_萬金": 400.0,
+      "最少要買": "整批",
+      "部分結算": false,
+      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261115184626-67903&goodsNum=400&goodsVersion=0"
+    },
+    {
+      "伺服器": "獨眼巨人庫克羅普斯",
+      "DD373_RMB每萬": 1.0883,
+      "DD373_TWD每萬": 5.4415,
+      "含稅成本_TWD每萬": 5.6047,
+      "8591參考價_TWD每萬": 6.25,
+      "每萬淨利_TWD": 0.2703,
+      "淨利率": 4.82,
+      "庫存_萬金": 500.0,
+      "最少要買": "整批",
+      "部分結算": false,
+      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261011093613-49272&goodsNum=500&goodsVersion=17"
     },
     {
       "伺服器": "水蛇許德拉",
-      "DD373_RMB每萬": 1.0799,
-      "DD373_TWD每萬": 5.3995,
-      "含稅成本_TWD每萬": 5.5615,
+      "DD373_RMB每萬": 1.077,
+      "DD373_TWD每萬": 5.385,
+      "含稅成本_TWD每萬": 5.5465,
       "8591參考價_TWD每萬": 6.1728,
-      "每萬淨利_TWD": 0.2409,
-      "淨利率": 4.33,
+      "每萬淨利_TWD": 0.2559,
+      "淨利率": 4.61,
+      "庫存_萬金": 1200.0,
+      "最少要買": "整批",
+      "部分結算": false,
+      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261115134643-39257&goodsNum=1200&goodsVersion=3"
+    },
+    {
+      "伺服器": "水蛇許德拉",
+      "DD373_RMB每萬": 1.0776,
+      "DD373_TWD每萬": 5.388,
+      "含稅成本_TWD每萬": 5.5496,
+      "8591參考價_TWD每萬": 6.1728,
+      "每萬淨利_TWD": 0.2528,
+      "淨利率": 4.56,
+      "庫存_萬金": 769.0,
+      "最少要買": "整批",
+      "部分結算": false,
+      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261115172210-66969&goodsNum=769&goodsVersion=4"
+    },
+    {
+      "伺服器": "水蛇許德拉",
+      "DD373_RMB每萬": 1.0784,
+      "DD373_TWD每萬": 5.392,
+      "含稅成本_TWD每萬": 5.5538,
+      "8591參考價_TWD每萬": 6.1728,
+      "每萬淨利_TWD": 0.2487,
+      "淨利率": 4.48,
+      "庫存_萬金": 332.0,
+      "最少要買": "整批",
+      "部分結算": false,
+      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261115185204-76690&goodsNum=332&goodsVersion=0"
+    },
+    {
+      "伺服器": "勝利女神雅典娜",
+      "DD373_RMB每萬": 1.0929,
+      "DD373_TWD每萬": 5.4645,
+      "含稅成本_TWD每萬": 5.6284,
+      "8591參考價_TWD每萬": 6.25,
+      "每萬淨利_TWD": 0.2466,
+      "淨利率": 4.38,
+      "庫存_萬金": 1100.0,
+      "最少要買": "整批",
+      "部分結算": false,
+      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261114133744-36725&goodsNum=1100&goodsVersion=4"
+    },
+    {
+      "伺服器": "勝利女神雅典娜",
+      "DD373_RMB每萬": 1.093,
+      "DD373_TWD每萬": 5.465,
+      "含稅成本_TWD每萬": 5.6289,
+      "8591參考價_TWD每萬": 6.25,
+      "每萬淨利_TWD": 0.2461,
+      "淨利率": 4.37,
+      "庫存_萬金": 905.0,
+      "最少要買": "整批",
+      "部分結算": false,
+      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261115151651-76208&goodsNum=905&goodsVersion=1"
+    },
+    {
+      "伺服器": "戰神馬爾斯",
+      "DD373_RMB每萬": 1.0936,
+      "DD373_TWD每萬": 5.468,
+      "含稅成本_TWD每萬": 5.632,
+      "8591參考價_TWD每萬": 6.25,
+      "每萬淨利_TWD": 0.243,
+      "淨利率": 4.31,
       "庫存_萬金": 355.0,
       "最少要買": "整批",
       "部分結算": false,
-      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261115175714-73102&goodsNum=355&goodsVersion=0"
+      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261115185307-97829&goodsNum=355&goodsVersion=0"
     },
     {
-      "伺服器": "水蛇許德拉",
-      "DD373_RMB每萬": 1.0799,
-      "DD373_TWD每萬": 5.3995,
-      "含稅成本_TWD每萬": 5.5615,
-      "8591參考價_TWD每萬": 6.1728,
-      "每萬淨利_TWD": 0.2409,
-      "淨利率": 4.33,
-      "庫存_萬金": 781.0,
+      "伺服器": "戰神馬爾斯",
+      "DD373_RMB每萬": 1.0937,
+      "DD373_TWD每萬": 5.4685,
+      "含稅成本_TWD每萬": 5.6326,
+      "8591參考價_TWD每萬": 6.25,
+      "每萬淨利_TWD": 0.2424,
+      "淨利率": 4.3,
+      "庫存_萬金": 600.0,
       "最少要買": "整批",
       "部分結算": false,
-      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261115172210-66969&goodsNum=781&goodsVersion=1"
+      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261111111528-44445&goodsNum=600&goodsVersion=4"
+    },
+    {
+      "伺服器": "戰神馬爾斯",
+      "DD373_RMB每萬": 1.0938,
+      "DD373_TWD每萬": 5.469,
+      "含稅成本_TWD每萬": 5.6331,
+      "8591參考價_TWD每萬": 6.25,
+      "每萬淨利_TWD": 0.2419,
+      "淨利率": 4.29,
+      "庫存_萬金": 1130.0,
+      "最少要買": "整批",
+      "部分結算": false,
+      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261112011012-91510&goodsNum=500&goodsVersion=3"
     },
     {
       "伺服器": "勝利女神雅典娜",
@@ -894,97 +894,6 @@
       "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261115134149-46653&goodsNum=100&goodsVersion=1"
     },
     {
-      "伺服器": "水蛇許德拉",
-      "DD373_RMB每萬": 1.0811,
-      "DD373_TWD每萬": 5.4055,
-      "含稅成本_TWD每萬": 5.5677,
-      "8591參考價_TWD每萬": 6.1728,
-      "每萬淨利_TWD": 0.2348,
-      "淨利率": 4.22,
-      "庫存_萬金": 1070.0,
-      "最少要買": "整批",
-      "部分結算": false,
-      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261115172418-10247&goodsNum=1070&goodsVersion=1"
-    },
-    {
-      "伺服器": "勝利女神雅典娜",
-      "DD373_RMB每萬": 1.0947,
-      "DD373_TWD每萬": 5.4735,
-      "含稅成本_TWD每萬": 5.6377,
-      "8591參考價_TWD每萬": 6.25,
-      "每萬淨利_TWD": 0.2373,
-      "淨利率": 4.21,
-      "庫存_萬金": 2500.0,
-      "最少要買": "整批",
-      "部分結算": false,
-      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261115175600-95954&goodsNum=2500&goodsVersion=0"
-    },
-    {
-      "伺服器": "勝利女神雅典娜",
-      "DD373_RMB每萬": 1.0948,
-      "DD373_TWD每萬": 5.474,
-      "含稅成本_TWD每萬": 5.6382,
-      "8591參考價_TWD每萬": 6.25,
-      "每萬淨利_TWD": 0.2368,
-      "淨利率": 4.2,
-      "庫存_萬金": 1190.0,
-      "最少要買": "整批",
-      "部分結算": false,
-      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261114141934-93735&goodsNum=1190&goodsVersion=5"
-    },
-    {
-      "伺服器": "月亮女神阿緹蜜斯",
-      "DD373_RMB每萬": 1.0499,
-      "DD373_TWD每萬": 5.2495,
-      "含稅成本_TWD每萬": 5.407,
-      "8591參考價_TWD每萬": 5.988,
-      "每萬淨利_TWD": 0.2217,
-      "淨利率": 4.1,
-      "庫存_萬金": 630.0,
-      "最少要買": "整批",
-      "部分結算": false,
-      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261115151321-70735&goodsNum=630&goodsVersion=8"
-    },
-    {
-      "伺服器": "月亮女神阿緹蜜斯",
-      "DD373_RMB每萬": 1.05,
-      "DD373_TWD每萬": 5.25,
-      "含稅成本_TWD每萬": 5.4075,
-      "8591參考價_TWD每萬": 5.988,
-      "每萬淨利_TWD": 0.2212,
-      "淨利率": 4.09,
-      "庫存_萬金": 8000.0,
-      "最少要買": "整批",
-      "部分結算": false,
-      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261114170503-26554&goodsNum=1000&goodsVersion=2"
-    },
-    {
-      "伺服器": "飛馬珀伽索斯",
-      "DD373_RMB每萬": 1.089,
-      "DD373_TWD每萬": 5.445,
-      "含稅成本_TWD每萬": 5.6084,
-      "8591參考價_TWD每萬": 6.1728,
-      "每萬淨利_TWD": 0.1941,
-      "淨利率": 3.46,
-      "庫存_萬金": 95.0,
-      "最少要買": "整批",
-      "部分結算": false,
-      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261115171713-86312&goodsNum=95&goodsVersion=1"
-    },
-    {
-      "伺服器": "飛馬珀伽索斯",
-      "DD373_RMB每萬": 1.09,
-      "DD373_TWD每萬": 5.45,
-      "含稅成本_TWD每萬": 5.6135,
-      "8591參考價_TWD每萬": 6.1728,
-      "每萬淨利_TWD": 0.1889,
-      "淨利率": 3.37,
-      "庫存_萬金": 600.0,
-      "最少要買": "整批",
-      "部分結算": false,
-      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261114214556-83924&goodsNum=600&goodsVersion=7"
-    },
-    {
       "伺服器": "飛馬珀伽索斯",
       "DD373_RMB每萬": 1.0939,
       "DD373_TWD每萬": 5.4695,
@@ -998,17 +907,56 @@
       "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261115172039-16767&goodsNum=500&goodsVersion=0"
     },
     {
-      "伺服器": "月亮女神阿緹蜜斯",
-      "DD373_RMB每萬": 1.0661,
-      "DD373_TWD每萬": 5.3305,
-      "含稅成本_TWD每萬": 5.4904,
-      "8591參考價_TWD每萬": 5.988,
-      "每萬淨利_TWD": 0.1383,
-      "淨利率": 2.52,
-      "庫存_萬金": 744.0,
+      "伺服器": "飛馬珀伽索斯",
+      "DD373_RMB每萬": 1.094,
+      "DD373_TWD每萬": 5.47,
+      "含稅成本_TWD每萬": 5.6341,
+      "8591參考價_TWD每萬": 6.1728,
+      "每萬淨利_TWD": 0.1683,
+      "淨利率": 2.99,
+      "庫存_萬金": 581.0,
       "最少要買": "整批",
       "部分結算": false,
-      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261115172123-31843&goodsNum=744&goodsVersion=2"
+      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261114130456-26473&goodsNum=581&goodsVersion=2"
+    },
+    {
+      "伺服器": "飛馬珀伽索斯",
+      "DD373_RMB每萬": 1.0961,
+      "DD373_TWD每萬": 5.4805,
+      "含稅成本_TWD每萬": 5.6449,
+      "8591參考價_TWD每萬": 6.1728,
+      "每萬淨利_TWD": 0.1575,
+      "淨利率": 2.79,
+      "庫存_萬金": 600.0,
+      "最少要買": "整批",
+      "部分結算": false,
+      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261115162112-85397&goodsNum=600&goodsVersion=0"
+    },
+    {
+      "伺服器": "蛇髮女墨杜沙",
+      "DD373_RMB每萬": 1.0789,
+      "DD373_TWD每萬": 5.3945,
+      "含稅成本_TWD每萬": 5.5563,
+      "8591參考價_TWD每萬": 6.0606,
+      "每萬淨利_TWD": 0.1406,
+      "淨利率": 2.53,
+      "庫存_萬金": 370.0,
+      "最少要買": "整批",
+      "部分結算": false,
+      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261115185234-97737&goodsNum=370&goodsVersion=0"
+    },
+    {
+      "伺服器": "蛇髮女墨杜沙",
+      "DD373_RMB每萬": 1.079,
+      "DD373_TWD每萬": 5.395,
+      "含稅成本_TWD每萬": 5.5568,
+      "8591參考價_TWD每萬": 6.0606,
+      "每萬淨利_TWD": 0.1401,
+      "淨利率": 2.52,
+      "庫存_萬金": 1186.0,
+      "最少要買": "整批",
+      "部分結算": false,
+      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261115151545-59071&goodsNum=1186&goodsVersion=1"
     }
   ]
 }
