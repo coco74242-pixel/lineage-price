@@ -1,6 +1,6 @@
 {
-  "updated_at": "2026-11-17 04:52:11 +0800",
-  "updated_at_ts": 1794862331.6509778,
+  "updated_at": "2026-11-17 05:58:37 +0800",
+  "updated_at_ts": 1794866317.5297039,
   "timezone": "Asia/Taipei",
   "fx_rmb_to_twd": 5,
   "fee_8591": 0.06,
@@ -9,9 +9,57 @@
   "hit_count": 17,
   "server_count": 7,
   "errors": [],
-  "ref_fetched_at": "2026-11-17 04:52:09 +0800",
+  "ref_fetched_at": "2026-11-17 05:58:35 +0800",
   "ref_source": "8591 sell_sort=1, 銷量第一名（銷量相近≥90% 時取匯率較差）",
   "refs": {
+    "獅子涅墨亞": {
+      "ref_twd": 6.0606,
+      "reason": "銷量第一名",
+      "top": [
+        {
+          "rate": 1650.0,
+          "twd": 6.0606,
+          "sell_count": 70,
+          "chosen": true
+        },
+        {
+          "rate": 1480.0,
+          "twd": 6.7568,
+          "sell_count": 11,
+          "chosen": false
+        },
+        {
+          "rate": 1600.0,
+          "twd": 6.25,
+          "sell_count": 9,
+          "chosen": false
+        }
+      ]
+    },
+    "勝利女神雅典娜": {
+      "ref_twd": 6.25,
+      "reason": "銷量相近，取匯率較差",
+      "top": [
+        {
+          "rate": 1380.0,
+          "twd": 7.2464,
+          "sell_count": 258,
+          "chosen": false
+        },
+        {
+          "rate": 1600.0,
+          "twd": 6.25,
+          "sell_count": 245,
+          "chosen": true
+        },
+        {
+          "rate": 1590.0,
+          "twd": 6.2893,
+          "sell_count": 67,
+          "chosen": false
+        }
+      ]
+    },
     "太陽神阿波羅": {
       "ref_twd": 6.25,
       "reason": "銷量第一名",
@@ -56,78 +104,6 @@
           "rate": 1900.0,
           "twd": 5.2632,
           "sell_count": 15,
-          "chosen": false
-        }
-      ]
-    },
-    "勝利女神雅典娜": {
-      "ref_twd": 6.25,
-      "reason": "銷量相近，取匯率較差",
-      "top": [
-        {
-          "rate": 1380.0,
-          "twd": 7.2464,
-          "sell_count": 258,
-          "chosen": false
-        },
-        {
-          "rate": 1600.0,
-          "twd": 6.25,
-          "sell_count": 245,
-          "chosen": true
-        },
-        {
-          "rate": 1590.0,
-          "twd": 6.2893,
-          "sell_count": 67,
-          "chosen": false
-        }
-      ]
-    },
-    "獨眼巨人庫克羅普斯": {
-      "ref_twd": 6.25,
-      "reason": "銷量第一名",
-      "top": [
-        {
-          "rate": 1600.0,
-          "twd": 6.25,
-          "sell_count": 289,
-          "chosen": true
-        },
-        {
-          "rate": 1650.0,
-          "twd": 6.0606,
-          "sell_count": 33,
-          "chosen": false
-        },
-        {
-          "rate": 1580.0,
-          "twd": 6.3291,
-          "sell_count": 17,
-          "chosen": false
-        }
-      ]
-    },
-    "獅子涅墨亞": {
-      "ref_twd": 6.0606,
-      "reason": "銷量第一名",
-      "top": [
-        {
-          "rate": 1650.0,
-          "twd": 6.0606,
-          "sell_count": 70,
-          "chosen": true
-        },
-        {
-          "rate": 1480.0,
-          "twd": 6.7568,
-          "sell_count": 11,
-          "chosen": false
-        },
-        {
-          "rate": 1600.0,
-          "twd": 6.25,
-          "sell_count": 9,
           "chosen": false
         }
       ]
@@ -200,6 +176,30 @@
           "rate": 1700.0,
           "twd": 5.8824,
           "sell_count": 25,
+          "chosen": false
+        }
+      ]
+    },
+    "獨眼巨人庫克羅普斯": {
+      "ref_twd": 6.25,
+      "reason": "銷量第一名",
+      "top": [
+        {
+          "rate": 1600.0,
+          "twd": 6.25,
+          "sell_count": 289,
+          "chosen": true
+        },
+        {
+          "rate": 1650.0,
+          "twd": 6.0606,
+          "sell_count": 33,
+          "chosen": false
+        },
+        {
+          "rate": 1580.0,
+          "twd": 6.3291,
+          "sell_count": 17,
           "chosen": false
         }
       ]
@@ -324,30 +324,6 @@
         }
       ]
     },
-    "冥王黑帝斯": {
-      "ref_twd": 6.1728,
-      "reason": "銷量第一名",
-      "top": [
-        {
-          "rate": 1620.0,
-          "twd": 6.1728,
-          "sell_count": 98,
-          "chosen": true
-        },
-        {
-          "rate": 1600.0,
-          "twd": 6.25,
-          "sell_count": 75,
-          "chosen": false
-        },
-        {
-          "rate": 1610.0,
-          "twd": 6.2112,
-          "sell_count": 28,
-          "chosen": false
-        }
-      ]
-    },
     "海神波塞頓": {
       "ref_twd": 6.25,
       "reason": "銷量第一名",
@@ -396,26 +372,26 @@
         }
       ]
     },
-    "火神赫發斯特斯": {
-      "ref_twd": 5.988,
+    "冥王黑帝斯": {
+      "ref_twd": 6.1728,
       "reason": "銷量第一名",
       "top": [
         {
-          "rate": 1670.0,
-          "twd": 5.988,
-          "sell_count": 46,
+          "rate": 1620.0,
+          "twd": 6.1728,
+          "sell_count": 98,
           "chosen": true
         },
         {
-          "rate": 1452.83,
-          "twd": 6.8831,
-          "sell_count": 22,
+          "rate": 1600.0,
+          "twd": 6.25,
+          "sell_count": 75,
           "chosen": false
         },
         {
-          "rate": 1220.0,
-          "twd": 8.1967,
-          "sell_count": 16,
+          "rate": 1610.0,
+          "twd": 6.2112,
+          "sell_count": 28,
           "chosen": false
         }
       ]
@@ -440,6 +416,54 @@
           "rate": 1509.43,
           "twd": 6.625,
           "sell_count": 20,
+          "chosen": false
+        }
+      ]
+    },
+    "火神赫發斯特斯": {
+      "ref_twd": 5.988,
+      "reason": "銷量第一名",
+      "top": [
+        {
+          "rate": 1670.0,
+          "twd": 5.988,
+          "sell_count": 46,
+          "chosen": true
+        },
+        {
+          "rate": 1452.83,
+          "twd": 6.8831,
+          "sell_count": 22,
+          "chosen": false
+        },
+        {
+          "rate": 1220.0,
+          "twd": 8.1967,
+          "sell_count": 16,
+          "chosen": false
+        }
+      ]
+    },
+    "半人馬涅索斯": {
+      "ref_twd": 6.25,
+      "reason": "銷量第一名",
+      "top": [
+        {
+          "rate": 1600.0,
+          "twd": 6.25,
+          "sell_count": 88,
+          "chosen": true
+        },
+        {
+          "rate": 1610.0,
+          "twd": 6.2112,
+          "sell_count": 49,
+          "chosen": false
+        },
+        {
+          "rate": 900.0,
+          "twd": 11.1111,
+          "sell_count": 41,
           "chosen": false
         }
       ]
@@ -512,30 +536,6 @@
           "rate": 1160.0,
           "twd": 8.6207,
           "sell_count": 36,
-          "chosen": false
-        }
-      ]
-    },
-    "半人馬涅索斯": {
-      "ref_twd": 6.25,
-      "reason": "銷量第一名",
-      "top": [
-        {
-          "rate": 1600.0,
-          "twd": 6.25,
-          "sell_count": 88,
-          "chosen": true
-        },
-        {
-          "rate": 1610.0,
-          "twd": 6.2112,
-          "sell_count": 49,
-          "chosen": false
-        },
-        {
-          "rate": 900.0,
-          "twd": 11.1111,
-          "sell_count": 41,
           "chosen": false
         }
       ]
