@@ -1,6 +1,6 @@
 {
-  "updated_at": "2026-11-17 03:01:55 +0800",
-  "updated_at_ts": 1794855715.7088914,
+  "updated_at": "2026-11-17 03:52:08 +0800",
+  "updated_at_ts": 1794858728.601499,
   "timezone": "Asia/Taipei",
   "fx_rmb_to_twd": 5,
   "fee_8591": 0.06,
@@ -596,29 +596,29 @@
     },
     {
       "伺服器": "天后海拉",
-      "DD373_RMB每萬": 1.1186,
-      "DD373_TWD每萬": 5.593,
-      "含稅成本_TWD每萬": 5.7608,
+      "DD373_RMB每萬": 1.1195,
+      "DD373_TWD每萬": 5.5975,
+      "含稅成本_TWD每萬": 5.7654,
       "8591參考價_TWD每萬": 8.0645,
-      "每萬淨利_TWD": 1.8198,
-      "淨利率": 31.59,
-      "庫存_萬金": 130.0,
+      "每萬淨利_TWD": 1.8152,
+      "淨利率": 31.48,
+      "庫存_萬金": 270.0,
       "最少要買": "整批",
       "部分結算": false,
-      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261115234045-25528&goodsNum=130&goodsVersion=3"
+      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261116204103-64229&goodsNum=270&goodsVersion=0"
     },
     {
       "伺服器": "天后海拉",
-      "DD373_RMB每萬": 1.1186,
-      "DD373_TWD每萬": 5.593,
-      "含稅成本_TWD每萬": 5.7608,
+      "DD373_RMB每萬": 1.125,
+      "DD373_TWD每萬": 5.625,
+      "含稅成本_TWD每萬": 5.7938,
       "8591參考價_TWD每萬": 8.0645,
-      "每萬淨利_TWD": 1.8198,
-      "淨利率": 31.59,
-      "庫存_萬金": 230.0,
+      "每萬淨利_TWD": 1.7869,
+      "淨利率": 30.84,
+      "庫存_萬金": 8380.0,
       "最少要買": "整批",
       "部分結算": false,
-      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261116213754-52190&goodsNum=230&goodsVersion=0"
+      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261115213753-42660&goodsNum=500&goodsVersion=0"
     },
     {
       "伺服器": "美神維納斯",
