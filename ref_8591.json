@@ -1,32 +1,92 @@
 {
-  "fetched_at": "2026-11-16 11:00:29 +0800",
-  "fetched_at_ts": 1794798029.2881296,
+  "fetched_at": "2026-11-16 12:18:19 +0800",
+  "fetched_at_ts": 1794802699.624162,
   "source": "8591 sell_sort=1, 銷量第一名（銷量相近≥90% 時取匯率較差）",
   "servers": {
-    "太陽神阿波羅": 6.25,
     "公牛克里特": 5.618,
-    "勝利女神雅典娜": 6.25,
-    "獅子涅墨亞": 6.3291,
-    "地獄犬刻耳柏洛斯": 6.25,
-    "飛馬珀伽索斯": 6.1728,
-    "愛神邱比特": 6.0606,
+    "獅子涅墨亞": 6.0606,
     "獨眼巨人庫克羅普斯": 6.25,
-    "美神維納斯": 7.4627,
+    "太陽神阿波羅": 6.25,
+    "地獄犬刻耳柏洛斯": 6.25,
+    "勝利女神雅典娜": 6.25,
+    "飛馬珀伽索斯": 5.988,
+    "愛神邱比特": 6.0606,
     "天神宙斯": 6.0606,
-    "月亮女神阿緹蜜斯": 5.988,
-    "天后海拉": 8.0645,
-    "戰神馬爾斯": 6.25,
-    "水蛇許德拉": 6.1728,
     "海神波塞頓": 6.25,
+    "水蛇許德拉": 6.1728,
+    "美神維納斯": 7.4627,
+    "月亮女神阿緹蜜斯": 6.0976,
+    "戰神馬爾斯": 6.25,
     "冥王黑帝斯": 6.4103,
-    "火神赫發斯特斯": 6.0976,
-    "收獲女神蒂蜜特": 9.6154,
-    "半人馬涅索斯": 6.25,
-    "泰坦女神瑞亞": 6.0606,
+    "天后海拉": 8.0645,
+    "火神赫發斯特斯": 5.988,
+    "蛇髮女墨杜沙": 6.0606,
     "牛人彌諾陶洛斯": 5.9524,
-    "蛇髮女墨杜沙": 6.0606
+    "泰坦女神瑞亞": 6.0606,
+    "半人馬涅索斯": 6.25,
+    "收獲女神蒂蜜特": 9.6154
   },
   "top": {
+    "公牛克里特": [
+      {
+        "rate": 1780.0,
+        "twd": 5.618,
+        "sell_count": 84,
+        "chosen": true
+      },
+      {
+        "rate": 2050.0,
+        "twd": 4.878,
+        "sell_count": 45,
+        "chosen": false
+      },
+      {
+        "rate": 1900.0,
+        "twd": 5.2632,
+        "sell_count": 15,
+        "chosen": false
+      }
+    ],
+    "獅子涅墨亞": [
+      {
+        "rate": 1650.0,
+        "twd": 6.0606,
+        "sell_count": 70,
+        "chosen": true
+      },
+      {
+        "rate": 1480.0,
+        "twd": 6.7568,
+        "sell_count": 11,
+        "chosen": false
+      },
+      {
+        "rate": 1600.0,
+        "twd": 6.25,
+        "sell_count": 9,
+        "chosen": false
+      }
+    ],
+    "獨眼巨人庫克羅普斯": [
+      {
+        "rate": 1600.0,
+        "twd": 6.25,
+        "sell_count": 289,
+        "chosen": true
+      },
+      {
+        "rate": 1650.0,
+        "twd": 6.0606,
+        "sell_count": 33,
+        "chosen": false
+      },
+      {
+        "rate": 1200.0,
+        "twd": 8.3333,
+        "sell_count": 17,
+        "chosen": false
+      }
+    ],
     "太陽神阿波羅": [
       {
         "rate": 1600.0,
@@ -47,23 +107,23 @@
         "chosen": false
       }
     ],
-    "公牛克里特": [
+    "地獄犬刻耳柏洛斯": [
       {
-        "rate": 1780.0,
-        "twd": 5.618,
-        "sell_count": 84,
+        "rate": 1600.0,
+        "twd": 6.25,
+        "sell_count": 67,
         "chosen": true
       },
       {
-        "rate": 1990.0,
-        "twd": 5.0251,
-        "sell_count": 45,
+        "rate": 1610.0,
+        "twd": 6.2112,
+        "sell_count": 25,
         "chosen": false
       },
       {
-        "rate": 1900.0,
-        "twd": 5.2632,
-        "sell_count": 15,
+        "rate": 1700.0,
+        "twd": 5.8824,
+        "sell_count": 25,
         "chosen": false
       }
     ],
@@ -87,50 +147,10 @@
         "chosen": false
       }
     ],
-    "獅子涅墨亞": [
-      {
-        "rate": 1580.0,
-        "twd": 6.3291,
-        "sell_count": 70,
-        "chosen": true
-      },
-      {
-        "rate": 1480.0,
-        "twd": 6.7568,
-        "sell_count": 11,
-        "chosen": false
-      },
-      {
-        "rate": 1600.0,
-        "twd": 6.25,
-        "sell_count": 9,
-        "chosen": false
-      }
-    ],
-    "地獄犬刻耳柏洛斯": [
-      {
-        "rate": 1600.0,
-        "twd": 6.25,
-        "sell_count": 67,
-        "chosen": true
-      },
-      {
-        "rate": 1590.0,
-        "twd": 6.2893,
-        "sell_count": 25,
-        "chosen": false
-      },
-      {
-        "rate": 1700.0,
-        "twd": 5.8824,
-        "sell_count": 25,
-        "chosen": false
-      }
-    ],
     "飛馬珀伽索斯": [
       {
-        "rate": 1620.0,
-        "twd": 6.1728,
+        "rate": 1670.0,
+        "twd": 5.988,
         "sell_count": 61,
         "chosen": true
       },
@@ -167,46 +187,6 @@
         "chosen": false
       }
     ],
-    "獨眼巨人庫克羅普斯": [
-      {
-        "rate": 1600.0,
-        "twd": 6.25,
-        "sell_count": 289,
-        "chosen": true
-      },
-      {
-        "rate": 1650.0,
-        "twd": 6.0606,
-        "sell_count": 33,
-        "chosen": false
-      },
-      {
-        "rate": 1200.0,
-        "twd": 8.3333,
-        "sell_count": 17,
-        "chosen": false
-      }
-    ],
-    "美神維納斯": [
-      {
-        "rate": 1340.0,
-        "twd": 7.4627,
-        "sell_count": 65,
-        "chosen": true
-      },
-      {
-        "rate": 1610.0,
-        "twd": 6.2112,
-        "sell_count": 43,
-        "chosen": false
-      },
-      {
-        "rate": 1600.0,
-        "twd": 6.25,
-        "sell_count": 29,
-        "chosen": false
-      }
-    ],
     "天神宙斯": [
       {
         "rate": 1650.0,
@@ -215,8 +195,8 @@
         "chosen": true
       },
       {
-        "rate": 1640.0,
-        "twd": 6.0976,
+        "rate": 1690.0,
+        "twd": 5.9172,
         "sell_count": 27,
         "chosen": false
       },
@@ -227,63 +207,23 @@
         "chosen": false
       }
     ],
-    "月亮女神阿緹蜜斯": [
-      {
-        "rate": 1670.0,
-        "twd": 5.988,
-        "sell_count": 67,
-        "chosen": true
-      },
+    "海神波塞頓": [
       {
         "rate": 1600.0,
         "twd": 6.25,
-        "sell_count": 50,
-        "chosen": false
-      },
-      {
-        "rate": 1370.0,
-        "twd": 7.2993,
-        "sell_count": 29,
-        "chosen": false
-      }
-    ],
-    "天后海拉": [
-      {
-        "rate": 1240.0,
-        "twd": 8.0645,
-        "sell_count": 63,
+        "sell_count": 114,
         "chosen": true
       },
       {
-        "rate": 1610.0,
-        "twd": 6.2112,
-        "sell_count": 39,
+        "rate": 1400.0,
+        "twd": 7.1429,
+        "sell_count": 47,
         "chosen": false
       },
       {
-        "rate": 1600.0,
-        "twd": 6.25,
+        "rate": 1640.0,
+        "twd": 6.0976,
         "sell_count": 35,
-        "chosen": false
-      }
-    ],
-    "戰神馬爾斯": [
-      {
-        "rate": 1600.0,
-        "twd": 6.25,
-        "sell_count": 89,
-        "chosen": true
-      },
-      {
-        "rate": 1300.0,
-        "twd": 7.6923,
-        "sell_count": 30,
-        "chosen": false
-      },
-      {
-        "rate": 1700.0,
-        "twd": 5.8824,
-        "sell_count": 27,
         "chosen": false
       }
     ],
@@ -307,23 +247,63 @@
         "chosen": false
       }
     ],
-    "海神波塞頓": [
+    "美神維納斯": [
       {
-        "rate": 1600.0,
-        "twd": 6.25,
-        "sell_count": 114,
+        "rate": 1340.0,
+        "twd": 7.4627,
+        "sell_count": 65,
         "chosen": true
       },
       {
-        "rate": 1400.0,
-        "twd": 7.1429,
-        "sell_count": 47,
+        "rate": 1610.0,
+        "twd": 6.2112,
+        "sell_count": 43,
         "chosen": false
       },
       {
-        "rate": 1670.0,
-        "twd": 5.988,
-        "sell_count": 35,
+        "rate": 1600.0,
+        "twd": 6.25,
+        "sell_count": 29,
+        "chosen": false
+      }
+    ],
+    "月亮女神阿緹蜜斯": [
+      {
+        "rate": 1640.0,
+        "twd": 6.0976,
+        "sell_count": 67,
+        "chosen": true
+      },
+      {
+        "rate": 1600.0,
+        "twd": 6.25,
+        "sell_count": 50,
+        "chosen": false
+      },
+      {
+        "rate": 1370.0,
+        "twd": 7.2993,
+        "sell_count": 29,
+        "chosen": false
+      }
+    ],
+    "戰神馬爾斯": [
+      {
+        "rate": 1600.0,
+        "twd": 6.25,
+        "sell_count": 89,
+        "chosen": true
+      },
+      {
+        "rate": 1300.0,
+        "twd": 7.6923,
+        "sell_count": 30,
+        "chosen": false
+      },
+      {
+        "rate": 1700.0,
+        "twd": 5.8824,
+        "sell_count": 27,
         "chosen": false
       }
     ],
@@ -341,16 +321,36 @@
         "chosen": false
       },
       {
-        "rate": 1540.0,
-        "twd": 6.4935,
+        "rate": 1610.0,
+        "twd": 6.2112,
         "sell_count": 28,
+        "chosen": false
+      }
+    ],
+    "天后海拉": [
+      {
+        "rate": 1240.0,
+        "twd": 8.0645,
+        "sell_count": 63,
+        "chosen": true
+      },
+      {
+        "rate": 1640.0,
+        "twd": 6.0976,
+        "sell_count": 39,
+        "chosen": false
+      },
+      {
+        "rate": 1600.0,
+        "twd": 6.25,
+        "sell_count": 35,
         "chosen": false
       }
     ],
     "火神赫發斯特斯": [
       {
-        "rate": 1640.0,
-        "twd": 6.0976,
+        "rate": 1670.0,
+        "twd": 5.988,
         "sell_count": 46,
         "chosen": true
       },
@@ -367,63 +367,23 @@
         "chosen": false
       }
     ],
-    "收獲女神蒂蜜特": [
-      {
-        "rate": 1040.0,
-        "twd": 9.6154,
-        "sell_count": 175,
-        "chosen": true
-      },
-      {
-        "rate": 1600.0,
-        "twd": 6.25,
-        "sell_count": 41,
-        "chosen": false
-      },
-      {
-        "rate": 1509.43,
-        "twd": 6.625,
-        "sell_count": 20,
-        "chosen": false
-      }
-    ],
-    "半人馬涅索斯": [
-      {
-        "rate": 1600.0,
-        "twd": 6.25,
-        "sell_count": 88,
-        "chosen": true
-      },
-      {
-        "rate": 1640.0,
-        "twd": 6.0976,
-        "sell_count": 48,
-        "chosen": false
-      },
-      {
-        "rate": 900.0,
-        "twd": 11.1111,
-        "sell_count": 41,
-        "chosen": false
-      }
-    ],
-    "泰坦女神瑞亞": [
+    "蛇髮女墨杜沙": [
       {
         "rate": 1650.0,
         "twd": 6.0606,
-        "sell_count": 488,
+        "sell_count": 60,
         "chosen": true
       },
       {
-        "rate": 1645.16,
-        "twd": 6.0784,
-        "sell_count": 106,
+        "rate": 1210.0,
+        "twd": 8.2645,
+        "sell_count": 56,
         "chosen": false
       },
       {
-        "rate": 1610.0,
-        "twd": 6.2112,
-        "sell_count": 44,
+        "rate": 1600.0,
+        "twd": 6.25,
+        "sell_count": 32,
         "chosen": false
       }
     ],
@@ -447,49 +407,89 @@
         "chosen": false
       }
     ],
-    "蛇髮女墨杜沙": [
+    "泰坦女神瑞亞": [
       {
         "rate": 1650.0,
         "twd": 6.0606,
-        "sell_count": 60,
+        "sell_count": 488,
         "chosen": true
       },
       {
-        "rate": 1210.0,
-        "twd": 8.2645,
-        "sell_count": 56,
+        "rate": 1645.16,
+        "twd": 6.0784,
+        "sell_count": 106,
         "chosen": false
+      },
+      {
+        "rate": 1610.0,
+        "twd": 6.2112,
+        "sell_count": 44,
+        "chosen": false
+      }
+    ],
+    "半人馬涅索斯": [
+      {
+        "rate": 1600.0,
+        "twd": 6.25,
+        "sell_count": 88,
+        "chosen": true
+      },
+      {
+        "rate": 1610.0,
+        "twd": 6.2112,
+        "sell_count": 48,
+        "chosen": false
+      },
+      {
+        "rate": 900.0,
+        "twd": 11.1111,
+        "sell_count": 41,
+        "chosen": false
+      }
+    ],
+    "收獲女神蒂蜜特": [
+      {
+        "rate": 1040.0,
+        "twd": 9.6154,
+        "sell_count": 175,
+        "chosen": true
       },
       {
         "rate": 1600.0,
         "twd": 6.25,
-        "sell_count": 32,
+        "sell_count": 41,
+        "chosen": false
+      },
+      {
+        "rate": 1509.43,
+        "twd": 6.625,
+        "sell_count": 20,
         "chosen": false
       }
     ]
   },
   "reason": {
-    "太陽神阿波羅": "銷量第一名",
     "公牛克里特": "銷量第一名",
-    "勝利女神雅典娜": "銷量相近，取匯率較差",
     "獅子涅墨亞": "銷量第一名",
+    "獨眼巨人庫克羅普斯": "銷量第一名",
+    "太陽神阿波羅": "銷量第一名",
     "地獄犬刻耳柏洛斯": "銷量第一名",
+    "勝利女神雅典娜": "銷量相近，取匯率較差",
     "飛馬珀伽索斯": "銷量第一名",
     "愛神邱比特": "銷量相近，取匯率較差",
-    "獨眼巨人庫克羅普斯": "銷量第一名",
-    "美神維納斯": "銷量第一名",
     "天神宙斯": "銷量第一名",
-    "月亮女神阿緹蜜斯": "銷量第一名",
-    "天后海拉": "銷量第一名",
-    "戰神馬爾斯": "銷量第一名",
-    "水蛇許德拉": "銷量第一名",
     "海神波塞頓": "銷量第一名",
+    "水蛇許德拉": "銷量第一名",
+    "美神維納斯": "銷量第一名",
+    "月亮女神阿緹蜜斯": "銷量第一名",
+    "戰神馬爾斯": "銷量第一名",
     "冥王黑帝斯": "銷量第一名",
+    "天后海拉": "銷量第一名",
     "火神赫發斯特斯": "銷量第一名",
-    "收獲女神蒂蜜特": "銷量第一名",
-    "半人馬涅索斯": "銷量第一名",
-    "泰坦女神瑞亞": "銷量第一名",
+    "蛇髮女墨杜沙": "銷量第一名",
     "牛人彌諾陶洛斯": "銷量第一名",
-    "蛇髮女墨杜沙": "銷量第一名"
+    "泰坦女神瑞亞": "銷量第一名",
+    "半人馬涅索斯": "銷量第一名",
+    "收獲女神蒂蜜特": "銷量第一名"
   }
 }
