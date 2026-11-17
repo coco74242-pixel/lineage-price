@@ -68,7 +68,7 @@ footer{margin-top:8px;color:var(--muted);font-size:11.5px}
   <div id="status" class="status">載入中…</div>
   <table class="t">
     <thead><tr>
-      <th>遊戲服</th><th>匯率</th><th>最低價</th><th>均價</th>
+      <th>遊戲服</th><th>匯率</th><th>最低價<span class="unit">人民幣/萬</span></th><th>均價</th>
       <th class="my">我的成本均價</th>
       <th>成本 1台幣=多少金</th>
       <th class="my">我的1台幣成本</th>
@@ -113,7 +113,7 @@ async function load(){
     document.getElementById('rows').innerHTML=(d.rows||[]).map(x=>{
       const err=x.tag==='error';
       return `<tr class="${esc(x.tag)}"><td class="srv">${esc(x.name)}</td><td>${esc(x.rate)}</td>`+
-        `<td class="low">${esc(x.low)}${err?'':'<span class="unit">人民幣/萬</span>'}</td><td class="avg">${esc(x.avg)}</td><td class="my">${pend}</td>`+
+        `<td class="low">${esc(x.low)}</td><td class="avg">${esc(x.avg)}</td><td class="my">${pend}</td>`+
         `<td class="cost">${esc(x.cost)}</td><td class="my">${pend}</td><td class="my">${pend}</td>`+
         `<td class="my">${pend}</td><td class="my">${pend}</td></tr>`;
     }).join('');
