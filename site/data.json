@@ -1,6 +1,6 @@
 {
-  "updated_at": "2026-11-18 03:44:53 +0800",
-  "updated_at_ts": 1794944693.7762358,
+  "updated_at": "2026-11-18 04:14:53 +0800",
+  "updated_at_ts": 1794946493.3262272,
   "timezone": "Asia/Taipei",
   "fx_rmb_to_twd": 5,
   "fee_8591": 0.06,
@@ -661,32 +661,6 @@
     },
     {
       "伺服器": "公牛克里特",
-      "DD373_RMB每萬": 0.9288,
-      "DD373_TWD每萬": 4.644,
-      "含稅成本_TWD每萬": 4.7833,
-      "8591參考價_TWD每萬": 5.618,
-      "每萬淨利_TWD": 0.4976,
-      "淨利率": 10.4,
-      "庫存_萬金": 180.0,
-      "最少要買": "90",
-      "部分結算": true,
-      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261003163140-79187&goodsNum=180&goodsVersion=355"
-    },
-    {
-      "伺服器": "公牛克里特",
-      "DD373_RMB每萬": 0.9458,
-      "DD373_TWD每萬": 4.729,
-      "含稅成本_TWD每萬": 4.8709,
-      "8591參考價_TWD每萬": 5.618,
-      "每萬淨利_TWD": 0.4101,
-      "淨利率": 8.42,
-      "庫存_萬金": 15250.0,
-      "最少要買": "7625",
-      "部分結算": true,
-      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261109195949-88249&goodsNum=500&goodsVersion=22"
-    },
-    {
-      "伺服器": "公牛克里特",
       "DD373_RMB每萬": 0.9459,
       "DD373_TWD每萬": 4.7295,
       "含稅成本_TWD每萬": 4.8714,
@@ -697,6 +671,32 @@
       "最少要買": "整批",
       "部分結算": false,
       "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261117203432-84665&goodsNum=1400&goodsVersion=0"
+    },
+    {
+      "伺服器": "公牛克里特",
+      "DD373_RMB每萬": 0.946,
+      "DD373_TWD每萬": 4.73,
+      "含稅成本_TWD每萬": 4.8719,
+      "8591參考價_TWD每萬": 5.618,
+      "每萬淨利_TWD": 0.409,
+      "淨利率": 8.4,
+      "庫存_萬金": 110.0,
+      "最少要買": "整批",
+      "部分結算": false,
+      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261117203154-33272&goodsNum=110&goodsVersion=0"
+    },
+    {
+      "伺服器": "公牛克里特",
+      "DD373_RMB每萬": 0.95,
+      "DD373_TWD每萬": 4.75,
+      "含稅成本_TWD每萬": 4.8925,
+      "8591參考價_TWD每萬": 5.618,
+      "每萬淨利_TWD": 0.3884,
+      "淨利率": 7.94,
+      "庫存_萬金": 1000.0,
+      "最少要買": "整批",
+      "部分結算": false,
+      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261117202434-10072&goodsNum=1000&goodsVersion=0"
     },
     {
       "伺服器": "蛇髮女墨杜沙",
