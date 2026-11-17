@@ -43,6 +43,11 @@ table.t{width:100%;border-collapse:collapse;background:var(--card);border:1px so
 details{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:2px 10px;margin-top:8px;font-size:12.5px}
 details>summary{cursor:pointer;font-weight:700;padding:5px 0}
 details ul{margin:2px 0 8px;padding-left:1.2em}
+.sheetbox{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin-top:8px;font-size:12.5px}
+.sheetbox h2{font-size:13px;margin:0 0 4px;font-weight:700}
+.sheetbox p{margin:0 0 8px;color:var(--muted)}
+.sheetbox a.btn{display:inline-block;background:var(--teal);color:#fff;font-weight:700;text-decoration:none;border-radius:6px;padding:6px 12px}
+.sheetbox .hint{font-size:12px;color:var(--muted);margin:8px 0 0}
 footer{margin-top:8px;color:var(--muted);font-size:11.5px}
 .only-sm{display:none}
 @media (max-width:700px){
@@ -83,6 +88,12 @@ footer{margin-top:8px;color:var(--muted);font-size:11.5px}
     <span><span class="pending">斜紋欄</span> 我的成本、3%、4%、幣量：待接訂單（需登入 DD373）</span>
   </div>
   <div class="only-sm pending" style="margin:4px 2px">手機版先隱藏「我的成本／3%／4%／幣量」欄（待接訂單）</div>
+  <section class="sheetbox" aria-label="我的成本表">
+    <h2>我的成本表</h2>
+    <p>藍字欄在試算表裡自己填：伺服器（下拉選）、匯率、成本、幣量、賣出1台幣(金)。1台幣成本和利潤率會自動算。匯率可填本頁上方的臺銀現金賣出。</p>
+    <a class="btn" href="https://docs.google.com/spreadsheets/d/1zb0FjzX4ydx8QjdLOnJeamGTsMbNjyl14M2h9DiO-Tc/edit" target="_blank" rel="noopener">開啟成本表</a>
+    <p class="hint">這份表存在你的 Google 雲端，只有你登入後才看得到；網站不會公開裡面的數字。</p>
+  </section>
   <details>
     <summary>算法（照原程式 DD373即時價格.exe，未改）</summary>
     <ul>
