@@ -6,6 +6,7 @@
 <meta name="theme-color" content="#f4f1ea">
 <title>DD373 即時價格</title>
 <style>
+.unit{color:#9ca3af;font-size:.72em;margin-left:3px;font-weight:400}
 :root{--bg:#f4f1ea;--card:#fffdf8;--ink:#1c1917;--muted:#78716c;--line:#e7e0d6;--teal:#0f766e;
   --red:#c0392b;--green:#1e8449;--red-bg:#fee2e2;--amber:#b45309;--amber-bg:#fef3c7}
 *{box-sizing:border-box}
@@ -112,7 +113,7 @@ async function load(){
     document.getElementById('rows').innerHTML=(d.rows||[]).map(x=>{
       const err=x.tag==='error';
       return `<tr class="${esc(x.tag)}"><td class="srv">${esc(x.name)}</td><td>${esc(x.rate)}</td>`+
-        `<td class="low">${esc(x.low)}</td><td class="avg">${esc(x.avg)}</td><td class="my">${pend}</td>`+
+        `<td class="low">${esc(x.low)}${err?'':'<span class="unit">元/萬</span>'}</td><td class="avg">${esc(x.avg)}</td><td class="my">${pend}</td>`+
         `<td class="cost">${esc(x.cost)}</td><td class="my">${pend}</td><td class="my">${pend}</td>`+
         `<td class="my">${pend}</td><td class="my">${pend}</td></tr>`;
     }).join('');
