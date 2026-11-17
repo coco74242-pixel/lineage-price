@@ -113,7 +113,7 @@ async function load(){
     document.getElementById('rows').innerHTML=(d.rows||[]).map(x=>{
       const err=x.tag==='error';
       return `<tr class="${esc(x.tag)}"><td class="srv">${esc(x.name)}</td><td>${esc(x.rate)}</td>`+
-        `<td class="low">${esc(x.low)}${err?'':'<span class="unit">元/萬</span>'}</td><td class="avg">${esc(x.avg)}</td><td class="my">${pend}</td>`+
+        `<td class="low">${esc(x.low)}${err?'':'<span class="unit">人民幣/萬</span>'}</td><td class="avg">${esc(x.avg)}</td><td class="my">${pend}</td>`+
         `<td class="cost">${esc(x.cost)}</td><td class="my">${pend}</td><td class="my">${pend}</td>`+
         `<td class="my">${pend}</td><td class="my">${pend}</td></tr>`;
     }).join('');
