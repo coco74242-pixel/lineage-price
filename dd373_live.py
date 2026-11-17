@@ -216,12 +216,16 @@ def main():
            'budget_twd': BUDGET_TWD, 'interval_min': INTERVAL_MIN, 'margins': list(MARGINS)}
     try:
         results, status, rate, day = run_round(on_row=lambda r: set_market(r, prev, market, tags))
+        if results and all('error' in r for r in results):
+            # 9 服全部失敗（例如被擋）＝本輪失敗：照原程式保留上一輪表格，只改狀態列
+            raise RuntimeError('全部伺服器抓價失敗：' + results[0].get('error', ''))
         out.update(ok=True, status=f"{now:%H:%M:%S}  {status}", rate=rate, rate_text=f'{rate:g}',
                    rate_day=f'{day:%Y/%m/%d}', raw=results)
     except Exception as e:
         log('本輪失敗: ' + repr(e) + '\n' + traceback.format_exc())
         # 原程式：本輪失敗時表格保留上一輪的值，只改狀態列
-        market = {r['name']: r for r in old.get('rows', []) if 'name' in r}
+        market = {r['name']: {k: v for k, v in r.items() if k not in ('name', 'tag')}
+                  for r in old.get('rows', []) if 'name' in r}
         tags = {k: '' for k in market}
         out.update(ok=False, status=f'本輪失敗：{e}', rate=old.get('rate'), rate_text=old.get('rate_text'),
                    rate_day=old.get('rate_day'), raw=old.get('raw', []))

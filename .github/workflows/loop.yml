@@ -1,8 +1,13 @@
 name: loop
-# 每 ~60 秒跑一輪 monitor.py + dd373_live.py，資料推到 live 分支，再觸發 deploy.yml 發布 Pages。
+# 每 ~5 分鐘跑一輪 monitor.py + dd373_live.py，資料推到 live 分支，再觸發 deploy.yml 發布 Pages。
 # 跑約 5 小時 40 分後自己再叫一次 loop.yml（GITHUB_TOKEN 可觸發 workflow_dispatch），接在 6 小時上限之前。
 on:
   workflow_dispatch:
+    inputs:
+      probe:
+        description: '只跑一輪測試（不發布、不推資料、不接力）'
+        type: boolean
+        default: false
 permissions:
   contents: write
   actions: write
@@ -20,7 +25,7 @@ jobs:
       DD373_CHROME_CHANNEL: chrome
       DD373_HEADLESS: '0'
       RUN_MINUTES: '340'
-      ROUND_SECONDS: '60'
+      ROUND_SECONDS: '300'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -35,7 +40,26 @@ jobs:
             done
             echo "restored from live"
           fi
+      - name: probe (one round, no publish)
+        if: ${{ inputs.probe }}
+        run: |
+          rm -f ref_8591.json   # 強制重抓 8591，確認有沒有被擋
+          timeout 150 python -u monitor.py > out.txt 2>&1 || true
+          timeout 360 xvfb-run -a python -u dd373_live.py > dd373_out.txt 2>&1 || true
+          python - <<'PY'
+          import json
+          try: refs=len(json.load(open('ref_8591.json')).get('servers') or {})
+          except Exception: refs=0
+          a=json.load(open('site/data.json')); b=json.load(open('site/dd373/data.json'))
+          errs=a.get('errors') or []
+          site_ok='SITE_OK' in open('out.txt',encoding='utf-8',errors='ignore').read()
+          dd373_ok=sum(1 for r in b.get('rows',[]) if r.get('tag')!='error' and r.get('avg')) if b.get('ok') else 0
+          ok = refs>=15 and site_ok and dd373_ok>=7
+          print("PROBE", "OK" if ok else "BLOCKED", "8591_refs", refs, "hits", a.get('hit_count'), "8591page_written", site_ok, "8591page_errors", len(errs), "dd373_ok_servers", dd373_ok, "dd373_status", str(b.get('status'))[:80])
+          for e in errs[:5]: print("  err:", str(e)[:120])
+          PY
       - name: run loop
+        if: ${{ !inputs.probe }}
         run: |
           set +e
           echo "LOOP_T0=$(date +%s)" >> "$GITHUB_ENV"
@@ -72,8 +96,8 @@ jobs:
                 echo "push live failed"
               fi
             fi
-            # 每 30 輪把資料也存回 main 一次（備份；網站不靠它）
-            if [ $((n % 30)) -eq 0 ]; then
+            # 每 6 輪（約 30 分）把資料也存回 main 一次（備份；網站不靠它）
+            if [ $((n % 6)) -eq 0 ]; then
               git add site/data.json site/dd373/data.json ref_8591.json dd373_rate.json
               git -c user.name=github-actions[bot] -c user.email=41898282+github-actions[bot]@users.noreply.github.com \
                 commit -q -m "data $(date '+%F %T')" || true
@@ -84,7 +108,7 @@ jobs:
           done
           exit 0
       - name: hand over to next loop
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && !inputs.probe }}
         run: |
           # 跑不到 30 分鐘就結束代表有問題，不自動重啟（避免無限重開）；由 monitor.yml 排程 / 守護例行補啟
           if [ $(( $(date +%s) - ${LOOP_T0:-0} )) -gt 1800 ]; then gh workflow run loop.yml -R "$REPO" --ref main; else echo "loop ended early, not re-dispatching"; fi

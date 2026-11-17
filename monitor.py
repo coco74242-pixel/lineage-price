@@ -380,9 +380,16 @@ def load_or_refresh_8591(cfg: dict) -> tuple[dict, list[str]]:
         "top": top_map,
         "reason": reason_map,
     }
-    REF_PATH.write_text(json.dumps(cache, ensure_ascii=False, indent=2), encoding="utf-8")
     if not servers:
         errors.append("8591 全部伺服器參考價抓取失敗")
+        # 全部失敗（例如被擋）：不覆蓋上一份好的參考價，沿用舊快取；下一輪會再重抓
+        try:
+            prev = json.loads(REF_PATH.read_text(encoding="utf-8"))
+            if prev.get("servers"):
+                return prev, errors
+        except Exception:
+            pass
+    REF_PATH.write_text(json.dumps(cache, ensure_ascii=False, indent=2), encoding="utf-8")
     return cache, errors
 
 
@@ -701,6 +708,28 @@ def write_site_snapshot(hits: list[dict], errors: list[str], ref_cache: dict, cf
     print(f"SITE_OK {DATA_PATH} hits={len(public)} errors={len(uniq)}")
 
 
+def keep_last_good_snapshot(errors: list[str]) -> None:
+    """整輪失敗（DD373 全部抓不到，或沒有任何 8591 參考價）：保留上一份好的網站資料，
+    只更新錯誤訊息與嘗試時間；updated_at 不動，網頁會照舊顯示資料時間與過期提示。"""
+    try:
+        prev = json.loads(DATA_PATH.read_text(encoding="utf-8"))
+    except Exception:
+        prev = {}
+    if not prev.get("updated_at"):
+        return
+    uniq: list[str] = []
+    for e in ["本輪全部抓取失敗，以下仍是 " + str(prev.get("updated_at")) + " 的資料"] + errors:
+        if e not in uniq:
+            uniq.append(e)
+    prev["errors"] = uniq
+    prev["last_attempt_at"] = iso_now()
+    prev["last_attempt_ok"] = False
+    tmp = DATA_PATH.with_suffix(".json.tmp")
+    tmp.write_text(json.dumps(prev, ensure_ascii=False, indent=2), encoding="utf-8")
+    tmp.replace(DATA_PATH)
+    print(f"SITE_KEPT {DATA_PATH} (round failed) errors={len(uniq)}")
+
+
 def emit(hits: list[dict], errors: list[str]) -> int:
     # Public output: JSON hits and/or ERROR lines. No hits -> NO_HITS.
     if errors:
@@ -950,7 +979,10 @@ def run(discord: bool) -> int:
         errors.append("8591 缺參考價：" + "、".join(missing_ref))
     state = load_state()
     all_hits = build_hits(listings, ref_cache, cfg, None)
-    write_site_snapshot(all_hits, errors, ref_cache, cfg)
+    if listings and (ref_cache.get("servers") or {}):
+        write_site_snapshot(all_hits, errors, ref_cache, cfg)
+    else:
+        keep_last_good_snapshot(errors)
 
     hits = build_hits(listings, ref_cache, cfg, state) if discord else []
     for h in hits:
