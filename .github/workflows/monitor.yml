@@ -35,10 +35,11 @@ jobs:
               print("ERROR: monitor.py did not refresh data.json"); sys.exit(1)
           PY
       - name: DD373 即時價格 (site/dd373, failures do not affect the 8591 page)
-        env: {TZ: Asia/Taipei, DD373_CHROME_CHANNEL: chrome}
+        env: {TZ: Asia/Taipei, DD373_CHROME_CHANNEL: chrome, DD373_HEADLESS: '0'}
         run: |
           pip install -q requests beautifulsoup4 lxml playwright > /dev/null 2>&1 || true
-          timeout 360 python -u dd373_live.py > dd373_out.txt 2>&1 || true
+          # 臺銀匯率頁擋 headless Chrome，用一般 Chrome + 虛擬螢幕（同原程式開縮小的 Chrome）
+          timeout 360 xvfb-run -a python -u dd373_live.py > dd373_out.txt 2>&1 || true
           tail -n 12 dd373_out.txt | cut -c1-300
       - name: guard against secrets
         run: |
