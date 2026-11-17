@@ -1,0 +1,19 @@
+name: test-rate (temporary)
+on: workflow_dispatch
+jobs:
+  t:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - env: {TZ: Asia/Taipei}
+        run: |
+          pip install -q requests beautifulsoup4 lxml playwright > /dev/null 2>&1
+          python - <<'PY'
+          import dd373_live as m, json
+          m.RATE_JSON='/tmp/rate_test.json'
+          m.fetch_bot_rate()
+          print(open('/tmp/rate_test.json').read())
+          PY
