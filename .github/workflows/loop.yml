@@ -1,0 +1,85 @@
+name: loop
+# 每 ~60 秒跑一輪 monitor.py + dd373_live.py，資料推到 live 分支，再觸發 deploy.yml 發布 Pages。
+# 跑約 5 小時 40 分後自己再叫一次 loop.yml（GITHUB_TOKEN 可觸發 workflow_dispatch），接在 6 小時上限之前。
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: write
+concurrency:
+  group: loop
+  cancel-in-progress: false
+jobs:
+  loop:
+    runs-on: ubuntu-latest
+    timeout-minutes: 355
+    env:
+      TZ: Asia/Taipei
+      GH_TOKEN: ${{ github.token }}
+      REPO: ${{ github.repository }}
+      DD373_CHROME_CHANNEL: chrome
+      DD373_HEADLESS: '0'
+      RUN_MINUTES: '340'
+      ROUND_SECONDS: '60'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: install
+        run: pip install -q requests beautifulsoup4 lxml playwright > /dev/null 2>&1 || true
+      - name: restore last data from live branch
+        run: |
+          if git fetch -q --depth 1 origin live 2>/dev/null; then
+            for f in site/data.json site/dd373/data.json ref_8591.json dd373_rate.json state.json; do
+              git show FETCH_HEAD:$f > /tmp/r 2>/dev/null && mv /tmp/r $f || true
+            done
+            echo "restored from live"
+          fi
+      - name: run loop
+        run: |
+          FILES="site/data.json site/dd373/data.json ref_8591.json dd373_rate.json state.json"
+          end=$(( $(date +%s) + RUN_MINUTES*60 ))
+          n=0
+          while [ "$(date +%s)" -lt "$end" ]; do
+            t0=$(date +%s); n=$((n+1))
+            # 拿 main 上最新的程式（只換程式檔，資料檔不動）
+            if git fetch -q --depth 1 origin main 2>/dev/null; then
+              git checkout -q FETCH_HEAD -- monitor.py dd373_live.py config.json 2>/dev/null || true
+            fi
+            timeout 120 python -u monitor.py > out.txt 2>&1 || true
+            timeout 360 xvfb-run -a python -u dd373_live.py > dd373_out.txt 2>&1 || true
+            python - <<'PY' || true
+          import json
+          a=json.load(open('site/data.json')); b=json.load(open('site/dd373/data.json'))
+          print("8591", a.get('updated_at'), "hits", a.get('hit_count'), "errors", len(a.get('errors') or []), "| dd373", b.get('updated_at'), "ok", b.get('ok'))
+          PY
+            if grep -Eiq 'discord(app)?\.com/api/webhooks|ghp_|gho_|ghs_|github_pat_' $FILES site/index.html site/dd373/index.html 2>/dev/null; then
+              echo "secret-like text found, skip publish"
+            else
+              export GIT_INDEX_FILE=/tmp/live.idx; rm -f $GIT_INDEX_FILE
+              for f in $FILES; do
+                [ -f "$f" ] && git update-index --add --cacheinfo 100644,$(git hash-object -w "$f"),"$f"
+              done
+              tree=$(git write-tree); unset GIT_INDEX_FILE
+              c=$(GIT_AUTHOR_NAME=github-actions[bot] GIT_AUTHOR_EMAIL=41898282+github-actions[bot]@users.noreply.github.com \
+                  GIT_COMMITTER_NAME=github-actions[bot] GIT_COMMITTER_EMAIL=41898282+github-actions[bot]@users.noreply.github.com \
+                  git commit-tree $tree -m "live $(date '+%F %T')")
+              if git push -q -f origin "$c:refs/heads/live"; then
+                gh workflow run deploy.yml -R "$REPO" --ref main > /dev/null 2>&1 || echo "deploy dispatch failed"
+              else
+                echo "push live failed"
+              fi
+            fi
+            # 每 30 輪把資料也存回 main 一次（備份；網站不靠它）
+            if [ $((n % 30)) -eq 0 ]; then
+              git add site/data.json site/dd373/data.json ref_8591.json dd373_rate.json
+              git -c user.name=github-actions[bot] -c user.email=41898282+github-actions[bot]@users.noreply.github.com \
+                commit -q -m "data $(date '+%F %T')" || true
+              git push -q origin HEAD:main || (git pull -q --rebase -X theirs origin main && git push -q origin HEAD:main) || true
+            fi
+            left=$(( ROUND_SECONDS - ($(date +%s) - t0) ))
+            [ "$left" -gt 0 ] && sleep "$left"
+          done
+      - name: hand over to next loop
+        if: always()
+        run: gh workflow run loop.yml -R "$REPO" --ref main

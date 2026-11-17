@@ -1,0 +1,28 @@
+name: deploy
+# 由 loop.yml 每輪觸發：main 的網頁 + live 分支的最新資料 → GitHub Pages
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: false
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: overlay live data
+        run: |
+          git fetch -q --depth 1 origin live
+          for f in site/data.json site/dd373/data.json; do git show FETCH_HEAD:$f > $f; done
+      - uses: actions/upload-pages-artifact@v3
+        with: {path: site}
+      - id: deploy
+        uses: actions/deploy-pages@v4
