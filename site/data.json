@@ -1,6 +1,6 @@
 {
-  "updated_at": "2026-11-17 22:34:37 +0800",
-  "updated_at_ts": 1794926077.3467185,
+  "updated_at": "2026-11-17 23:04:37 +0800",
+  "updated_at_ts": 1794927877.7447062,
   "timezone": "Asia/Taipei",
   "fx_rmb_to_twd": 5,
   "fee_8591": 0.06,
@@ -544,42 +544,42 @@
   "hits": [
     {
       "伺服器": "收獲女神蒂蜜特",
-      "DD373_RMB每萬": 1.1824,
-      "DD373_TWD每萬": 5.912,
-      "含稅成本_TWD每萬": 6.0894,
+      "DD373_RMB每萬": 1.17,
+      "DD373_TWD每萬": 5.85,
+      "含稅成本_TWD每萬": 6.0255,
       "8591參考價_TWD每萬": 9.6154,
-      "每萬淨利_TWD": 2.9491,
-      "淨利率": 48.43,
-      "庫存_萬金": 320.0,
+      "每萬淨利_TWD": 3.013,
+      "淨利率": 50.0,
+      "庫存_萬金": 48.0,
       "最少要買": "整批",
       "部分結算": false,
-      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261117204502-89343&goodsNum=100&goodsVersion=0"
+      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261117225313-77538&goodsNum=48&goodsVersion=0"
     },
     {
       "伺服器": "收獲女神蒂蜜特",
-      "DD373_RMB每萬": 1.1825,
-      "DD373_TWD每萬": 5.9125,
-      "含稅成本_TWD每萬": 6.0899,
+      "DD373_RMB每萬": 1.18,
+      "DD373_TWD每萬": 5.9,
+      "含稅成本_TWD每萬": 6.077,
       "8591參考價_TWD每萬": 9.6154,
-      "每萬淨利_TWD": 2.9486,
-      "淨利率": 48.42,
-      "庫存_萬金": 61.0,
+      "每萬淨利_TWD": 2.9615,
+      "淨利率": 48.73,
+      "庫存_萬金": 62.0,
       "最少要買": "整批",
       "部分結算": false,
-      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261117180029-63080&goodsNum=61&goodsVersion=0"
+      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261117225127-83298&goodsNum=62&goodsVersion=0"
     },
     {
       "伺服器": "收獲女神蒂蜜特",
-      "DD373_RMB每萬": 1.1825,
-      "DD373_TWD每萬": 5.9125,
-      "含稅成本_TWD每萬": 6.0899,
+      "DD373_RMB每萬": 1.181,
+      "DD373_TWD每萬": 5.905,
+      "含稅成本_TWD每萬": 6.0822,
       "8591參考價_TWD每萬": 9.6154,
-      "每萬淨利_TWD": 2.9486,
-      "淨利率": 48.42,
-      "庫存_萬金": 308.0,
+      "每萬淨利_TWD": 2.9563,
+      "淨利率": 48.61,
+      "庫存_萬金": 1900.0,
       "最少要買": "整批",
       "部分結算": false,
-      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261117222700-55074&goodsNum=308&goodsVersion=0"
+      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261117225215-72402&goodsNum=1900&goodsVersion=0"
     },
     {
       "伺服器": "美神維納斯",
@@ -593,6 +593,19 @@
       "最少要買": "整批",
       "部分結算": false,
       "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261117202613-68343&goodsNum=11&goodsVersion=0"
+    },
+    {
+      "伺服器": "天后海拉",
+      "DD373_RMB每萬": 1.1537,
+      "DD373_TWD每萬": 5.7685,
+      "含稅成本_TWD每萬": 5.9416,
+      "8591參考價_TWD每萬": 8.0645,
+      "每萬淨利_TWD": 1.6391,
+      "淨利率": 27.59,
+      "庫存_萬金": 3000.0,
+      "最少要買": "整批",
+      "部分結算": false,
+      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261117225728-82123&goodsNum=3000&goodsVersion=0"
     },
     {
       "伺服器": "天后海拉",
@@ -621,19 +634,6 @@
       "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261117213542-41814&goodsNum=230&goodsVersion=0"
     },
     {
-      "伺服器": "天后海拉",
-      "DD373_RMB每萬": 1.1605,
-      "DD373_TWD每萬": 5.8025,
-      "含稅成本_TWD每萬": 5.9766,
-      "8591參考價_TWD每萬": 8.0645,
-      "每萬淨利_TWD": 1.6041,
-      "淨利率": 26.84,
-      "庫存_萬金": 330.0,
-      "最少要買": "整批",
-      "部分結算": false,
-      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261117205423-63984&goodsNum=330&goodsVersion=0"
-    },
-    {
       "伺服器": "美神維納斯",
       "DD373_RMB每萬": 1.139,
       "DD373_TWD每萬": 5.695,
@@ -648,16 +648,16 @@
     },
     {
       "伺服器": "美神維納斯",
-      "DD373_RMB每萬": 1.1762,
-      "DD373_TWD每萬": 5.881,
-      "含稅成本_TWD每萬": 6.0574,
+      "DD373_RMB每萬": 1.1585,
+      "DD373_TWD每萬": 5.7925,
+      "含稅成本_TWD每萬": 5.9663,
       "8591參考價_TWD每萬": 7.4627,
-      "每萬淨利_TWD": 0.9575,
-      "淨利率": 15.81,
-      "庫存_萬金": 122.0,
+      "每萬淨利_TWD": 1.0487,
+      "淨利率": 17.58,
+      "庫存_萬金": 3500.0,
       "最少要買": "整批",
       "部分結算": false,
-      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261117212837-61751&goodsNum=122&goodsVersion=1"
+      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261117225548-94907&goodsNum=3500&goodsVersion=0"
     },
     {
       "伺服器": "公牛克里特",
@@ -674,16 +674,16 @@
     },
     {
       "伺服器": "公牛克里特",
-      "DD373_RMB每萬": 0.9297,
-      "DD373_TWD每萬": 4.6485,
-      "含稅成本_TWD每萬": 4.788,
+      "DD373_RMB每萬": 0.9296,
+      "DD373_TWD每萬": 4.648,
+      "含稅成本_TWD每萬": 4.7874,
       "8591參考價_TWD每萬": 5.618,
-      "每萬淨利_TWD": 0.493,
-      "淨利率": 10.3,
-      "庫存_萬金": 404.0,
-      "最少要買": "整批",
-      "部分結算": false,
-      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261117222742-76134&goodsNum=404&goodsVersion=0"
+      "每萬淨利_TWD": 0.4935,
+      "淨利率": 10.31,
+      "庫存_萬金": 160.0,
+      "最少要買": "80",
+      "部分結算": true,
+      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261003163140-79187&goodsNum=160&goodsVersion=352"
     },
     {
       "伺服器": "公牛克里特",
@@ -693,8 +693,8 @@
       "8591參考價_TWD每萬": 5.618,
       "每萬淨利_TWD": 0.4924,
       "淨利率": 10.28,
-      "庫存_萬金": 16500.0,
-      "最少要買": "8250",
+      "庫存_萬金": 15250.0,
+      "最少要買": "7625",
       "部分結算": true,
       "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261109195949-88249&goodsNum=500&goodsVersion=21"
     },
@@ -726,16 +726,16 @@
     },
     {
       "伺服器": "水蛇許德拉",
-      "DD373_RMB每萬": 1.178,
-      "DD373_TWD每萬": 5.89,
-      "含稅成本_TWD每萬": 6.0667,
+      "DD373_RMB每萬": 1.18,
+      "DD373_TWD每萬": 5.9,
+      "含稅成本_TWD每萬": 6.077,
       "8591參考價_TWD每萬": 6.6667,
-      "每萬淨利_TWD": 0.2,
-      "淨利率": 3.3,
-      "庫存_萬金": 510.0,
+      "每萬淨利_TWD": 0.1897,
+      "淨利率": 3.12,
+      "庫存_萬金": 1640.0,
       "最少要買": "整批",
       "部分結算": false,
-      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261117211648-40786&goodsNum=510&goodsVersion=0"
+      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20260613174900-40653&goodsNum=1000&goodsVersion=74"
     }
   ]
 }
