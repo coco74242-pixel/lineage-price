@@ -1,6 +1,6 @@
 {
-  "updated_at": "2026-11-17 15:58:14 +0800",
-  "updated_at_ts": 1794902294.4515915,
+  "updated_at": "2026-11-17 16:09:04 +0800",
+  "updated_at_ts": 1794902944.4691632,
   "timezone": "Asia/Taipei",
   "fx_rmb_to_twd": 5,
   "fee_8591": 0.06,
@@ -570,16 +570,16 @@
     },
     {
       "伺服器": "收獲女神蒂蜜特",
-      "DD373_RMB每萬": 1.179,
-      "DD373_TWD每萬": 5.895,
-      "含稅成本_TWD每萬": 6.0719,
+      "DD373_RMB每萬": 1.1838,
+      "DD373_TWD每萬": 5.919,
+      "含稅成本_TWD每萬": 6.0966,
       "8591參考價_TWD每萬": 9.6154,
-      "每萬淨利_TWD": 2.9666,
-      "淨利率": 48.86,
-      "庫存_萬金": 500.0,
+      "每萬淨利_TWD": 2.9419,
+      "淨利率": 48.26,
+      "庫存_萬金": 5000.0,
       "最少要買": "整批",
       "部分結算": false,
-      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261115183747-64562&goodsNum=500&goodsVersion=3"
+      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261115214207-73704&goodsNum=500&goodsVersion=6"
     },
     {
       "伺服器": "天后海拉",
@@ -661,19 +661,6 @@
     },
     {
       "伺服器": "公牛克里特",
-      "DD373_RMB每萬": 0.9474,
-      "DD373_TWD每萬": 4.737,
-      "含稅成本_TWD每萬": 4.8791,
-      "8591參考價_TWD每萬": 5.618,
-      "每萬淨利_TWD": 0.4018,
-      "淨利率": 8.24,
-      "庫存_萬金": 400.0,
-      "最少要買": "整批",
-      "部分結算": false,
-      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261117155758-81217&goodsNum=400&goodsVersion=0"
-    },
-    {
-      "伺服器": "公牛克里特",
       "DD373_RMB每萬": 0.9475,
       "DD373_TWD每萬": 4.7375,
       "含稅成本_TWD每萬": 4.8796,
@@ -687,29 +674,29 @@
     },
     {
       "伺服器": "公牛克里特",
-      "DD373_RMB每萬": 0.9476,
-      "DD373_TWD每萬": 4.738,
-      "含稅成本_TWD每萬": 4.8801,
+      "DD373_RMB每萬": 0.9477,
+      "DD373_TWD每萬": 4.7385,
+      "含稅成本_TWD每萬": 4.8807,
       "8591參考價_TWD每萬": 5.618,
-      "每萬淨利_TWD": 0.4008,
-      "淨利率": 8.21,
-      "庫存_萬金": 350.0,
+      "每萬淨利_TWD": 0.4003,
+      "淨利率": 8.2,
+      "庫存_萬金": 2900.0,
       "最少要買": "整批",
       "部分結算": false,
-      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261117135649-31832&goodsNum=350&goodsVersion=0"
+      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261117024815-16206&goodsNum=2900&goodsVersion=2"
     },
     {
-      "伺服器": "水蛇許德拉",
-      "DD373_RMB每萬": 1.1486,
-      "DD373_TWD每萬": 5.743,
-      "含稅成本_TWD每萬": 5.9153,
-      "8591參考價_TWD每萬": 6.6667,
-      "每萬淨利_TWD": 0.3514,
-      "淨利率": 5.94,
-      "庫存_萬金": 265.0,
+      "伺服器": "公牛克里特",
+      "DD373_RMB每萬": 0.9479,
+      "DD373_TWD每萬": 4.7395,
+      "含稅成本_TWD每萬": 4.8817,
+      "8591參考價_TWD每萬": 5.618,
+      "每萬淨利_TWD": 0.3992,
+      "淨利率": 8.18,
+      "庫存_萬金": 1480.0,
       "最少要買": "整批",
       "部分結算": false,
-      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20260802193441-31831&goodsNum=265&goodsVersion=179"
+      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261116161159-88999&goodsNum=1480&goodsVersion=3"
     },
     {
       "伺服器": "水蛇許德拉",
@@ -777,6 +764,32 @@
       "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261117132342-62917&goodsNum=327&goodsVersion=0"
     },
     {
+      "伺服器": "水蛇許德拉",
+      "DD373_RMB每萬": 1.16,
+      "DD373_TWD每萬": 5.8,
+      "含稅成本_TWD每萬": 5.974,
+      "8591參考價_TWD每萬": 6.6667,
+      "每萬淨利_TWD": 0.2927,
+      "淨利率": 4.9,
+      "庫存_萬金": 409.0,
+      "最少要買": "整批",
+      "部分結算": false,
+      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261117115000-73580&goodsNum=409&goodsVersion=1"
+    },
+    {
+      "伺服器": "蛇髮女墨杜沙",
+      "DD373_RMB每萬": 1.0996,
+      "DD373_TWD每萬": 5.498,
+      "含稅成本_TWD每萬": 5.6629,
+      "8591參考價_TWD每萬": 6.2112,
+      "每萬淨利_TWD": 0.1756,
+      "淨利率": 3.1,
+      "庫存_萬金": 636.0,
+      "最少要買": "整批",
+      "部分結算": false,
+      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261117004225-36503&goodsNum=636&goodsVersion=2"
+    },
+    {
       "伺服器": "蛇髮女墨杜沙",
       "DD373_RMB每萬": 1.0997,
       "DD373_TWD每萬": 5.4985,
@@ -788,19 +801,6 @@
       "最少要買": "整批",
       "部分結算": false,
       "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261117150911-40108&goodsNum=600&goodsVersion=3"
-    },
-    {
-      "伺服器": "蛇髮女墨杜沙",
-      "DD373_RMB每萬": 1.0998,
-      "DD373_TWD每萬": 5.499,
-      "含稅成本_TWD每萬": 5.664,
-      "8591參考價_TWD每萬": 6.2112,
-      "每萬淨利_TWD": 0.1746,
-      "淨利率": 3.08,
-      "庫存_萬金": 636.0,
-      "最少要買": "整批",
-      "部分結算": false,
-      "網址": "https://order.dd373.com/default/buy_form.html?shopNumber=DB20261117004225-36503&goodsNum=636&goodsVersion=1"
     },
     {
       "伺服器": "蛇髮女墨杜沙",
