@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f4f1ea">
+<title>DD373 即時價格</title>
+<style>
+:root{--bg:#f4f1ea;--card:#fffdf8;--ink:#1c1917;--muted:#78716c;--line:#e7e0d6;--teal:#0f766e;
+  --red:#c0392b;--green:#1e8449;--red-bg:#fee2e2;--amber:#b45309;--amber-bg:#fef3c7}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:"PingFang TC","Noto Sans TC","Source Han Sans TC","Microsoft JhengHei",ui-sans-serif,system-ui,sans-serif;
+  background:var(--bg);color:var(--ink);font-size:13.5px;line-height:1.4;padding:10px 12px 14px}
+.wrap{max-width:1200px;margin:0 auto}
+.top{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin-bottom:6px}
+h1{font-size:1.1rem;margin:0 6px 0 0;white-space:nowrap}
+.chip{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:2px 9px;font-size:12px;color:var(--muted);white-space:nowrap}
+.chip b{color:var(--ink)}
+.nav{margin-left:auto;font-size:12px}
+.nav a{color:var(--teal);font-weight:700;text-decoration:none}
+.status{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:5px 10px;margin-bottom:6px;font-size:12.5px}
+.status.bad{background:var(--red-bg);color:#b91c1c;border-color:#fecaca}
+.status .stale{color:var(--amber);font-weight:700}
+table.t{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:8px;overflow:hidden;font-variant-numeric:tabular-nums}
+.t th{background:#efe9df;color:var(--muted);font-weight:600;font-size:12px;padding:5px 8px;white-space:nowrap;text-align:right}
+.t th:first-child,.t td:first-child{text-align:left}
+.t td{padding:5px 8px;border-top:1px solid var(--line);white-space:nowrap;text-align:right}
+.t td.srv{font-weight:700}
+.t td.cost{font-weight:800;font-size:14.5px}
+.t th.my,.t td.my{background:repeating-linear-gradient(135deg,#f6f2ea 0 6px,#f1ece3 6px 12px);color:#a8a29e}
+.t th.my{color:#a8a29e}
+.t tr.up td.avg{color:var(--red);font-weight:700}
+.t tr.down td.avg{color:var(--green);font-weight:700}
+.t tr.up td.avg::after{content:" ▲";font-size:10px}
+.t tr.down td.avg::after{content:" ▼";font-size:10px}
+.t tr.error td{color:#999}
+.t tr.error td.low{color:#b91c1c;font-weight:700}
+.legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:var(--muted);margin:6px 2px}
+.legend .r{color:var(--red);font-weight:700}.legend .g{color:var(--green);font-weight:700}
+.pending{display:inline-block;background:#efe9df;border:1px dashed #cfc5b6;border-radius:6px;padding:1px 7px;color:var(--muted);font-size:12px}
+details{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:2px 10px;margin-top:8px;font-size:12.5px}
+details>summary{cursor:pointer;font-weight:700;padding:5px 0}
+details ul{margin:2px 0 8px;padding-left:1.2em}
+footer{margin-top:8px;color:var(--muted);font-size:11.5px}
+.only-sm{display:none}
+@media (max-width:700px){
+  body{padding:8px 6px;font-size:12.5px}
+  .t th,.t td{padding:4px 4px;font-size:12px}
+  .t td.cost{font-size:13px}
+  .t .my{display:none}
+  .t td.srv{white-space:normal;max-width:6em;line-height:1.15}
+  .only-sm{display:block}
+  .nav{margin-left:0}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <h1>DD373 即時價格</h1>
+    <span class="chip">匯率來源 <b id="rsrc">臺銀現金賣出</b></span>
+    <span class="chip">掃單預算 <b>5 萬台幣</b></span>
+    <span class="chip">更新時間 <b id="upd">—</b>（台北時間）</span>
+    <span class="nav"><a href="../">← 8591 比價</a></span>
+  </div>
+  <div id="status" class="status">載入中…</div>
+  <table class="t">
+    <thead><tr>
+      <th>遊戲服</th><th>匯率</th><th>最低價</th><th>均價</th>
+      <th class="my">我的成本均價</th>
+      <th>成本 1台幣=多少金</th>
+      <th class="my">我的1台幣成本</th>
+      <th class="my">3% 1台幣=多少金</th><th class="my">4% 1台幣=多少金</th>
+      <th class="my">幣量(萬金)</th>
+    </tr></thead>
+    <tbody id="rows"><tr><td colspan="10" style="text-align:center;color:#78716c;padding:20px">載入中…</td></tr></tbody>
+  </table>
+  <div class="legend">
+    <span>均價比上一輪 <span class="r">▲ 變貴</span>／<span class="g">▼ 變便宜</span></span>
+    <span>價格單位：人民幣／萬金</span>
+    <span><span class="pending">斜紋欄</span> 我的成本、3%、4%、幣量：待接訂單（需登入 DD373）</span>
+  </div>
+  <div class="only-sm pending" style="margin:4px 2px">手機版先隱藏「我的成本／3%／4%／幣量」欄（待接訂單）</div>
+  <details>
+    <summary>算法（照原程式 DD373即時價格.exe，未改）</summary>
+    <ul>
+      <li>每服用 5 萬台幣 ÷ 匯率 當人民幣預算，賣單照單價由低到高掃；買不起起售量的單跳過，每張最多買到庫存，取到 0.01 萬金；剩不到 1 元就停。</li>
+      <li>一頁 20 張，預算還剩 20 元以上才翻下一頁。</li>
+      <li>最低價 = 掃過的賣單中最低單價；均價 = 花掉的人民幣 ÷ 買到的萬金。</li>
+      <li>成本 1台幣=多少金 = 10000 ÷（匯率 × 均價）。</li>
+      <li>3%、4% = 10000 ÷（匯率 × <b>我的成本均價</b> × 1.03／1.04），取最接近的十位數。原程式是用你自己訂單的成本算，不是用市場均價，所以要等接上訂單才會有數字。</li>
+      <li>匯率：臺銀人民幣現金賣出，每天 9:30 後抓一次；還沒抓到今天的，就沿用上一次並標示「今天更新失敗」。</li>
+    </ul>
+  </details>
+  <footer>資料由 GitHub Actions 定時抓取（約每 10 分鐘～1 小時一次）；本頁每分鐘自動重新讀取。</footer>
+</div>
+<script>
+const MYCOLS=['myavg','__cost__','mycost','my0.03','my0.04','myqty'];
+function esc(s){return String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+async function load(){
+  try{
+    const r=await fetch('data.json?t='+Date.now(),{cache:'no-store'});
+    const d=await r.json();
+    document.getElementById('upd').textContent=d.updated_at||'—';
+    if(d.rate_day) document.getElementById('rsrc').textContent='臺銀現金賣出 '+d.rate_text+'（'+d.rate_day+'）';
+    const age=(Date.now()/1000-(d.updated_at_ts||0))/60;
+    const st=document.getElementById('status');
+    st.className='status'+(d.ok?'':' bad');
+    st.innerHTML=esc(d.status)+(age>70?' <span class="stale">（資料已 '+Math.round(age)+' 分鐘沒更新）</span>':'');
+    const pend='<span title="待接訂單（需登入 DD373）">—</span>';
+    document.getElementById('rows').innerHTML=(d.rows||[]).map(x=>{
+      const err=x.tag==='error';
+      return `<tr class="${esc(x.tag)}"><td class="srv">${esc(x.name)}</td><td>${esc(x.rate)}</td>`+
+        `<td class="low">${esc(x.low)}</td><td class="avg">${esc(x.avg)}</td><td class="my">${pend}</td>`+
+        `<td class="cost">${esc(x.cost)}</td><td class="my">${pend}</td><td class="my">${pend}</td>`+
+        `<td class="my">${pend}</td><td class="my">${pend}</td></tr>`;
+    }).join('');
+  }catch(e){
+    const st=document.getElementById('status'); st.className='status bad'; st.textContent='讀不到資料：'+e;
+  }
+}
+load(); setInterval(load,60000);
+</script>
+</body>
+</html>

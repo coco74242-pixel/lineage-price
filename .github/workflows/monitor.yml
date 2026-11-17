@@ -34,14 +34,20 @@ jobs:
           if time.time() - float(d.get('updated_at_ts') or 0) > 600:
               print("ERROR: monitor.py did not refresh data.json"); sys.exit(1)
           PY
+      - name: DD373 即時價格 (site/dd373, failures do not affect the 8591 page)
+        env: {TZ: Asia/Taipei, DD373_CHROME_CHANNEL: chrome}
+        run: |
+          pip install -q requests beautifulsoup4 lxml playwright > /dev/null 2>&1 || true
+          timeout 360 python -u dd373_live.py > dd373_out.txt 2>&1 || true
+          tail -n 12 dd373_out.txt | cut -c1-300
       - name: guard against secrets
         run: |
-          if grep -Eiq 'discord(app)?\.com/api/webhooks|ghp_|gho_|ghs_|github_pat_' site/data.json site/index.html ref_8591.json; then echo "secret-like text found"; exit 1; fi
+          if grep -Eiq 'discord(app)?\.com/api/webhooks|ghp_|gho_|ghs_|github_pat_' site/data.json site/index.html ref_8591.json site/dd373/data.json site/dd373/index.html dd373_rate.json; then echo "secret-like text found"; exit 1; fi
       - name: commit data
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add site/data.json ref_8591.json
+          git add site/data.json ref_8591.json site/dd373/data.json dd373_rate.json
           git diff --cached --quiet || git commit -q -m "data $(TZ=Asia/Taipei date '+%F %T')"
           git push -q || (git pull -q --rebase -X theirs && git push -q) || true
       - uses: actions/configure-pages@v5
