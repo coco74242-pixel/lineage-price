@@ -11,9 +11,14 @@ jobs:
       - env: {TZ: Asia/Taipei}
         run: |
           pip install -q requests beautifulsoup4 lxml playwright > /dev/null 2>&1
-          python - <<'PY'
-          import dd373_live as m, json
+          curl -s -m 20 -o /tmp/c.txt -w "csv http %{http_code}\n" https://rate.bot.com.tw/xrt/flcsv/0/day; head -c 150 /tmp/c.txt; echo
+          cat > /tmp/t.py <<'PY'
+          import sys; sys.path.insert(0,'.')
+          import dd373_live as m
           m.RATE_JSON='/tmp/rate_test.json'
-          m.fetch_bot_rate()
-          print(open('/tmp/rate_test.json').read())
+          try:
+              m.fetch_bot_rate(); print(open('/tmp/rate_test.json').read())
+          except Exception as e: print('FAIL', e)
           PY
+          echo headless; python /tmp/t.py
+          echo headful-xvfb; DD373_HEADLESS=0 xvfb-run -a python /tmp/t.py

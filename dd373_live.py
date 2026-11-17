@@ -116,7 +116,7 @@ def fetch_bot_rate():
     從第一個「人民幣」往後取前 4 個 \\d+\\.\\d+：[0]=現金買入(B2)、[1]=現金賣出(C2)。寫入日期 = 今天 (yyyy/M/d)。"""
     from playwright.sync_api import sync_playwright
     with sync_playwright() as p:
-        kw = {'headless': True}
+        kw = {'headless': os.environ.get('DD373_HEADLESS', '1') == '1'}
         if os.environ.get('DD373_CHROME_CHANNEL', 'chrome'):
             kw['channel'] = os.environ.get('DD373_CHROME_CHANNEL', 'chrome')
         b = p.chromium.launch(**kw)
@@ -139,7 +139,7 @@ def fetch_bot_rate():
     elif 'Chinese Yuan' in body:
         idx = body.index('Chinese Yuan')
     else:
-        raise RuntimeError('臺銀頁面解析失敗')
+        raise RuntimeError('臺銀頁面解析失敗，body 頭 200 字元：' + body[:200].replace('\n', ' '))
     nums = re.findall(r'\d+\.\d+', body[idx:])[:4]
     cash_buy, cash_sell = float(nums[0]), float(nums[1])
     t = date.today()
