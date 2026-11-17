@@ -37,6 +37,8 @@ jobs:
           fi
       - name: run loop
         run: |
+          set +e
+          echo "LOOP_T0=$(date +%s)" >> "$GITHUB_ENV"
           FILES="site/data.json site/dd373/data.json ref_8591.json dd373_rate.json state.json"
           end=$(( $(date +%s) + RUN_MINUTES*60 ))
           n=0
@@ -78,8 +80,11 @@ jobs:
               git push -q origin HEAD:main || (git pull -q --rebase -X theirs origin main && git push -q origin HEAD:main) || true
             fi
             left=$(( ROUND_SECONDS - ($(date +%s) - t0) ))
-            [ "$left" -gt 0 ] && sleep "$left"
+            if [ "$left" -gt 0 ]; then sleep "$left"; fi
           done
+          exit 0
       - name: hand over to next loop
-        if: always()
-        run: gh workflow run loop.yml -R "$REPO" --ref main
+        if: ${{ !cancelled() }}
+        run: |
+          # 跑不到 30 分鐘就結束代表有問題，不自動重啟（避免無限重開）；由 monitor.yml 排程 / 守護例行補啟
+          if [ $(( $(date +%s) - ${LOOP_T0:-0} )) -gt 1800 ]; then gh workflow run loop.yml -R "$REPO" --ref main; else echo "loop ended early, not re-dispatching"; fi
