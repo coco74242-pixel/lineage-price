@@ -57,6 +57,13 @@ jobs:
           ok = refs>=15 and site_ok and dd373_ok>=7
           print("PROBE", "OK" if ok else "BLOCKED", "8591_refs", refs, "hits", a.get('hit_count'), "8591page_written", site_ok, "8591page_errors", len(errs), "dd373_ok_servers", dd373_ok, "dd373_status", str(b.get('status'))[:80])
           for e in errs[:5]: print("  err:", str(e)[:120])
+          import re, monitor
+          sid, name = next(iter(monitor.SERVERS_8591.items()))
+          st, _, html = monitor.http_get(f"https://www.8591.com.tw/v3/mall/list/68065?ware_type=0&sell_sort=1&server_id={sid}", 25, referer="https://www.8591.com.tw/")
+          m = re.search(r'<script[^>]*id="__NUXT_DATA__"[^>]*>(.*?)</script>', html, re.S)
+          raw = m.group(1) if m else ''
+          t = re.search(r'<title>(.*?)</title>', html, re.S)
+          print("DIAG8591", name, "http", st, "len", len(html), "nuxt", len(raw), "ware_title", raw.count('ware_title'), "parsed", len(monitor.parse_8591_listings(html, sid, name)), "title", (t.group(1).strip()[:60] if t else ''))
           PY
       - name: run loop
         if: ${{ !inputs.probe }}
