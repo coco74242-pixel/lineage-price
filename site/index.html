@@ -99,12 +99,12 @@
     </details>
     <footer>
       價格單位：台幣／萬。成本已含 DD373 遊戲幣交易稅 3%（買方付），淨利已扣 8591 的 6% 手續費。「最少」只在可部分結算的單出現（至少要買一半）。下單前請核對伺服器與收貨資訊。
-      資料由 GitHub 每 10 分鐘自動更新（排程偶爾會晚 10–30 分鐘），頁面每 60 秒重新讀取。
+      資料由 GitHub 約每 30 分鐘自動更新，頁面每 60 秒重新讀取，也可按「更新」立即重讀。
     </footer>
   </div>
   <script>
     const DATA_URL = "data.json";
-    const STALE_SEC = 25 * 60;
+    const STALE_SEC = 75 * 60;
     let data = null;
     let remain = 60;
 
@@ -176,7 +176,7 @@
       if (data && data.updated_at_ts) {
         const age = (Date.now() / 1000) - data.updated_at_ts;
         if (age > STALE_SEC) {
-          parts.push('<div class="banner warn">資料已超過 25 分鐘未更新，GitHub 排程可能延遲，稍後會自動補上。</div>');
+          parts.push('<div class="banner warn">資料已超過 75 分鐘未更新，GitHub 排程可能延遲，稍後會自動補上。</div>');
         }
       } else if (data && !data.updated_at) {
         parts.push('<div class="banner warn">還沒有完整結果，正在等監測跑完第一輪。</div>');

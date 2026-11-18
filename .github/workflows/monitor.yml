@@ -1,8 +1,8 @@
 name: monitor
-# 備援／啟動器：排程或手動觸發時，如果沒有 loop 在跑，就啟動 loop.yml（每分鐘更新）。
+# 備援／啟動器：排程或手動觸發時，如果沒有 loop 在跑，就啟動 loop.yml（約每 30 分鐘一輪）。
 on:
   schedule:
-    - cron: '*/10 * * * *'
+    - cron: '*/30 * * * *'
   workflow_dispatch:
 permissions:
   actions: write

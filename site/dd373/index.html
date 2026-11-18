@@ -141,7 +141,7 @@ footer{margin-top:8px;color:var(--muted);font-size:11.5px}
       <li>匯率：臺銀人民幣現金賣出，每天 9:30 後抓一次；還沒抓到今天的，就沿用上一次並標示「今天更新失敗」。</li>
     </ul>
   </details>
-  <footer>資料由 GitHub Actions 定時抓取（約每 5 分鐘一次）；本頁每分鐘自動重新讀取，也可按「更新」立即重讀（伺服器每 5 分鐘抓一次新資料）。</footer>
+  <footer>資料由 GitHub Actions 定時抓取（約每 30 分鐘一次）；本頁每分鐘自動重新讀取，也可按「更新」立即重讀（伺服器每 30 分鐘抓一次新資料）。</footer>
 </div>
 <script>
 const MYCOLS=['myavg','__cost__','mycost','my0.03','my0.04','myqty'];
@@ -155,7 +155,7 @@ async function load(){
     const age=(Date.now()/1000-(d.updated_at_ts||0))/60;
     const st=document.getElementById('status');
     st.className='status'+(d.ok?'':' bad');
-    st.innerHTML=esc(d.status)+(age>70?' <span class="stale">（資料已 '+Math.round(age)+' 分鐘沒更新）</span>':'');
+    st.innerHTML=esc(d.status)+(age>75?' <span class="stale">（資料已 '+Math.round(age)+' 分鐘沒更新）</span>':'');
     const pend='<span title="待接訂單（需登入 DD373）">—</span>';
     document.getElementById('rows').innerHTML=(d.rows||[]).map(x=>{
       const err=x.tag==='error';
