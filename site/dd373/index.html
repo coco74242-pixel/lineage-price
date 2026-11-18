@@ -50,9 +50,12 @@ details ul{margin:2px 0 8px;padding-left:1.2em}
 .sheetbox .hint{font-size:12px;color:var(--muted);margin:8px 0 0}
 .sheetbox .btns{display:flex;gap:8px;flex-wrap:wrap}
 .sheetbox button.btn{background:#fff;color:var(--teal);border:1px solid var(--teal);font-weight:700;border-radius:6px;padding:6px 12px;cursor:pointer;font-size:12.5px}
-.sheetframe{display:none;margin-top:8px}
-.sheetframe.on{display:block}
-.sheetframe iframe{width:100%;height:78vh;min-height:480px;border:1px solid var(--line);border-radius:6px;background:#fff}
+.sheetframe{display:none;position:fixed;inset:0;z-index:9999;background:#fff;flex-direction:column;overscroll-behavior:contain}
+.sheetframe.on{display:flex}
+.sheetbar{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 10px;border-bottom:1px solid var(--line);background:var(--card);font-weight:700;font-size:13px}
+.sheetbar button{background:var(--teal);color:#fff;border:0;border-radius:6px;padding:6px 14px;font-weight:700;font-size:13px;cursor:pointer}
+.sheetframe iframe{flex:1;width:100%;height:100%;border:0;background:#fff;overscroll-behavior:contain}
+html.sheet-open,html.sheet-open body{overflow:hidden;overscroll-behavior:none;touch-action:none}
 footer{margin-top:8px;color:var(--muted);font-size:11.5px}
 .only-sm{display:none}
 @media (max-width:700px){
@@ -101,7 +104,7 @@ footer{margin-top:8px;color:var(--muted);font-size:11.5px}
       <a class="btn" href="https://docs.google.com/spreadsheets/d/1zb0FjzX4ydx8QjdLOnJeamGTsMbNjyl14M2h9DiO-Tc/edit" target="_blank" rel="noopener">在新分頁開啟</a>
     </div>
     <div class="sheetframe" id="sheetFrame"></div>
-    <p class="hint">這份表存在你的 Google 雲端，只有你登入 Google 後才看得到、改得動；網站本身不存任何數字。若框內空白或要求登入，請先按「在新分頁開啟」登入一次，或改用新分頁編輯（Safari／無痕視窗會擋框內登入）。</p>
+    <p class="hint">這份表存在你的 Google 雲端，只有你登入 Google 後才看得到、改得動；網站本身不存任何數字。若打開後空白或要求登入，請先按「在新分頁開啟」登入一次，或改用新分頁編輯（Safari／無痕視窗會擋框內登入）。</p>
   </section>
   <details>
     <summary>算法（照原程式 DD373即時價格.exe，未改）</summary>
@@ -144,9 +147,12 @@ async function load(){
 load(); setInterval(load,60000);
 </script>
 <script>
-(function(){var b=document.getElementById('sheetToggle'),f=document.getElementById('sheetFrame');
-b.addEventListener('click',function(){if(!f.firstChild){var i=document.createElement('iframe');i.src='https://docs.google.com/spreadsheets/d/1zb0FjzX4ydx8QjdLOnJeamGTsMbNjyl14M2h9DiO-Tc/edit';i.title='我的成本表';i.setAttribute('allow','clipboard-read; clipboard-write');f.appendChild(i);}
-var on=f.classList.toggle('on');b.textContent=on?'收起成本表':'在本頁顯示成本表';});})();
+(function(){var b=document.getElementById('sheetToggle'),f=document.getElementById('sheetFrame'),y=0;
+function close(){f.classList.remove('on');document.documentElement.classList.remove('sheet-open');document.documentElement.style.overflow='';document.body.style.overflow='';window.scrollTo(0,y);}
+function open(){if(!f.firstChild){var bar=document.createElement('div');bar.className='sheetbar';bar.innerHTML='<span>我的成本表</span>';var c=document.createElement('button');c.type='button';c.textContent='✕ 關閉';c.addEventListener('click',close);bar.appendChild(c);var i=document.createElement('iframe');i.src='https://docs.google.com/spreadsheets/d/1zb0FjzX4ydx8QjdLOnJeamGTsMbNjyl14M2h9DiO-Tc/edit';i.title='我的成本表';i.setAttribute('allow','clipboard-read; clipboard-write');f.appendChild(bar);f.appendChild(i);}
+y=window.scrollY;f.classList.add('on');document.documentElement.classList.add('sheet-open');document.documentElement.style.overflow='hidden';document.body.style.overflow='hidden';}
+b.addEventListener('click',open);
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&f.classList.contains('on'))close();});})();
 </script>
 </body>
 </html>
