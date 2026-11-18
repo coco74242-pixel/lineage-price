@@ -50,12 +50,20 @@ details ul{margin:2px 0 8px;padding-left:1.2em}
 .sheetbox .hint{font-size:12px;color:var(--muted);margin:8px 0 0}
 .sheetbox .btns{display:flex;gap:8px;flex-wrap:wrap}
 .sheetbox button.btn{background:#fff;color:var(--teal);border:1px solid var(--teal);font-weight:700;border-radius:6px;padding:6px 12px;cursor:pointer;font-size:12.5px}
-.sheetframe{display:none;position:fixed;inset:0;z-index:9999;background:#fff;flex-direction:column;overscroll-behavior:contain}
-.sheetframe.on{display:flex}
-.sheetbar{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 10px;border-bottom:1px solid var(--line);background:var(--card);font-weight:700;font-size:13px}
-.sheetbar button{background:var(--teal);color:#fff;border:0;border-radius:6px;padding:6px 14px;font-weight:700;font-size:13px;cursor:pointer}
-.sheetframe iframe{flex:1;width:100%;height:100%;border:0;background:#fff;overscroll-behavior:contain}
-html.sheet-open,html.sheet-open body{overflow:hidden;overscroll-behavior:none;touch-action:none}
+.sheetframe{display:none;margin-top:8px;overscroll-behavior:contain}
+.sheetframe.on{display:block}
+.sheetframe iframe{width:100%;height:70vh;min-height:460px;border:1px solid var(--line);border-radius:6px;background:#fff;overscroll-behavior:contain}
+html.sheet-hover,html.sheet-hover body{overflow:hidden}
+.calc{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin-top:8px;font-size:13px}
+.calc h2{font-size:13px;margin:0 0 6px;font-weight:700}
+.calc .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:6px}
+.calc label{display:flex;align-items:center;gap:4px}
+.calc input,.calc select{font-size:14px;padding:4px 6px;border:1px solid var(--line);border-radius:6px}
+.calc input{width:7em;text-align:right}
+.calc button{background:#fff;color:var(--teal);border:1px solid var(--teal);border-radius:6px;padding:4px 10px;font-weight:700;cursor:pointer;font-size:12.5px}
+.calc .out{font-size:18px;font-weight:800}
+.calc .pos{color:#16a34a}.calc .neg{color:#dc2626}
+.calc .note{font-size:12px;color:var(--muted)}
 footer{margin-top:8px;color:var(--muted);font-size:11.5px}
 .only-sm{display:none}
 @media (max-width:700px){
@@ -98,15 +106,29 @@ footer{margin-top:8px;color:var(--muted);font-size:11.5px}
     <span><span class="pending">斜紋欄</span> 我的成本、3%、4%、幣量：待接訂單（需登入 DD373）</span>
   </div>
   <div class="only-sm pending" style="margin:4px 2px">手機版先隱藏「我的成本／3%／4%／幣量」欄（待接訂單）</div>
+  <section class="calc" aria-label="利潤計算">
+    <h2>利潤計算</h2>
+    <div class="row">
+      <label>伺服器 <select id="cSrv"></select></label>
+      <button type="button" id="cMkt">帶入現在行情</button>
+      <button type="button" id="cCostBtn">帶入 DD373 成本</button>
+    </div>
+    <div class="row">
+      <label>行情價 <input id="cMktV" inputmode="decimal" placeholder="1,650"> 金／1台幣</label>
+      <label>成本 <input id="cCost" inputmode="decimal" placeholder="1,749"> 金／1台幣</label>
+    </div>
+    <div class="row">利潤率 <span class="out" id="cOut">—</span> <span class="note" id="cNote"></span></div>
+    <div class="note" id="cSrc">利潤率 = 成本 ÷ 行情價 − 1（跟成本表 G 欄一樣，未扣 8591 手續費）。「帶入現在行情」= 8591 參考賣價（銷量第一的賣家，銷量相近取匯率較差者）。</div>
+  </section>
   <section class="sheetbox" aria-label="我的成本表">
     <h2>我的成本表</h2>
     <p>藍字欄在試算表裡自己填：伺服器（下拉選）、匯率、成本、幣量、賣出1台幣(金)。1台幣成本和利潤率會自動算。匯率可填本頁上方的臺銀現金賣出。</p>
     <div class="btns">
-      <button type="button" class="btn" id="sheetToggle">在本頁顯示成本表</button>
+      <button type="button" class="btn" id="sheetToggle">顯示成本表</button>
       <a class="btn" href="https://docs.google.com/spreadsheets/d/1zb0FjzX4ydx8QjdLOnJeamGTsMbNjyl14M2h9DiO-Tc/edit?usp=sharing" target="_blank" rel="noopener">在新分頁開啟</a>
     </div>
     <div class="sheetframe" id="sheetFrame"></div>
-    <p class="hint">這份表已開放「知道連結的人都能檢視和編輯」，不用登入也能用；改了會直接存回 Google 試算表，所有人看到的是同一份。按 ✕ 關閉或 Esc 回到價格頁。</p>
+    <p class="hint">這份表已開放「知道連結的人都能檢視和編輯」，不用登入也能用；改了會直接存回 Google 試算表，所有人看到的是同一份。滑鼠移到表上時，網頁本身會暫停捲動。</p>
   </section>
   <details>
     <summary>算法（照原程式 DD373即時價格.exe，未改）</summary>
@@ -148,16 +170,38 @@ async function load(){
 }
 load(); setInterval(load,60000);
 document.getElementById('refBtn').addEventListener('click',async function(){const b=this,m=document.getElementById('refMsg');b.disabled=true;m.textContent='更新中…';await load();
-const fr=document.querySelector('#sheetFrame iframe');if(fr&&document.getElementById('sheetFrame').classList.contains('on'))fr.src=fr.src;
+const fr=document.querySelector('#sheetFrame iframe');if(fr&&document.getElementById('sheetFrame').classList.contains('on'))fr.src=fr.src;if(window.calcReload)window.calcReload();
 m.textContent='已更新 '+new Date().toLocaleTimeString('zh-TW',{hour12:false,timeZone:'Asia/Taipei'});b.disabled=false;});
 </script>
 <script>
-(function(){var b=document.getElementById('sheetToggle'),f=document.getElementById('sheetFrame'),y=0;
-function close(){f.classList.remove('on');document.documentElement.classList.remove('sheet-open');document.documentElement.style.overflow='';document.body.style.overflow='';window.scrollTo(0,y);}
-function open(){if(!f.firstChild){var bar=document.createElement('div');bar.className='sheetbar';bar.innerHTML='<span>我的成本表</span>';var c=document.createElement('button');c.type='button';c.textContent='✕ 關閉';c.addEventListener('click',close);bar.appendChild(c);var i=document.createElement('iframe');i.src='https://docs.google.com/spreadsheets/d/1zb0FjzX4ydx8QjdLOnJeamGTsMbNjyl14M2h9DiO-Tc/edit?usp=sharing';i.title='我的成本表';i.setAttribute('allow','clipboard-read; clipboard-write');f.appendChild(bar);f.appendChild(i);}
-y=window.scrollY;f.classList.add('on');document.documentElement.classList.add('sheet-open');document.documentElement.style.overflow='hidden';document.body.style.overflow='hidden';}
-b.addEventListener('click',open);
-document.addEventListener('keydown',function(e){if(e.key==='Escape'&&f.classList.contains('on'))close();});})();
+(function(){var b=document.getElementById('sheetToggle'),f=document.getElementById('sheetFrame'),h=document.documentElement;
+b.addEventListener('click',function(){if(!f.firstChild){var i=document.createElement('iframe');i.src='https://docs.google.com/spreadsheets/d/1zb0FjzX4ydx8QjdLOnJeamGTsMbNjyl14M2h9DiO-Tc/edit?usp=sharing';i.title='我的成本表';i.setAttribute('allow','clipboard-read; clipboard-write');f.appendChild(i);}
+var on=f.classList.toggle('on');b.textContent=on?'收起成本表':'顯示成本表';if(!on)h.classList.remove('sheet-hover');});
+f.addEventListener('mouseenter',function(){h.classList.add('sheet-hover');});
+f.addEventListener('mouseleave',function(){h.classList.remove('sheet-hover');});})();
+</script>
+<script>
+(function(){var $=function(i){return document.getElementById(i)},refs={},rows={};
+function num(v){v=String(v||'').replace(/[,\s，金]/g,'');var n=parseFloat(v);return isFinite(n)?n:NaN}
+function fmt(n){return Math.round(n).toLocaleString('en-US')}
+function calc(){var m=num($('cMktV').value),c=num($('cCost').value),o=$('cOut'),t=$('cNote');
+ if(!(m>0)||!(c>0)){o.textContent='—';o.className='out';t.textContent='';return}
+ var g=c/m-1,n=c*(1-0.06)/m-1;o.textContent=(g>=0?'+':'')+(g*100).toFixed(2)+'%';o.className='out '+(g>=0?'pos':'neg');
+ t.textContent='（扣 8591 手續費 6% 後約 '+(n>=0?'+':'')+(n*100).toFixed(2)+'%）'}
+async function reload(){try{
+ var d=await (await fetch('data.json?t='+Date.now(),{cache:'no-store'})).json();rows={};(d.rows||[]).forEach(function(x){rows[x.name]=x});
+ var e=await (await fetch('../data.json?t='+Date.now(),{cache:'no-store'})).json();refs=e.refs||{};
+ var sel=$('cSrv'),cur=sel.value,names=Object.keys(rows);Object.keys(refs).forEach(function(k){if(names.indexOf(k)<0)names.push(k)});
+ sel.innerHTML=names.map(function(n){return '<option>'+n.replace(/[<&]/g,'')+'</option>'}).join('');if(cur&&names.indexOf(cur)>=0)sel.value=cur;
+}catch(err){$('cSrc').textContent='讀不到行情資料：'+err}}
+function mkt(){var r=refs[$('cSrv').value];if(!r||!r.ref_twd){$('cMktV').value='';$('cSrc').textContent='這個伺服器目前沒有 8591 參考價，請自己填行情。';calc();return}
+ var ch=(r.top||[]).filter(function(x){return x.chosen})[0],v=ch&&ch.rate?ch.rate:10000/r.ref_twd;$('cMktV').value=fmt(v);
+ $('cSrc').textContent='行情 = 8591 參考賣價 '+fmt(v)+' 金／1台幣（'+(r.reason||'')+'）。利潤率 = 成本 ÷ 行情價 − 1，跟成本表 G 欄一樣。';calc()}
+function cost(){var r=rows[$('cSrv').value];if(r&&r.cost){$('cCost').value=r.cost;calc()}}
+$('cMkt').addEventListener('click',async function(){await reload();mkt()});
+$('cCostBtn').addEventListener('click',async function(){await reload();cost()});
+['cMktV','cCost'].forEach(function(i){$(i).addEventListener('input',calc)});
+window.calcReload=reload;reload();})();
 </script>
 </body>
 </html>
