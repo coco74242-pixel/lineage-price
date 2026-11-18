@@ -64,6 +64,8 @@ html.sheet-hover,html.sheet-hover body{overflow:hidden}
 .calc .out{font-size:18px;font-weight:800}
 .calc .pos{color:#16a34a}.calc .neg{color:#dc2626}
 .calc .note{font-size:12px;color:var(--muted)}
+.calc .avg-del{padding:4px 8px;min-width:2em}
+.calc .tot b{font-variant-numeric:tabular-nums;font-weight:800}
 footer{margin-top:8px;color:var(--muted);font-size:11.5px}
 .only-sm{display:none}
 @media (max-width:700px){
@@ -119,6 +121,21 @@ footer{margin-top:8px;color:var(--muted);font-size:11.5px}
     </div>
     <div class="row">利潤率 <span class="out" id="cOut">—</span> <span class="note" id="cNote"></span></div>
     <div class="note" id="cSrc">利潤率 = 成本 ÷ 行情價 − 1（跟成本表 G 欄一樣，未扣 8591 手續費）。「帶入現在行情」= 8591 參考賣價（銷量第一的賣家，銷量相近取匯率較差者）。</div>
+  </section>
+  <section class="calc" aria-label="平均成本計算">
+    <h2>平均成本計算</h2>
+    <div class="note" style="margin-bottom:6px">每列填一單的台幣和萬金，會自動算出加權平均成本。資料只存在你這台裝置的瀏覽器，不會上傳。</div>
+    <div id="avgRows"></div>
+    <div class="row">
+      <button type="button" id="avgAdd">＋新增一單</button>
+    </div>
+    <div class="row tot">總台幣 <b id="avgTwd">—</b>　總萬金 <b id="avgQty">—</b></div>
+    <div class="row tot">平均成本 1台幣 = <span class="out" id="avgOut">—</span> 金</div>
+    <div class="row">
+      <button type="button" id="avgToProfit">帶入利潤計算</button>
+      <span class="note" id="avgHint"></span>
+    </div>
+    <div class="note">平均成本 = 總萬金 × 10,000 ÷ 總台幣，四捨五入到整數。可輸入千分位逗號，例如 1,869。</div>
   </section>
   <section class="sheetbox" aria-label="我的成本表">
     <h2>我的成本表</h2>
@@ -202,6 +219,59 @@ $('cMkt').addEventListener('click',async function(){await reload();mkt()});
 $('cCostBtn').addEventListener('click',async function(){await reload();cost()});
 ['cMktV','cCost'].forEach(function(i){$(i).addEventListener('input',calc)});
 window.calcReload=reload;reload();})();
+</script>
+
+<script>
+(function(){
+var KEY='dd373-avg-cost-rows', box=document.getElementById('avgRows');
+var $=function(i){return document.getElementById(i)};
+function num(v){v=String(v||'').replace(/[,\s，元金萬万NT$ｎｔ＄]/gi,'');var n=parseFloat(v);return isFinite(n)?n:NaN}
+function fmtInt(n){return Math.round(n).toLocaleString('en-US')}
+function fmtNum(n){if(!isFinite(n))return '—';if(Math.abs(n-Math.round(n))<1e-9)return fmtInt(n);return n.toLocaleString('en-US',{maximumFractionDigits:2})}
+function rows(){return Array.prototype.slice.call(box.querySelectorAll('.avg-order'))}
+function read(){return rows().map(function(r){return {twd:r.querySelector('[data-k=twd]').value,qty:r.querySelector('[data-k=qty]').value}})}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(read()))}catch(e){}}
+function add(twd,qty){
+  var r=document.createElement('div');r.className='row avg-order';
+  r.innerHTML='<label>台幣(NT$) <input inputmode="decimal" placeholder="1,869" data-k="twd" autocomplete="off"></label> '+
+    '<label>萬金 <input inputmode="decimal" placeholder="344" data-k="qty" autocomplete="off"></label> '+
+    '<button type="button" class="avg-del" aria-label="刪除這一單">✕</button>';
+  if(twd!=null) r.querySelector('[data-k=twd]').value=twd;
+  if(qty!=null) r.querySelector('[data-k=qty]').value=qty;
+  r.querySelector('.avg-del').addEventListener('click',function(){
+    if(rows().length<=1){r.querySelector('[data-k=twd]').value='';r.querySelector('[data-k=qty]').value='';sum();save();return}
+    r.remove();sum();save();
+  });
+  r.querySelectorAll('input').forEach(function(i){i.addEventListener('input',function(){sum();save()})});
+  box.appendChild(r);
+}
+function sum(){
+  var twd=0,qty=0,ok=0;
+  read().forEach(function(x){var a=num(x.twd),b=num(x.qty);if(a>0&&b>0){twd+=a;qty+=b;ok++}});
+  if(!ok){$('avgTwd').textContent='—';$('avgQty').textContent='—';$('avgOut').textContent='—';$('avgOut').dataset.val='';return}
+  $('avgTwd').textContent=fmtNum(twd);$('avgQty').textContent=fmtNum(qty);
+  var avg=Math.round(qty*10000/twd);
+  $('avgOut').textContent=fmtInt(avg);$('avgOut').dataset.val=String(avg);
+}
+function load(){
+  var saved=null;
+  try{saved=JSON.parse(localStorage.getItem(KEY)||'null')}catch(e){saved=null}
+  box.innerHTML='';
+  if(Array.isArray(saved)&&saved.length){
+    saved.forEach(function(x){add(x&&x.twd||'',x&&x.qty||'')});
+  }else{add('','');add('','')}
+  sum();
+}
+$('avgAdd').addEventListener('click',function(){add('','');save()});
+$('avgToProfit').addEventListener('click',function(){
+  var v=$('avgOut').dataset.val,h=$('avgHint');
+  if(!v){h.textContent='請先填至少一筆完整的台幣和萬金。';return}
+  var c=$('cCost');c.value=fmtInt(Number(v));
+  c.dispatchEvent(new Event('input',{bubbles:true}));
+  h.textContent='已帶入成本 '+c.value+' 金／1台幣。';
+});
+load();
+})();
 </script>
 </body>
 </html>
