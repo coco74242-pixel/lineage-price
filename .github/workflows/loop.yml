@@ -35,7 +35,8 @@ jobs:
       - name: restore last data from live branch
         run: |
           if git fetch -q --depth 1 origin live 2>/dev/null; then
-            for f in site/data.json site/dd373/data.json ref_8591.json dd373_rate.json state.json; do
+            mkdir -p site/history
+            for f in site/data.json site/dd373/data.json ref_8591.json dd373_rate.json state.json site/history/victory.json; do
               git show FETCH_HEAD:$f > /tmp/r 2>/dev/null && mv /tmp/r $f || true
             done
             echo "restored from live"
@@ -70,17 +71,19 @@ jobs:
         run: |
           set +e
           echo "LOOP_T0=$(date +%s)" >> "$GITHUB_ENV"
-          FILES="site/data.json site/dd373/data.json ref_8591.json dd373_rate.json state.json"
+          FILES="site/data.json site/dd373/data.json ref_8591.json dd373_rate.json state.json site/history/victory.json"
           end=$(( $(date +%s) + RUN_MINUTES*60 ))
           n=0
           while [ "$(date +%s)" -lt "$end" ]; do
             t0=$(date +%s); n=$((n+1))
             # 拿 main 上最新的程式（只換程式檔，資料檔不動）
             if git fetch -q --depth 1 origin main 2>/dev/null; then
-              git checkout -q FETCH_HEAD -- monitor.py dd373_live.py config.json 2>/dev/null || true
+              git checkout -q FETCH_HEAD -- monitor.py dd373_live.py config.json history.py 2>/dev/null || true
             fi
             timeout 120 python -u monitor.py > out.txt 2>&1 || true
             timeout 360 xvfb-run -a python -u dd373_live.py > dd373_out.txt 2>&1 || true
+            timeout 30 python -u history.py > history_out.txt 2>&1 || true
+            tail -n 3 history_out.txt 2>/dev/null || true
             python - <<'PY' || true
           import json
           a=json.load(open('site/data.json')); b=json.load(open('site/dd373/data.json'))
@@ -104,7 +107,7 @@ jobs:
               fi
             fi
             # 每輪（約 60 分）把資料也存回 main 一次（備份；網站不靠它）
-            git add site/data.json site/dd373/data.json ref_8591.json dd373_rate.json
+            git add site/data.json site/dd373/data.json ref_8591.json dd373_rate.json site/history/victory.json
             git -c user.name=github-actions[bot] -c user.email=41898282+github-actions[bot]@users.noreply.github.com \
               commit -q -m "data $(date '+%F %T')" || true
             git push -q origin HEAD:main || (git pull -q --rebase -X theirs origin main && git push -q origin HEAD:main) || true

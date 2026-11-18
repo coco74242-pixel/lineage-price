@@ -71,6 +71,12 @@
     .t .th-cost-s{display:none}
     @media (max-width:640px){.t .th-cost-s{display:inline}}
   .refbtn{background:#0f766e;color:#fff;border:0;border-radius:6px;padding:4px 12px;font-weight:700;font-size:13px;cursor:pointer}.refbtn:disabled{opacity:.6;cursor:default}.refmsg{font-size:12px;color:#64748b;margin-left:4px}
+
+    .chartbox{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin-top:8px;font-size:12.5px}
+    .chartbox h2{font-size:13px;margin:0 0 6px;font-weight:700}
+    .chartbox .chart-wrap{position:relative;height:220px}
+    .chartbox .chart-empty{color:var(--muted);margin:12px 0;text-align:center}
+    .chartbox .chart-note{font-size:12px;color:var(--muted);margin:6px 0 0}
 </style>
 </head>
 <body>
@@ -93,6 +99,12 @@
     </div>
     <div id="banners"></div>
     <div id="list"></div>
+    <section class="chartbox" id="victoryChartBox" aria-label="勝利女神 價格曲線（每 3 小時）">
+      <h2>勝利女神 價格曲線（每 3 小時）</h2>
+      <p class="chart-empty" hidden>尚無資料，抓到價格後開始記錄</p>
+      <div class="chart-wrap"><canvas id="victoryChart"></canvas></div>
+      <p class="chart-note">單位：金／1台幣。缺資料或來源被擋時，該段線會中斷。</p>
+    </section>
     <details class="refs" id="refsBox">
       <summary>8591 參考價明細（銷量第一名；銷量相近時取匯率較差）</summary>
       <div id="refs"></div>
@@ -343,5 +355,7 @@
       m.textContent = "已更新 " + new Date().toLocaleTimeString('zh-TW',{hour12:false,timeZone:'Asia/Taipei'}); b.disabled = false;
     });
   </script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <script src="history/chart.js" data-url="history/victory.json"></script>
 </body>
 </html>
