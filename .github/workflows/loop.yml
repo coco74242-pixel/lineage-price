@@ -1,5 +1,5 @@
 name: loop
-# 每 ~30 分鐘跑一輪 monitor.py + dd373_live.py，資料推到 live 分支，再觸發 deploy.yml 發布 Pages。
+# 每 ~60 分鐘跑一輪 monitor.py + dd373_live.py，資料推到 live 分支，再觸發 deploy.yml 發布 Pages。
 # 跑約 5 小時 40 分後自己再叫一次 loop.yml（GITHUB_TOKEN 可觸發 workflow_dispatch），接在 6 小時上限之前。
 on:
   workflow_dispatch:
@@ -25,7 +25,7 @@ jobs:
       DD373_CHROME_CHANNEL: chrome
       DD373_HEADLESS: '0'
       RUN_MINUTES: '340'
-      ROUND_SECONDS: '1800'
+      ROUND_SECONDS: '3600'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -103,7 +103,7 @@ jobs:
                 echo "push live failed"
               fi
             fi
-            # 每輪（約 30 分）把資料也存回 main 一次（備份；網站不靠它）
+            # 每輪（約 60 分）把資料也存回 main 一次（備份；網站不靠它）
             git add site/data.json site/dd373/data.json ref_8591.json dd373_rate.json
             git -c user.name=github-actions[bot] -c user.email=41898282+github-actions[bot]@users.noreply.github.com \
               commit -q -m "data $(date '+%F %T')" || true
