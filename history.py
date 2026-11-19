@@ -20,6 +20,7 @@ SERVER = "勝利女神雅典娜"
 INTERVAL_SEC = 3 * 3600
 MAX_DAYS = 90
 TAIPEI = timezone(timedelta(hours=8))
+GRACE_SEC = 10 * 60  # 每小時一輪會有幾十秒誤差；允許提早 10 分，才不會 3 小時一點變成 4 小時
 FRESH_SEC = INTERVAL_SEC  # cached/fetched refs older than the interval are stale
 
 
@@ -156,7 +157,7 @@ def main() -> int:
     now = now_taipei()
     hist = load_history()
     last = last_ts_ms(hist["points"])
-    if last is not None and (now.timestamp() * 1000 - last) < INTERVAL_SEC * 1000:
+    if last is not None and (now.timestamp() * 1000 - last) < (INTERVAL_SEC - GRACE_SEC) * 1000:
         age = (now.timestamp() * 1000 - last) / 1000
         print(f"HISTORY skip (last point {age:.0f}s ago, need {INTERVAL_SEC}s)")
         return 0

@@ -39,7 +39,6 @@
     if (wrap) wrap.hidden = false;
     if (note) note.hidden = false;
     var labels = points.map(function (p) { return fmtLabel(p.ts, p.ts_ms); });
-    var c8591 = points.map(function (p) { return typeof p.p8591 === "number" ? p.p8591 : null; });
     var cdd = points.map(function (p) { return typeof p.pdd373 === "number" ? p.pdd373 : null; });
     if (box._chart) box._chart.destroy();
     box._chart = new Chart(canvas.getContext("2d"), {
@@ -47,17 +46,6 @@
       data: {
         labels: labels,
         datasets: [
-          {
-            label: "8591 參考價",
-            data: c8591,
-            borderColor: "#0f766e",
-            backgroundColor: "rgba(15,118,110,.12)",
-            borderWidth: 2,
-            pointRadius: 2,
-            pointHoverRadius: 4,
-            tension: 0.15,
-            spanGaps: false
-          },
           {
             label: "DD373 成本",
             data: cdd,

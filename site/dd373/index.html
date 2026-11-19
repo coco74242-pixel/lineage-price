@@ -94,7 +94,6 @@ footer{margin-top:8px;color:var(--muted);font-size:11.5px}
     <span class="chip">掃單預算 <b>5 萬台幣</b></span>
     <span class="chip">更新時間 <b id="upd">—</b>（台北時間）</span>
     <button type="button" class="refbtn" id="refBtn">更新</button><span class="refmsg" id="refMsg"></span>
-    <span class="nav"><a href="../">← 8591 比價</a></span>
   </div>
   <div id="status" class="status">載入中…</div>
   <table class="t">
@@ -124,7 +123,6 @@ footer{margin-top:8px;color:var(--muted);font-size:11.5px}
     <h2>利潤計算</h2>
     <div class="row">
       <label>伺服器 <select id="cSrv"></select></label>
-      <button type="button" id="cMkt">帶入現在行情</button>
       <button type="button" id="cCostBtn">帶入 DD373 成本</button>
     </div>
     <div class="row">
@@ -132,7 +130,7 @@ footer{margin-top:8px;color:var(--muted);font-size:11.5px}
       <label>成本 <input id="cCost" inputmode="decimal" placeholder="1,749"> 金／1台幣</label>
     </div>
     <div class="row">利潤率 <span class="out" id="cOut">—</span> <span class="note" id="cNote"></span></div>
-    <div class="note" id="cSrc">利潤率 = 成本 ÷ 行情價 − 1（跟成本表 G 欄一樣，未扣 8591 手續費）。「帶入現在行情」= 8591 參考賣價（銷量第一的賣家，銷量相近取匯率較差者）。</div>
+    <div class="note" id="cSrc">利潤率 = 成本 ÷ 行情價 − 1（跟成本表 G 欄一樣，未扣 8591 手續費）。行情價請自己填。</div>
   </section>
   <section class="calc" aria-label="平均成本計算">
     <h2>平均成本計算</h2>
@@ -210,7 +208,7 @@ f.addEventListener('mouseenter',function(){h.classList.add('sheet-hover');});
 f.addEventListener('mouseleave',function(){h.classList.remove('sheet-hover');});})();
 </script>
 <script>
-(function(){var $=function(i){return document.getElementById(i)},refs={},rows={};
+(function(){var $=function(i){return document.getElementById(i)},rows={};
 function num(v){v=String(v||'').replace(/[,\s，金]/g,'');var n=parseFloat(v);return isFinite(n)?n:NaN}
 function fmt(n){return Math.round(n).toLocaleString('en-US')}
 function calc(){var m=num($('cMktV').value),c=num($('cCost').value),o=$('cOut'),t=$('cNote');
@@ -219,15 +217,10 @@ function calc(){var m=num($('cMktV').value),c=num($('cCost').value),o=$('cOut'),
  t.textContent='（扣 8591 手續費 6% 後約 '+(n>=0?'+':'')+(n*100).toFixed(2)+'%）'}
 async function reload(){try{
  var d=await (await fetch('data.json?t='+Date.now(),{cache:'no-store'})).json();rows={};(d.rows||[]).forEach(function(x){rows[x.name]=x});
- var e=await (await fetch('../data.json?t='+Date.now(),{cache:'no-store'})).json();refs=e.refs||{};
- var sel=$('cSrv'),cur=sel.value,names=Object.keys(rows);Object.keys(refs).forEach(function(k){if(names.indexOf(k)<0)names.push(k)});
+ var sel=$('cSrv'),cur=sel.value,names=Object.keys(rows);
  sel.innerHTML=names.map(function(n){return '<option>'+n.replace(/[<&]/g,'')+'</option>'}).join('');if(cur&&names.indexOf(cur)>=0)sel.value=cur;
 }catch(err){$('cSrc').textContent='讀不到行情資料：'+err}}
-function mkt(){var r=refs[$('cSrv').value];if(!r||!r.ref_twd){$('cMktV').value='';$('cSrc').textContent='這個伺服器目前沒有 8591 參考價，請自己填行情。';calc();return}
- var ch=(r.top||[]).filter(function(x){return x.chosen})[0],v=ch&&ch.rate?ch.rate:10000/r.ref_twd;$('cMktV').value=fmt(v);
- $('cSrc').textContent='行情 = 8591 參考賣價 '+fmt(v)+' 金／1台幣（'+(r.reason||'')+'）。利潤率 = 成本 ÷ 行情價 − 1，跟成本表 G 欄一樣。';calc()}
 function cost(){var r=rows[$('cSrv').value];if(r&&r.cost){$('cCost').value=r.cost;calc()}}
-$('cMkt').addEventListener('click',async function(){await reload();mkt()});
 $('cCostBtn').addEventListener('click',async function(){await reload();cost()});
 ['cMktV','cCost'].forEach(function(i){$(i).addEventListener('input',calc)});
 window.calcReload=reload;reload();})();

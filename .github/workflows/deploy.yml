@@ -21,7 +21,8 @@ jobs:
       - name: overlay live data
         run: |
           git fetch -q --depth 1 origin live
-          for f in site/data.json site/dd373/data.json; do git show FETCH_HEAD:$f > $f; done
+          git show FETCH_HEAD:site/dd373/data.json > site/dd373/data.json
+          rm -f site/data.json   # 8591 頁面已移除
           # 價格曲線歷史：live 有就蓋上去，沒有就保留 main 上的檔
           mkdir -p site/history
           git show FETCH_HEAD:site/history/victory.json > /tmp/victory.json 2>/dev/null && mv /tmp/victory.json site/history/victory.json || true
