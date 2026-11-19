@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Record a 3-hourly price-history point for selected DD373 servers.
+"""Record a price-history point every 30 minutes for selected DD373 servers.
 
 Does not scrape or change price logic. Reads the already-written site data
 files, appends one point when the interval has elapsed, and keeps ~90 days.
@@ -26,10 +26,10 @@ SERVERS = (
     },
 )
 
-INTERVAL_SEC = 3 * 3600
+INTERVAL_SEC = 30 * 60
 MAX_DAYS = 90
 TAIPEI = timezone(timedelta(hours=8))
-GRACE_SEC = 10 * 60  # 每小時一輪會有幾十秒誤差；允許提早 10 分，才不會 3 小時一點變成 4 小時
+GRACE_SEC = 3 * 60  # 每 30 分鐘一輪會有幾十秒誤差；允許提早 3 分，避免漏點或重複記
 
 
 def now_taipei() -> datetime:
@@ -62,10 +62,13 @@ def load_json(path: Path) -> dict:
         return {}
 
 
-def price_dd373(data: dict, server: str) -> tuple[float | None, float | None]:
-    """(成本 金/台幣, 匯率) if this round succeeded for the server; else (None, None)."""
+def price_dd373(data: dict, server: str) -> tuple[float | None, float | None, float | None]:
+    """(成本 金/台幣, 匯率, 最低價 人民幣/萬) if this round succeeded; else (None, None, None).
+
+    Cost and rate rounding is unchanged; low is an extra field for the report/chart.
+    """
     if not data or not data.get("ok"):
-        return None, None
+        return None, None, None
     raw = next(
         (
             r
@@ -82,7 +85,10 @@ def price_dd373(data: dict, server: str) -> tuple[float | None, float | None]:
     rate = data.get("rate")
     if not isinstance(rate, (int, float)) or not (3 < rate < 7):
         rate = None
-    return cost, rate
+    low = raw.get("low") if raw else None
+    if not isinstance(low, (int, float)) or low <= 0:
+        low = None
+    return cost, rate, low
 
 
 def load_history(path: Path, server: str) -> dict:
@@ -92,7 +98,8 @@ def load_history(path: Path, server: str) -> dict:
         points = []
     return {
         "server": server,
-        "interval_hours": 3,
+        "interval_minutes": 30,
+        "interval_hours": 0.5,
         "unit": "金/台幣",
         "timezone": "Asia/Taipei",
         "points": points,
@@ -141,18 +148,19 @@ def record_server(server: str, path: Path, data: dict, now: datetime) -> str:
         age = (now.timestamp() * 1000 - last) / 1000
         return f"HISTORY skip {server} (last point {age:.0f}s ago, need {INTERVAL_SEC}s)"
 
-    pdd, rate = price_dd373(data, server)
+    pdd, rate, low = price_dd373(data, server)
     point = {
         "ts": iso_taipei(now),
         "ts_ms": int(now.timestamp() * 1000),
         "pdd373": pdd,
         "rate": rate,
+        "low": low,
     }
     hist["points"] = prune(hist["points"], now)
     hist["points"].append(point)
     write_history(path, hist)
     return (
-        f"HISTORY appended {server} {point['ts']} pdd373={pdd} rate={rate} "
+        f"HISTORY appended {server} {point['ts']} pdd373={pdd} low={low} rate={rate} "
         f"n={len(hist['points'])}"
     )
 

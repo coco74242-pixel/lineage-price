@@ -4,8 +4,8 @@
   var script = document.currentScript;
   var pageUrl = (script && script.getAttribute("data-url")) || "history/victory.json";
   var CURVES = {
-    "勝利女神雅典娜": { title: "勝利女神雅典娜 價格曲線（每 3 小時）", url: "../history/victory.json" },
-    "牛人彌諾陶洛斯": { title: "牛人彌諾陶洛斯 價格曲線（每 3 小時）", url: "../history/niuren.json" }
+    "勝利女神雅典娜": { title: "勝利女神雅典娜 價格曲線（每 30 分鐘）", url: "../history/victory.json" },
+    "牛人彌諾陶洛斯": { title: "牛人彌諾陶洛斯 價格曲線（每 30 分鐘）", url: "../history/niuren.json" }
   };
 
   function $(sel, root) { return (root || document).querySelector(sel); }
@@ -65,8 +65,26 @@
     list.hidden = false;
   }
 
+  var WINDOW_MS = 7 * 24 * 3600 * 1000;
+
+  function pointMs(p) {
+    if (typeof p.ts_ms === "number") return p.ts_ms;
+    if (!p || !p.ts) return 0;
+    var d = new Date(String(p.ts).replace(" +0800", "+08:00"));
+    return isNaN(d.getTime()) ? 0 : d.getTime();
+  }
+
+  function recentPoints(points) {
+    var now = Date.now();
+    var kept = points.filter(function (p) {
+      var ms = pointMs(p);
+      return ms && (now - ms) <= WINDOW_MS;
+    });
+    return kept;
+  }
+
   function render(box, hist) {
-    var points = hist && Array.isArray(hist.points) ? hist.points : [];
+    var points = recentPoints(hist && Array.isArray(hist.points) ? hist.points : []);
     var empty = $(".chart-empty", box);
     var wrap = $(".chart-wrap", box);
     var canvas = $("canvas", box);
@@ -93,7 +111,7 @@
             borderColor: "#b45309",
             backgroundColor: "rgba(180,83,9,.12)",
             borderWidth: 2,
-            pointRadius: 2,
+            pointRadius: 1.5,
             pointHoverRadius: 4,
             tension: 0.15,
             spanGaps: false
@@ -117,7 +135,7 @@
         },
         scales: {
           x: {
-            ticks: { maxRotation: 0, autoSkip: true, maxTicksLimit: 8, font: { size: 10 } },
+            ticks: { maxRotation: 0, autoSkip: true, maxTicksLimit: 12, font: { size: 10 } },
             grid: { color: "rgba(0,0,0,.05)" }
           },
           y: {
