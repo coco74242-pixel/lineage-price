@@ -4,3 +4,5 @@ state.json
 out.txt
 __pycache__/
 dd373_out.txt
+.discord_gap_webhook
+**/.discord_gap_webhook

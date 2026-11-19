@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """DD373 價差提醒：勝利女神、牛人的第 1 名與第 2、3 名價差 ≥ 0.15 元/萬時，發 Discord。
 
-不改算價、不寫入 data.json。Webhook 只從本機 .env 或 DISCORD_WEBHOOK_URL 讀取，
+不改算價、不寫入 data.json。Webhook 只從本機 /workspace/lineage-monitor/.discord_gap_webhook 讀取，
 絕不印出、寫入網站或公開 repo。
 """
 from __future__ import annotations
@@ -15,24 +15,16 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 THRESHOLD = 0.15
-ENV_PATH = Path("/workspace/lineage-monitor/.env")
+WEBHOOK_PATH = Path("/workspace/lineage-monitor/.discord_gap_webhook")
 STATE_PATH = Path("/workspace/lineage-monitor/gap-state/last.json")
 LISTINGS_PATH = Path(os.environ.get("DD373_GAP_LISTINGS") or "/workspace/lineage-monitor/gap-state/listings.json")
 TAIPEI = timezone(timedelta(hours=8))
 
 
 def load_webhook() -> str:
-    raw = (os.environ.get("DISCORD_WEBHOOK_URL") or "").strip()
-    if raw:
-        return raw
-    if ENV_PATH.is_file():
-        for line in ENV_PATH.read_text(encoding="utf-8").splitlines():
-            s = line.strip()
-            if not s or s.startswith("#") or "=" not in s:
-                continue
-            k, v = s.split("=", 1)
-            if k.strip() == "DISCORD_WEBHOOK_URL":
-                return v.strip().strip('"').strip("'")
+    # New gap-alert webhook only. Do not fall back to the older .env value.
+    if WEBHOOK_PATH.is_file():
+        return WEBHOOK_PATH.read_text(encoding="utf-8").strip()
     return ""
 
 
