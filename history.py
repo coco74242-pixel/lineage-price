@@ -3,17 +3,23 @@
 
 Does not scrape or change price logic. Reads the already-written site data
 files, appends one point when the interval has elapsed, and keeps ~90 days.
+Also maintains site/dd373/price_log.csv (all servers, last 60 days) for the
+Google Sheet IMPORTDATA report.
 Stale or blocked values are stored as null; they are never recorded as new.
 勝利女神 history stays in victory.json (existing points kept intact).
 """
 from __future__ import annotations
 
+import csv
 import json
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 DATA_DD373 = ROOT / "site" / "dd373" / "data.json"
+PRICE_LOG = ROOT / "site" / "dd373" / "price_log.csv"
+PRICE_LOG_DAYS = 60
+PRICE_LOG_HEADER = ["時間(台北)", "伺服器", "最低價(人民幣/萬)", "1台幣成本(金)", "匯率"]
 
 SERVERS = (
     {
@@ -165,11 +171,172 @@ def record_server(server: str, path: Path, data: dict, now: datetime) -> str:
     )
 
 
+
+def csv_cell(v) -> str:
+    if v is None or v == "":
+        return ""
+    if isinstance(v, bool):
+        return ""
+    if isinstance(v, int) and not isinstance(v, bool):
+        return str(v)
+    if isinstance(v, float):
+        if v <= 0 or v != v:
+            return ""
+        text = f"{v:.6f}".rstrip("0").rstrip(".")
+        return text
+    s = str(v).replace(",", "").strip()
+    if not s or s == "—":
+        return ""
+    try:
+        f = float(s)
+    except ValueError:
+        return ""
+    if f <= 0:
+        return ""
+    return f"{f:.6f}".rstrip("0").rstrip(".")
+
+
+def log_key(row: list[str]) -> tuple[str, str]:
+    ts = (row[0] if row else "")[:19]
+    name = row[1] if len(row) > 1 else ""
+    return ts, name
+
+
+def rows_from_history() -> list[list[str]]:
+    """Seed rows from existing curve files (勝利女神 / 牛人)."""
+    out: list[list[str]] = []
+    for srv in SERVERS:
+        hist = load_history(srv["path"], srv["name"])
+        for p in hist["points"]:
+            if not isinstance(p, dict):
+                continue
+            ts = str(p.get("ts") or "")
+            if ts.endswith(" +0800"):
+                ts = ts[:-6]
+            ts = ts[:19]
+            if not ts:
+                continue
+            out.append(
+                [
+                    ts,
+                    srv["name"],
+                    csv_cell(p.get("low")),
+                    csv_cell(p.get("pdd373")),
+                    csv_cell(p.get("rate")),
+                ]
+            )
+    return out
+
+
+def rows_from_data(data: dict) -> list[list[str]]:
+    """One row per server for this scrape; does not change price logic."""
+    if not data:
+        return []
+    ts = str(data.get("updated_at") or "")[:19]
+    if not ts:
+        ts = now_taipei().strftime("%Y-%m-%d %H:%M:%S")
+    rate = csv_cell(data.get("rate"))
+    if rate:
+        try:
+            rv = float(rate)
+        except ValueError:
+            rv = 0
+        if not (3 < rv < 7):
+            rate = ""
+    out: list[list[str]] = []
+    used: set[str] = set()
+    for r in data.get("raw") or []:
+        name = r.get("name")
+        if not name or "error" in r:
+            continue
+        used.add(name)
+        cost = r.get("cost_per_twd")
+        if isinstance(cost, (int, float)) and cost > 0:
+            cost = round(cost, 2)
+        else:
+            cost = None
+        out.append([ts, name, csv_cell(r.get("low")), csv_cell(cost), rate])
+    for r in data.get("rows") or []:
+        name = r.get("name")
+        if not name or name in used or r.get("tag") == "error":
+            continue
+        out.append(
+            [
+                ts,
+                name,
+                csv_cell(r.get("low")),
+                csv_cell(str(r.get("cost") or "").replace(",", "")),
+                csv_cell(r.get("rate")) or rate,
+            ]
+        )
+    return out
+
+
+def load_price_log() -> list[list[str]]:
+    if not PRICE_LOG.is_file():
+        return []
+    try:
+        with PRICE_LOG.open("r", encoding="utf-8", newline="") as fh:
+            rows = list(csv.reader(fh))
+    except Exception:
+        return []
+    if not rows:
+        return []
+    # drop header if present
+    if rows[0] and rows[0][0].startswith("時間"):
+        rows = rows[1:]
+    kept: list[list[str]] = []
+    for r in rows:
+        if len(r) < 2 or not r[0] or not r[1]:
+            continue
+        padded = (r + [""] * 5)[:5]
+        padded[0] = str(padded[0])[:19]
+        kept.append(padded)
+    return kept
+
+
+def write_price_log(rows: list[list[str]]) -> None:
+    PRICE_LOG.parent.mkdir(parents=True, exist_ok=True)
+    tmp = PRICE_LOG.with_suffix(".csv.tmp")
+    with tmp.open("w", encoding="utf-8", newline="") as fh:
+        w = csv.writer(fh, lineterminator="\n")
+        w.writerow(PRICE_LOG_HEADER)
+        w.writerows(rows)
+    tmp.replace(PRICE_LOG)
+
+
+def update_price_log(data: dict, now: datetime) -> str:
+    rows = load_price_log()
+    seeded = 0
+    if not rows:
+        rows = rows_from_history()
+        seeded = len(rows)
+    seen = {log_key(r) for r in rows}
+    added = 0
+    for r in rows_from_data(data):
+        k = log_key(r)
+        if k in seen:
+            continue
+        rows.append(r)
+        seen.add(k)
+        added += 1
+    cutoff = (now - timedelta(days=PRICE_LOG_DAYS)).strftime("%Y-%m-%d %H:%M:%S")
+    before = len(rows)
+    rows = [r for r in rows if r[0] >= cutoff]
+    pruned = before - len(rows)
+    rows.sort(key=lambda r: (r[0], r[1]))
+    write_price_log(rows)
+    return (
+        f"PRICE_LOG rows={len(rows)} added={added} seeded={seeded} pruned={pruned}"
+    )
+
+
 def main() -> int:
     now = now_taipei()
     data = load_json(DATA_DD373)
     for srv in SERVERS:
         print(record_server(srv["name"], srv["path"], data, now))
+    print(update_price_log(data, now))
     return 0
 
 
