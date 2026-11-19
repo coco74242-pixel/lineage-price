@@ -26,6 +26,8 @@ jobs:
       DD373_HEADLESS: '0'
       RUN_MINUTES: '340'
       ROUND_SECONDS: '3600'
+      # box = DD373 改由可可的電腦每小時抓、推到 live；雲端這輪不抓 DD373，只把 live 上 box 的 DD373 檔拿來用
+      DD373_SOURCE: box
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -81,7 +83,13 @@ jobs:
               git checkout -q FETCH_HEAD -- monitor.py dd373_live.py config.json history.py 2>/dev/null || true
             fi
             timeout 120 python -u monitor.py > out.txt 2>&1 || true
-            timeout 360 xvfb-run -a python -u dd373_live.py > dd373_out.txt 2>&1 || true
+            if [ "$DD373_SOURCE" = box ]; then
+              if git fetch -q --depth 1 origin live 2>/dev/null; then
+                for f in site/dd373/data.json dd373_rate.json; do git show FETCH_HEAD:$f > /tmp/r 2>/dev/null && mv /tmp/r $f || true; done
+              fi
+            else
+              timeout 360 xvfb-run -a python -u dd373_live.py > dd373_out.txt 2>&1 || true
+            fi
             timeout 30 python -u history.py > history_out.txt 2>&1 || true
             tail -n 3 history_out.txt 2>/dev/null || true
             python - <<'PY' || true

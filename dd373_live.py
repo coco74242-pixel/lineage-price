@@ -70,6 +70,52 @@ def parse_page(html):                                            # 原 83 行
     return int(head.group(1)), rows
 
 
+# ---- 開頁面方式（只換這段，算價不動）----
+# DD373_FETCH=browser：用本機 Chrome（Playwright channel=chrome，乾淨設定檔、不登入）開頁面，
+# 等頁面出現「为您找到 N 条记录」再取 HTML 給 parse_page；沒設就照原本 requests 直接下載。
+_pw = _browser = _page = None
+
+
+def fetch_html(url):
+    global _pw, _browser, _page
+    if os.environ.get('DD373_FETCH') != 'browser':
+        r = session.get(url, timeout=30)
+        r.raise_for_status()
+        return r.text
+    if _page is None:
+        from playwright.sync_api import sync_playwright
+        _pw = sync_playwright().start()
+        kw = {'headless': os.environ.get('DD373_HEADLESS', '1') == '1'}
+        if os.environ.get('DD373_CHROME_CHANNEL', 'chrome'):
+            kw['channel'] = os.environ.get('DD373_CHROME_CHANNEL', 'chrome')
+        _browser = _pw.chromium.launch(**kw)
+        _page = _browser.new_page()
+    _page.goto(url, timeout=60000, wait_until='domcontentloaded')
+    for _ in range(40):
+        try:
+            if re.search(r'为您找到 ?\d+ ?条记录', re.sub(r'\s+', ' ', _page.inner_text('body'))):
+                break
+        except Exception:
+            pass
+        time.sleep(1)
+    try:
+        return _page.content()
+    except Exception:
+        return ''
+
+
+def close_browser():
+    global _pw, _browser, _page
+    try:
+        if _browser:
+            _browser.close()
+        if _pw:
+            _pw.stop()
+    except Exception:
+        pass
+    _pw = _browser = _page = None
+
+
 def fill(rows, budget):                                          # 原 98 行
     bought, left = 0.0, budget
     for price, minimum, stock in sorted(rows):
@@ -86,9 +132,7 @@ def fill(rows, budget):                                          # 原 98 行
 def scan(code, budget):                                          # 原 112 行
     rows, pages, page = [], 1, 1
     while page <= pages:
-        r = session.get(URL.format(code=code, page=page), timeout=30)
-        r.raise_for_status()
-        count, found = parse_page(r.text)
+        count, found = parse_page(fetch_html(URL.format(code=code, page=page)))
         rows += found
         pages = (count + 19) // 20 or 1
         bought, spent = fill(rows, budget)
@@ -215,7 +259,10 @@ def main():
     out = {'updated_at': now.strftime('%Y-%m-%d %H:%M:%S'), 'updated_at_ts': time.time(),
            'budget_twd': BUDGET_TWD, 'interval_min': INTERVAL_MIN, 'margins': list(MARGINS)}
     try:
-        results, status, rate, day = run_round(on_row=lambda r: set_market(r, prev, market, tags))
+        try:
+            results, status, rate, day = run_round(on_row=lambda r: set_market(r, prev, market, tags))
+        finally:
+            close_browser()
         if results and all('error' in r for r in results):
             # 9 服全部失敗（例如被擋）＝本輪失敗：照原程式保留上一輪表格，只改狀態列
             raise RuntimeError('全部伺服器抓價失敗：' + results[0].get('error', ''))
