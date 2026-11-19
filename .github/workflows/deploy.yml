@@ -25,7 +25,9 @@ jobs:
           rm -f site/data.json   # 8591 頁面已移除
           # 價格曲線歷史：live 有就蓋上去，沒有就保留 main 上的檔
           mkdir -p site/history
-          git show FETCH_HEAD:site/history/victory.json > /tmp/victory.json 2>/dev/null && mv /tmp/victory.json site/history/victory.json || true
+          for f in victory.json niuren.json; do
+            git show FETCH_HEAD:site/history/$f > /tmp/$f 2>/dev/null && mv /tmp/$f site/history/$f || true
+          done
           # 匯率給 Google 試算表 IMPORTDATA 用（只取 data.json 裡的 rate，不改抓取邏輯）
           python3 -c "import json;r=json.load(open('site/dd373/data.json')).get('rate');open('site/dd373/rate.csv','w').write(str(r) if isinstance(r,(int,float)) and 3<r<7 else '')"
       - uses: actions/upload-pages-artifact@v3

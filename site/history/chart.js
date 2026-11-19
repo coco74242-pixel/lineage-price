@@ -1,7 +1,12 @@
 (function () {
-  var EMPTY = "尚無資料，抓到價格後開始記錄";
+  var EMPTY_START = "開始記錄中，下一輪抓價後會出現第一個點。";
+  var EMPTY_FAIL = "圖表元件載入失敗";
   var script = document.currentScript;
-  var url = (script && script.getAttribute("data-url")) || "history/victory.json";
+  var pageUrl = (script && script.getAttribute("data-url")) || "history/victory.json";
+  var CURVES = {
+    "勝利女神雅典娜": { title: "勝利女神雅典娜 價格曲線（每 3 小時）", url: "../history/victory.json" },
+    "牛人彌諾陶洛斯": { title: "牛人彌諾陶洛斯 價格曲線（每 3 小時）", url: "../history/niuren.json" }
+  };
 
   function $(sel, root) { return (root || document).querySelector(sel); }
 
@@ -16,13 +21,48 @@
     return mo + "/" + day + " " + hm;
   }
 
+  function fmtListTime(ts, tsMs) {
+    var d = null;
+    if (typeof tsMs === "number") d = new Date(tsMs);
+    else if (ts) d = new Date(String(ts).replace(" +0800", "+08:00"));
+    if (!d || isNaN(d.getTime())) return String(ts || "");
+    return d.toLocaleString("sv-SE", {
+      timeZone: "Asia/Taipei",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false
+    }).replace("T", " ");
+  }
+
+  function fmtPrice(v) {
+    if (typeof v !== "number") return "無資料";
+    return v.toLocaleString("zh-TW", { minimumFractionDigits: 0, maximumFractionDigits: 2 }) + " 金／台幣";
+  }
+
   function showEmpty(box, msg) {
     var empty = $(".chart-empty", box);
     var wrap = $(".chart-wrap", box);
     var note = $(".chart-note", box);
-    if (empty) { empty.hidden = false; empty.textContent = msg || EMPTY; }
+    var list = $(".chart-list", box);
+    if (empty) { empty.hidden = false; empty.textContent = msg || EMPTY_START; }
     if (wrap) wrap.hidden = true;
     if (note) note.hidden = true;
+    if (list) { list.hidden = true; list.innerHTML = ""; }
+  }
+
+  function renderList(box, points) {
+    var list = $(".chart-list", box);
+    if (!list) return;
+    if (!points.length) { list.hidden = true; list.innerHTML = ""; return; }
+    var rows = points.slice().reverse().map(function (p) {
+      var price = typeof p.pdd373 === "number" ? fmtPrice(p.pdd373) : "無資料";
+      return "<li><span class=\"t\">" + fmtListTime(p.ts, p.ts_ms) + "</span><span class=\"p\">" + price + "</span></li>";
+    }).join("");
+    list.innerHTML = "<div class=\"chart-list-head\"><span>時間（台北）</span><span>DD373 成本</span></div>" + rows;
+    list.hidden = false;
   }
 
   function render(box, hist) {
@@ -32,12 +72,13 @@
     var canvas = $("canvas", box);
     var note = $(".chart-note", box);
     if (!points.length || typeof Chart === "undefined" || !canvas) {
-      showEmpty(box, typeof Chart === "undefined" ? "圖表元件載入失敗" : EMPTY);
+      showEmpty(box, typeof Chart === "undefined" ? EMPTY_FAIL : EMPTY_START);
       return;
     }
     if (empty) empty.hidden = true;
     if (wrap) wrap.hidden = false;
     if (note) note.hidden = false;
+    renderList(box, points);
     var labels = points.map(function (p) { return fmtLabel(p.ts, p.ts_ms); });
     var cdd = points.map(function (p) { return typeof p.pdd373 === "number" ? p.pdd373 : null; });
     if (box._chart) box._chart.destroy();
@@ -89,16 +130,60 @@
     });
   }
 
-  function init() {
-    var box = document.getElementById("victoryChartBox");
+  function loadInto(box, url) {
     if (!box) return;
-    fetch(url + "?t=" + Date.now(), { cache: "no-store" })
+    fetch(url + (url.indexOf("?") >= 0 ? "&" : "?") + "t=" + Date.now(), { cache: "no-store" })
       .then(function (res) {
         if (!res.ok) throw new Error("HTTP " + res.status);
         return res.json();
       })
       .then(function (hist) { render(box, hist); })
-      .catch(function () { showEmpty(box, EMPTY); });
+      .catch(function () { showEmpty(box, EMPTY_START); });
+  }
+
+  function closeModal() {
+    var modal = document.getElementById("curveModal");
+    if (!modal) return;
+    modal.hidden = true;
+    document.body.classList.remove("curve-open");
+  }
+
+  function openModal(server) {
+    var conf = CURVES[server];
+    var modal = document.getElementById("curveModal");
+    var box = document.getElementById("curveModalBox");
+    var title = document.getElementById("curveModalTitle");
+    if (!conf || !modal || !box) return;
+    if (title) title.textContent = conf.title;
+    modal.hidden = false;
+    document.body.classList.add("curve-open");
+    showEmpty(box, "載入中…");
+    loadInto(box, conf.url);
+    var closeBtn = $(".cmodal-close", modal);
+    if (closeBtn) closeBtn.focus();
+  }
+
+  function onDocClick(e) {
+    var btn = e.target.closest && e.target.closest(".curve-btn");
+    if (btn) {
+      e.preventDefault();
+      openModal(btn.getAttribute("data-server"));
+      return;
+    }
+    if (e.target.closest && e.target.closest("[data-curve-close]")) {
+      closeModal();
+    }
+  }
+
+  function onKey(e) {
+    if (e.key === "Escape") closeModal();
+  }
+
+  function init() {
+    var box = document.getElementById("victoryChartBox");
+    if (box) loadInto(box, pageUrl);
+    document.addEventListener("click", onDocClick);
+    document.addEventListener("keydown", onKey);
   }
 
   if (document.readyState === "loading") {

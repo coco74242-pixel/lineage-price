@@ -84,6 +84,26 @@ footer{margin-top:8px;color:var(--muted);font-size:11.5px}
     .chartbox .chart-wrap{position:relative;height:220px}
     .chartbox .chart-empty{color:var(--muted);margin:12px 0;text-align:center}
     .chartbox .chart-note{font-size:12px;color:var(--muted);margin:6px 0 0}
+    .t td.srv .srv-name{display:block}
+    .curve-btn{display:inline-block;margin-top:3px;background:#fff;color:var(--teal);border:1px solid var(--teal);border-radius:999px;padding:1px 8px;font-size:11px;font-weight:700;cursor:pointer;line-height:1.4}
+    .curve-btn:hover,.curve-btn:focus{background:var(--teal);color:#fff}
+    body.curve-open{overflow:hidden}
+    .cmodal{position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;padding:16px}
+    .cmodal[hidden]{display:none}
+    .cmodal-back{position:absolute;inset:0;background:rgba(28,25,23,.45)}
+    .cmodal-card{position:relative;width:min(720px,100%);max-height:min(90vh,840px);overflow:auto;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px 14px;box-shadow:0 12px 40px rgba(0,0,0,.18)}
+    .cmodal-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:6px}
+    .cmodal-head h2{font-size:15px;margin:0;font-weight:700;line-height:1.3}
+    .cmodal-close{background:transparent;border:0;font-size:22px;line-height:1;color:var(--muted);cursor:pointer;padding:0 4px}
+    .cmodal-close:hover{color:var(--ink)}
+    .cmodal .chartbox{margin-top:0;border:0;padding:0}
+    .cmodal .chart-wrap{height:240px}
+    .chart-list{list-style:none;margin:10px 0 0;padding:0;border:1px solid var(--line);border-radius:8px;overflow:hidden;max-height:280px;overflow-y:auto;font-variant-numeric:tabular-nums}
+    .chart-list-head,.chart-list li{display:flex;justify-content:space-between;gap:10px;padding:6px 10px}
+    .chart-list-head{background:#efe9df;color:var(--muted);font-size:12px;font-weight:600;position:sticky;top:0}
+    .chart-list li{border-top:1px solid var(--line);font-size:12.5px}
+    .chart-list li .t{color:var(--ink)}
+    .chart-list li .p{font-weight:700}
 </style>
 </head>
 <body>
@@ -170,6 +190,22 @@ footer{margin-top:8px;color:var(--muted);font-size:11.5px}
   </details>
   <footer>資料由 GitHub Actions 定時抓取（約每 1 小時一次）；本頁每分鐘自動重新讀取，也可按「更新」立即重讀（伺服器每 1 小時抓一次新資料）。</footer>
 </div>
+
+<div id="curveModal" class="cmodal" hidden>
+  <div class="cmodal-back" data-curve-close></div>
+  <div class="cmodal-card" role="dialog" aria-modal="true" aria-labelledby="curveModalTitle">
+    <div class="cmodal-head">
+      <h2 id="curveModalTitle">價格曲線（每 3 小時）</h2>
+      <button type="button" class="cmodal-close" data-curve-close aria-label="關閉">×</button>
+    </div>
+    <section class="chartbox" id="curveModalBox">
+      <p class="chart-empty" hidden>開始記錄中，下一輪抓價後會出現第一個點。</p>
+      <div class="chart-wrap"><canvas id="curveModalChart"></canvas></div>
+      <p class="chart-note">單位：金／1台幣。缺資料或來源被擋時，該段線會中斷。清單由新到舊。</p>
+      <ol class="chart-list" hidden></ol>
+    </section>
+  </div>
+</div>
 <script>
 const MYCOLS=['myavg','__cost__','mycost','my0.03','my0.04','myqty'];
 function esc(s){return String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
@@ -184,9 +220,13 @@ async function load(){
     st.className='status'+(d.ok?'':' bad');
     st.innerHTML=esc(d.status)+(age>75?' <span class="stale">（資料已 '+Math.round(age)+' 分鐘沒更新）</span>':'');
     const pend='<span title="待接訂單（需登入 DD373）">—</span>';
+    const curveSrv={'勝利女神雅典娜':1,'牛人彌諾陶洛斯':1};
     document.getElementById('rows').innerHTML=(d.rows||[]).map(x=>{
       const err=x.tag==='error';
-      return `<tr class="${esc(x.tag)}"><td class="srv">${esc(x.name)}</td><td>${esc(x.rate)}</td>`+
+      const nameCell=curveSrv[x.name]
+        ? `<td class="srv"><span class="srv-name">${esc(x.name)}</span><button type="button" class="curve-btn" data-server="${esc(x.name)}">曲線</button></td>`
+        : `<td class="srv">${esc(x.name)}</td>`;
+      return `<tr class="${esc(x.tag)}">${nameCell}<td>${esc(x.rate)}</td>`+
         `<td class="low">${esc(x.low)}</td><td class="avg">${esc(x.avg)}</td><td class="my">${pend}</td>`+
         `<td class="cost">${esc(x.cost)}</td><td class="my">${pend}</td><td class="my">${pend}</td>`+
         `<td class="my">${pend}</td><td class="my">${pend}</td></tr>`;
