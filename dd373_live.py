@@ -47,6 +47,10 @@ SERVERS = {
     '牛人彌諾陶洛斯': '8k682m',
 }
 
+# 價差提醒只看這兩服的前三名賣單；不寫入 data.json，也不改掃單／算價。
+ALERT_SERVERS = ("勝利女神雅典娜", "牛人彌諾陶洛斯")
+PAGE_URL = "https://www.dd373.com/s-q0kacj-c-7mp223-khkbh6-{code}.html"
+
 session = requests.Session()
 session.headers.update({'User-Agent': UA, 'Accept-Language': 'zh-CN,zh;q=0.9'})
 
@@ -142,7 +146,7 @@ def scan(code, budget):                                          # 原 112 行
         time.sleep(PAGE_DELAY)
     if not rows or not bought:
         raise ValueError('沒有買得到的賣單')
-    return min(r[0] for r in rows), bought, spent
+    return min(r[0] for r in rows), bought, spent, rows
 
 
 # ---- 匯率（原 read_rate / current_rate；Rate.ps1 改成 fetch_bot_rate）----
@@ -209,16 +213,45 @@ def current_rate():                                              # 原 143 行
     return sell, (note + '，今天更新失敗' if day != date.today() and opened else note), day
 
 
-def run_round(on_row=None):                                      # 原 163 行
+def top_listings(rows, n=3):
+    # Cheapest-first (RMB per 10k gold); alert only, not written to data.json.
+    out = []
+    for price, minimum, stock in sorted(rows, key=lambda r: (r[0], r[1], r[2])):
+        out.append({"price": price, "min_buy": minimum, "stock": stock})
+        if len(out) >= n:
+            break
+    return out
+
+
+def write_gap_listings(info):
+    path = os.environ.get("DD373_GAP_LISTINGS", "").strip()
+    if not path or not info:
+        return
+    os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
+    tmp = path + ".tmp"
+    with open(tmp, "w", encoding="utf-8") as f:
+        json.dump({"updated_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                   "servers": info}, f, ensure_ascii=False, indent=2)
+        f.write("\n")
+    os.replace(tmp, path)
+
+
+def run_round(on_row=None, listings_out=None):                   # 原 163 行
     rate, rate_note, day = current_rate()
     errors, results = [], []
     for name, code in SERVERS.items():
         try:
-            low, bought, spent = scan(code, BUDGET_TWD / rate)
+            low, bought, spent, listings = scan(code, BUDGET_TWD / rate)
             avg = spent / bought
             cost = rate * avg
             res = {'name': name, 'low': low, 'avg': avg, 'bought': bought,
                    'spent_twd': spent * rate, 'rate': rate, 'cost_per_twd': 10000 / cost}
+            if listings_out is not None and name in ALERT_SERVERS:
+                listings_out[name] = {
+                    'code': code,
+                    'url': PAGE_URL.format(code=code),
+                    'listings': top_listings(listings),
+                }
         except Exception as e:
             errors.append(name)
             log(f'{name} 抓價失敗: {e!r}')
@@ -260,7 +293,11 @@ def main():
            'budget_twd': BUDGET_TWD, 'interval_min': INTERVAL_MIN, 'margins': list(MARGINS)}
     try:
         try:
-            results, status, rate, day = run_round(on_row=lambda r: set_market(r, prev, market, tags))
+            listings_out = {}
+            results, status, rate, day = run_round(
+                on_row=lambda r: set_market(r, prev, market, tags),
+                listings_out=listings_out,
+            )
         finally:
             close_browser()
         if results and all('error' in r for r in results):
@@ -268,6 +305,7 @@ def main():
             raise RuntimeError('全部伺服器抓價失敗：' + results[0].get('error', ''))
         out.update(ok=True, status=f"{now:%H:%M:%S}  {status}", rate=rate, rate_text=f'{rate:g}',
                    rate_day=f'{day:%Y/%m/%d}', raw=results)
+        write_gap_listings(listings_out)
     except Exception as e:
         log('本輪失敗: ' + repr(e) + '\n' + traceback.format_exc())
         # 原程式：本輪失敗時表格保留上一輪的值，只改狀態列
