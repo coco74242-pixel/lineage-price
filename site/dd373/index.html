@@ -74,6 +74,7 @@ footer{margin-top:8px;color:var(--muted);font-size:11.5px}
   .t td.cost{font-size:13px}
   .t .my{display:none}
   .t td.srv{white-space:normal;max-width:6em;line-height:1.15}
+  .t td.srv.srv-extra{max-width:12em}
   .only-sm{display:block}
   .nav{margin-left:0}
 }
@@ -85,7 +86,14 @@ footer{margin-top:8px;color:var(--muted);font-size:11.5px}
     .chartbox .chart-empty{color:var(--muted);margin:12px 0;text-align:center}
     .chartbox .chart-note{font-size:12px;color:var(--muted);margin:6px 0 0}
     .t td.srv .srv-name{display:block}
+    .t td.srv.srv-extra{white-space:normal;vertical-align:top}
     .curve-btn{display:inline-block;margin-top:3px;background:#fff;color:var(--teal);border:1px solid var(--teal);border-radius:999px;padding:1px 8px;font-size:11px;font-weight:700;cursor:pointer;line-height:1.4}
+    .seen-low-box{display:block;margin-top:6px;font-weight:400}
+    .seen-low-lab{display:block;font-size:11px;color:var(--muted);font-weight:600;line-height:1.2}
+    .seen-low-row{display:flex;align-items:center;gap:3px;margin-top:2px}
+    .seen-low{width:6.2em;font-size:13px;font-weight:700;padding:2px 5px;border:1px solid var(--line);border-radius:6px;text-align:right;font-variant-numeric:tabular-nums;background:#fff;color:var(--ink)}
+    .seen-low:focus{outline:2px solid rgba(15,118,110,.35);border-color:var(--teal)}
+    .seen-low-ts{display:block;font-size:10.5px;color:var(--muted);margin-top:1px;min-height:1.2em}
     .curve-btn:hover,.curve-btn:focus{background:var(--teal);color:#fff}
     body.curve-open{overflow:hidden}
     .cmodal{position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;padding:16px}
@@ -131,6 +139,7 @@ footer{margin-top:8px;color:var(--muted);font-size:11.5px}
     <span>均價比上一輪 <span class="r">▲ 變貴</span>／<span class="g">▼ 變便宜</span></span>
     <span>價格單位：人民幣／萬金</span>
     <span><span class="pending">斜紋欄</span> 我的成本、3%、4%、幣量：待接訂單（需登入 DD373）</span>
+    <span>「我看過的最低價」自己填，單位同最低價（人民幣／萬），只存在這台裝置，不算進成本。</span>
   </div>
   <div class="only-sm pending" style="margin:4px 2px">手機版先隱藏「我的成本／3%／4%／幣量」欄（待接訂單）</div>
   <section class="chartbox" id="victoryChartBox" aria-label="勝利女神 價格曲線（每 3 小時）">
@@ -209,6 +218,49 @@ footer{margin-top:8px;color:var(--muted);font-size:11.5px}
 <script>
 const MYCOLS=['myavg','__cost__','mycost','my0.03','my0.04','myqty'];
 function esc(s){return String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+const SEEN_KEY='dd373-seen-low';
+const curveSrv={'勝利女神雅典娜':1,'牛人彌諾陶洛斯':1};
+function seenLoad(){
+  try{const o=JSON.parse(localStorage.getItem(SEEN_KEY)||'{}');return o&&typeof o==='object'&&!Array.isArray(o)?o:{}}catch(e){return {}}
+}
+function seenSaveAll(map){try{localStorage.setItem(SEEN_KEY,JSON.stringify(map))}catch(e){}}
+function fmtSeenTs(tsMs){
+  if(typeof tsMs!=='number'||!isFinite(tsMs)) return '';
+  const d=new Date(tsMs); if(isNaN(d.getTime())) return '';
+  const s=d.toLocaleString('sv-SE',{timeZone:'Asia/Taipei',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false});
+  return s.replace('-','/')+' 記入';
+}
+function seenCommit(inp,updateTime){
+  const name=inp.getAttribute('data-server'); if(!name) return;
+  const price=String(inp.value||'').trim();
+  const map=seenLoad();
+  if(!price){delete map[name]}
+  else{
+    const prev=map[name]||{};
+    const rec={price};
+    if(updateTime) rec.ts_ms=Date.now();
+    else if(typeof prev.ts_ms==='number') rec.ts_ms=prev.ts_ms;
+    map[name]=rec;
+  }
+  seenSaveAll(map);
+  const ts=inp.closest('.seen-low-box')&&inp.closest('.seen-low-box').querySelector('.seen-low-ts');
+  if(ts) ts.textContent=(map[name]&&map[name].ts_ms)?fmtSeenTs(map[name].ts_ms):'';
+}
+function seenFill(keep){
+  const map=seenLoad();
+  document.querySelectorAll('#rows input.seen-low').forEach(function(inp){
+    const name=inp.getAttribute('data-server');
+    if(keep&&keep.server===name){
+      inp.value=keep.value;
+      try{inp.focus();inp.setSelectionRange(keep.start,keep.end)}catch(e){}
+      return;
+    }
+    const rec=map[name]||{};
+    inp.value=rec.price||'';
+    const ts=inp.closest('.seen-low-box')&&inp.closest('.seen-low-box').querySelector('.seen-low-ts');
+    if(ts) ts.textContent=rec.ts_ms?fmtSeenTs(rec.ts_ms):'';
+  });
+}
 async function load(){
   try{
     const r=await fetch('data.json?t='+Date.now(),{cache:'no-store'});
@@ -220,22 +272,36 @@ async function load(){
     st.className='status'+(d.ok?'':' bad');
     st.innerHTML=esc(d.status)+(age>75?' <span class="stale">（資料已 '+Math.round(age)+' 分鐘沒更新）</span>':'');
     const pend='<span title="待接訂單（需登入 DD373）">—</span>';
-    const curveSrv={'勝利女神雅典娜':1,'牛人彌諾陶洛斯':1};
+    const ae=document.activeElement;
+    const typing=ae&&ae.classList&&ae.classList.contains('seen-low');
+    const keep=typing?{server:ae.getAttribute('data-server'),value:ae.value,start:ae.selectionStart,end:ae.selectionEnd}:null;
+    const seen=seenLoad();
     document.getElementById('rows').innerHTML=(d.rows||[]).map(x=>{
       const err=x.tag==='error';
-      const nameCell=curveSrv[x.name]
-        ? `<td class="srv"><span class="srv-name">${esc(x.name)}</span><button type="button" class="curve-btn" data-server="${esc(x.name)}">曲線</button></td>`
-        : `<td class="srv">${esc(x.name)}</td>`;
+      let nameCell=`<td class="srv">${esc(x.name)}</td>`;
+      if(curveSrv[x.name]){
+        const rec=seen[x.name]||{};
+        const tsTxt=rec.ts_ms?fmtSeenTs(rec.ts_ms):'';
+        nameCell=`<td class="srv srv-extra"><span class="srv-name">${esc(x.name)}</span><button type="button" class="curve-btn" data-server="${esc(x.name)}">曲線</button>`+
+          `<label class="seen-low-box"><span class="seen-low-lab">我看過的最低價</span>`+
+          `<span class="seen-low-row"><input class="seen-low" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" placeholder="例如 1.0248" data-server="${esc(x.name)}" aria-label="${esc(x.name)} 我看過的最低價">`+
+          `<span class="unit">人民幣/萬</span></span>`+
+          `<span class="seen-low-ts">${esc(tsTxt)}</span></label></td>`;
+      }
       return `<tr class="${esc(x.tag)}">${nameCell}<td>${esc(x.rate)}</td>`+
         `<td class="low">${esc(x.low)}</td><td class="avg">${esc(x.avg)}</td><td class="my">${pend}</td>`+
         `<td class="cost">${esc(x.cost)}</td><td class="my">${pend}</td><td class="my">${pend}</td>`+
         `<td class="my">${pend}</td><td class="my">${pend}</td></tr>`;
     }).join('');
+    seenFill(keep);
   }catch(e){
     const st=document.getElementById('status'); st.className='status bad'; st.textContent='讀不到資料：'+e;
   }
 }
 load(); setInterval(load,60000);
+document.getElementById('rows').addEventListener('input',function(e){const inp=e.target.closest&&e.target.closest('input.seen-low');if(inp) seenCommit(inp,false)});
+document.getElementById('rows').addEventListener('change',function(e){const inp=e.target.closest&&e.target.closest('input.seen-low');if(inp) seenCommit(inp,true)});
+document.getElementById('rows').addEventListener('keydown',function(e){if(e.key!=='Enter')return;const inp=e.target.closest&&e.target.closest('input.seen-low');if(!inp)return;e.preventDefault();inp.blur()});
 document.getElementById('refBtn').addEventListener('click',async function(){const b=this,m=document.getElementById('refMsg');b.disabled=true;m.textContent='更新中…';await load();
 const fr=document.querySelector('#sheetFrame iframe');if(fr&&document.getElementById('sheetFrame').classList.contains('on'))fr.src=fr.src;if(window.calcReload)window.calcReload();
 m.textContent='已更新 '+new Date().toLocaleTimeString('zh-TW',{hour12:false,timeZone:'Asia/Taipei'});b.disabled=false;});
