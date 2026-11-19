@@ -123,7 +123,8 @@ footer{margin-top:8px;color:var(--muted);font-size:11.5px}
     .chart-list-head{background:#efe9df;color:var(--muted);font-size:12px;font-weight:600;position:sticky;top:0}
     .chart-list li{border-top:1px solid var(--line);font-size:12.5px}
     .chart-list li .t{color:var(--ink)}
-    .chart-list li .p{font-weight:700}
+    .chart-list li .p{font-weight:700;text-align:right}
+    .chart-list li .p .sub{display:block;font-weight:400;font-size:11px;color:var(--muted)}
 </style>
 </head>
 <body>
@@ -239,7 +240,7 @@ footer{margin-top:8px;color:var(--muted);font-size:11.5px}
     <section class="chartbox" id="curveModalBox">
       <p class="chart-empty" hidden>開始記錄中，下一輪抓價後會出現第一個點。</p>
       <div class="chart-wrap"><canvas id="curveModalChart"></canvas></div>
-      <p class="chart-note">單位：金／1台幣。缺資料或來源被擋時，該段線會中斷。清單由新到舊。</p>
+      <p class="chart-note">單位：成本 人民幣／萬金（5 萬台幣掃單均價）。便宜往下、變貴往上。缺資料或來源被擋時，該段線會中斷。清單由新到舊。</p>
       <ol class="chart-list" hidden></ol>
     </section>
   </div>

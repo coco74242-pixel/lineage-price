@@ -37,9 +37,29 @@
     }).replace("T", " ");
   }
 
-  function fmtPrice(v) {
+  // 成本 人民幣/萬金 = 10000 ÷ (金/台幣 × 匯率)，與頁面「均價」同一套 5 萬台幣掃單平均。
+  // 僅顯示用，不改寫歷史檔。缺匯率或金/台幣時該點留空（線會中斷）。
+  function rmbPerWan(p) {
+    var gold = p && p.pdd373, rate = p && p.rate;
+    if (typeof gold !== "number" || gold <= 0 || typeof rate !== "number" || !(3 < rate && rate < 7)) return null;
+    return 10000 / (gold * rate);
+  }
+  function twdPerWan(p) {
+    var gold = p && p.pdd373;
+    if (typeof gold !== "number" || gold <= 0) return null;
+    return 10000 / gold;
+  }
+  function fmtRmb(v) {
     if (typeof v !== "number") return "無資料";
-    return v.toLocaleString("zh-TW", { minimumFractionDigits: 0, maximumFractionDigits: 2 }) + " 金／台幣";
+    return v.toLocaleString("zh-TW", { minimumFractionDigits: 2, maximumFractionDigits: 4 }) + " 人民幣／萬";
+  }
+  function fmtGold(v) {
+    if (typeof v !== "number") return "";
+    return v.toLocaleString("zh-TW", { maximumFractionDigits: 2 }) + " 金／台幣";
+  }
+  function fmtTwd(v) {
+    if (typeof v !== "number") return "";
+    return v.toLocaleString("zh-TW", { minimumFractionDigits: 2, maximumFractionDigits: 4 }) + " 台幣／萬";
   }
 
   function showEmpty(box, msg) {
@@ -58,10 +78,12 @@
     if (!list) return;
     if (!points.length) { list.hidden = true; list.innerHTML = ""; return; }
     var rows = points.slice().reverse().map(function (p) {
-      var price = typeof p.pdd373 === "number" ? fmtPrice(p.pdd373) : "無資料";
+      var rmb = rmbPerWan(p);
+      var gold = typeof p.pdd373 === "number" ? fmtGold(p.pdd373) : "";
+      var price = rmb == null ? "無資料" : (fmtRmb(rmb) + (gold ? "<span class=\"sub\">" + gold + "</span>" : ""));
       return "<li><span class=\"t\">" + fmtListTime(p.ts, p.ts_ms) + "</span><span class=\"p\">" + price + "</span></li>";
     }).join("");
-    list.innerHTML = "<div class=\"chart-list-head\"><span>時間（台北）</span><span>DD373 成本</span></div>" + rows;
+    list.innerHTML = "<div class=\"chart-list-head\"><span>時間（台北）</span><span>成本 人民幣／萬</span></div>" + rows;
     list.hidden = false;
   }
 
@@ -98,7 +120,7 @@
     if (note) note.hidden = false;
     renderList(box, points);
     var labels = points.map(function (p) { return fmtLabel(p.ts, p.ts_ms); });
-    var cdd = points.map(function (p) { return typeof p.pdd373 === "number" ? p.pdd373 : null; });
+    var cdd = points.map(function (p) { return rmbPerWan(p); });
     if (box._chart) box._chart.destroy();
     box._chart = new Chart(canvas.getContext("2d"), {
       type: "line",
@@ -106,7 +128,7 @@
         labels: labels,
         datasets: [
           {
-            label: "DD373 成本",
+            label: "成本 人民幣／萬",
             data: cdd,
             borderColor: "#b45309",
             backgroundColor: "rgba(180,83,9,.12)",
@@ -127,8 +149,15 @@
           tooltip: {
             callbacks: {
               label: function (ctx) {
-                var v = ctx.parsed.y;
-                return ctx.dataset.label + "：" + (v == null ? "無資料" : v.toLocaleString("zh-TW") + " 金／台幣");
+                var i = ctx.dataIndex;
+                var p = points[i] || {};
+                var rmb = ctx.parsed.y;
+                if (rmb == null) return "成本：無資料";
+                var lines = ["成本：" + fmtRmb(rmb)];
+                var twd = twdPerWan(p);
+                if (twd != null) lines.push(fmtTwd(twd));
+                if (typeof p.pdd373 === "number") lines.push(fmtGold(p.pdd373));
+                return lines;
               }
             }
           }
@@ -139,8 +168,14 @@
             grid: { color: "rgba(0,0,0,.05)" }
           },
           y: {
-            title: { display: true, text: "金／1台幣", font: { size: 11 } },
-            ticks: { font: { size: 10 } },
+            title: { display: true, text: "成本 人民幣/萬", font: { size: 11 } },
+            reverse: false,
+            ticks: {
+              font: { size: 10 },
+              callback: function (v) {
+                return Number(v).toLocaleString("zh-TW", { minimumFractionDigits: 2, maximumFractionDigits: 4 });
+              }
+            },
             grid: { color: "rgba(0,0,0,.06)" }
           }
         }
