@@ -10,7 +10,8 @@
     "火神赫發斯特斯": { title: "火神赫發斯特斯 價格曲線（每 30 分鐘）", url: "../history/hephaestus.json" },
     "愛神邱比特": { title: "愛神邱比特 價格曲線（每 30 分鐘）", url: "../history/cupid.json" },
     "蛇髮女墨杜沙": { title: "蛇髮女墨杜沙 價格曲線（每 30 分鐘）", url: "../history/medusa.json" },
-    "冥王黑帝斯": { title: "冥王黑帝斯 價格曲線（每 30 分鐘）", url: "../history/hades.json" }
+    "冥王黑帝斯": { title: "冥王黑帝斯 價格曲線（每 30 分鐘）", url: "../history/hades.json" },
+    "地獄犬刻耳柏洛斯": { title: "地獄犬刻耳柏洛斯 價格曲線（每 30 分鐘）", url: "../history/cerberus.json" }
   };
 
   function $(sel, root) { return (root || document).querySelector(sel); }

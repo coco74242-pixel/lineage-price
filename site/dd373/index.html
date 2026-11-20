@@ -192,6 +192,13 @@ footer{margin-top:8px;color:var(--muted);font-size:11.5px}
           <span class="seen-low-ts"></span>
         </label>
       </div>
+      <div class="seen-card">
+        <div class="seen-card-name">地獄犬刻耳柏洛斯</div>
+        <label class="seen-low-box">
+          <span class="seen-low-row"><input class="seen-low" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" placeholder="例如 1.0248" data-server="地獄犬刻耳柏洛斯" aria-label="地獄犬刻耳柏洛斯 我看過的最低價"><span class="unit">人民幣/萬</span></span>
+          <span class="seen-low-ts"></span>
+        </label>
+      </div>
     </div>
   </aside>
   <div class="table-col">
@@ -285,7 +292,7 @@ footer{margin-top:8px;color:var(--muted);font-size:11.5px}
 const MYCOLS=['myavg','__cost__','mycost','my0.03','my0.04','myqty'];
 function esc(s){return String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
 const SEEN_KEY='dd373-seen-low';
-const curveSrv={'勝利女神雅典娜':1,'牛人彌諾陶洛斯':1,'戰神馬爾斯':1,'火神赫發斯特斯':1,'愛神邱比特':1,'蛇髮女墨杜沙':1,'冥王黑帝斯':1};
+const curveSrv={'勝利女神雅典娜':1,'牛人彌諾陶洛斯':1,'戰神馬爾斯':1,'火神赫發斯特斯':1,'愛神邱比特':1,'蛇髮女墨杜沙':1,'冥王黑帝斯':1,'地獄犬刻耳柏洛斯':1};
 function seenLoad(){
   try{const o=JSON.parse(localStorage.getItem(SEEN_KEY)||'{}');return o&&typeof o==='object'&&!Array.isArray(o)?o:{}}catch(e){return {}}
 }
@@ -312,7 +319,7 @@ function seenCommit(inp,updateTime){
   const ts=inp.closest('.seen-low-box')&&inp.closest('.seen-low-box').querySelector('.seen-low-ts');
   if(ts) ts.textContent=(map[name]&&map[name].ts_ms)?fmtSeenTs(map[name].ts_ms):'';
 }
-const SEEN_HIST={'勝利女神雅典娜':'victory','牛人彌諾陶洛斯':'niuren','戰神馬爾斯':'mars','火神赫發斯特斯':'hephaestus','愛神邱比特':'cupid','蛇髮女墨杜沙':'medusa','冥王黑帝斯':'hades'};
+const SEEN_HIST={'勝利女神雅典娜':'victory','牛人彌諾陶洛斯':'niuren','戰神馬爾斯':'mars','火神赫發斯特斯':'hephaestus','愛神邱比特':'cupid','蛇髮女墨杜沙':'medusa','冥王黑帝斯':'hades','地獄犬刻耳柏洛斯':'cerberus'};
 function seenFill(){
   const map=seenLoad();
   document.querySelectorAll('#seenPanel input.seen-low').forEach(function(inp){

@@ -1,0 +1,8 @@
+{
+  "server": "地獄犬刻耳柏洛斯",
+  "interval_minutes": 30,
+  "interval_hours": 0.5,
+  "unit": "金/台幣",
+  "timezone": "Asia/Taipei",
+  "points": []
+}

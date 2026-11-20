@@ -51,6 +51,10 @@ SERVERS = (
         "name": "冥王黑帝斯",
         "path": ROOT / "site" / "history" / "hades.json",
     },
+    {
+        "name": "地獄犬刻耳柏洛斯",
+        "path": ROOT / "site" / "history" / "cerberus.json",
+    },
 )
 
 INTERVAL_SEC = 30 * 60
