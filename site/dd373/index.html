@@ -223,7 +223,7 @@ footer{margin-top:8px;color:var(--muted);font-size:11.5px}
       <li>一頁 20 張，預算還剩 20 元以上才翻下一頁。</li>
       <li>最低價 = 掃過的賣單中最低單價；均價 = 花掉的人民幣 ÷ 買到的萬金。</li>
       <li>成本 1台幣=多少金 = 10000 ÷（匯率 × 均價）。</li>
-      <li>3%、4% = 10000 ÷（匯率 × <b>我的成本均價</b> × 1.03／1.04），取最接近的十位數。原程式是用你自己訂單的成本算，不是用市場均價，所以要等接上訂單才會有數字。</li>
+      <li>3%、4% = 10000 ÷（匯率 × <b>我的成本均價</b> × 1.03／1.04），取最接近的十位數。用你自己訂單的成本算，不是用市場均價。我的成本均價、我的1台幣成本、幣量都從成本表「幣量成本」分頁讀（有填幣量的服才會顯示），匯率用成本表那一列的匯率。</li>
       <li>匯率：臺銀人民幣現金賣出，每天 9:30 後抓一次；還沒抓到今天的，就沿用上一次並標示「今天更新失敗」。</li>
     </ul>
   </details>
@@ -285,26 +285,41 @@ function seenFill(){
     if(ts) ts.textContent=rec.ts_ms?fmtSeenTs(rec.ts_ms):'';
   });
 }
+const MY_SHEET='https://docs.google.com/spreadsheets/d/1zb0FjzX4ydx8QjdLOnJeamGTsMbNjyl14M2h9DiO-Tc/gviz/tq?tqx=out:csv&sheet='+encodeURIComponent('幣量成本');
+function csvRows(t){const out=[];let row=[],f='',q=false;for(let i=0;i<t.length;i++){const c=t[i];
+  if(q){if(c==='"'){if(t[i+1]==='"'){f+='"';i++}else q=false}else f+=c}
+  else if(c==='"')q=true;else if(c===','){row.push(f);f=''}else if(c==='\n'){row.push(f);out.push(row);row=[];f=''}else if(c!=='\r')f+=c}
+  if(f||row.length){row.push(f);out.push(row)}return out}
+function myNum(v){const n=parseFloat(String(v||'').replace(/[,\s%]/g,''));return isFinite(n)?n:NaN}
+async function loadMine(){
+  try{const t=await (await fetch(MY_SHEET+'&t='+Date.now(),{cache:'no-store'})).text();const m={};
+    csvRows(t).slice(1).forEach(function(r){const name=(r[0]||'').trim(),rate=myNum(r[1]),avg=myNum(r[2]),qty=myNum(r[4]);
+      if(name&&rate>0&&avg>0&&qty>0){const c=10000/(rate*avg);
+        m[name]={avg:avg.toFixed(4),cost:Math.round(c).toLocaleString('en-US'),p3:(Math.round(c/1.03/10)*10).toLocaleString('en-US'),p4:(Math.round(c/1.04/10)*10).toLocaleString('en-US'),qty:Math.round(qty).toLocaleString('en-US')}}});
+    return m}catch(e){return {}}
+}
 async function load(){
   try{
+    const mineP=loadMine();
     const r=await fetch('data.json?t='+Date.now(),{cache:'no-store'});
     const d=await r.json();
+    const mine=await mineP;
     document.getElementById('upd').textContent=d.updated_at||'—';
     if(d.rate_day) document.getElementById('rsrc').textContent='臺銀現金賣出 '+d.rate_text+'（'+d.rate_day+'）';
     const age=(Date.now()/1000-(d.updated_at_ts||0))/60;
     const st=document.getElementById('status');
     st.className='status'+(d.ok?'':' bad');
     st.innerHTML=esc(d.status)+(age>75?' <span class="stale">（資料已 '+Math.round(age)+' 分鐘沒更新）</span>':'');
-    const pend='<span title="待接訂單（需登入 DD373）">—</span>';
+    const pend='<span title="成本表沒有這服的幣量">—</span>';
     document.getElementById('rows').innerHTML=(d.rows||[]).map(x=>{
-      const err=x.tag==='error';
+      const err=x.tag==='error';const my=mine[x.name];
       const nameCell=curveSrv[x.name]
         ? `<td class="srv"><span class="srv-name">${esc(x.name)}</span><button type="button" class="curve-btn" data-server="${esc(x.name)}">曲線</button></td>`
         : `<td class="srv">${esc(x.name)}</td>`;
       return `<tr class="${esc(x.tag)}">${nameCell}<td>${esc(x.rate)}</td>`+
-        `<td class="low">${esc(x.low)}</td><td class="avg">${esc(x.avg)}</td><td class="my">${pend}</td>`+
-        `<td class="cost">${esc(x.cost)}</td><td class="my">${pend}</td><td class="my">${pend}</td>`+
-        `<td class="my">${pend}</td><td class="my">${pend}</td></tr>`;
+        `<td class="low">${esc(x.low)}</td><td class="avg">${esc(x.avg)}</td><td class="my">${my?esc(my.avg):pend}</td>`+
+        `<td class="cost">${esc(x.cost)}</td><td class="my">${my?esc(my.cost):pend}</td><td class="my">${my?esc(my.p3):pend}</td>`+
+        `<td class="my">${my?esc(my.p4):pend}</td><td class="my">${my?esc(my.qty):pend}</td></tr>`;
     }).join('');
   }catch(e){
     const st=document.getElementById('status'); st.className='status bad'; st.textContent='讀不到資料：'+e;
