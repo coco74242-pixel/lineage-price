@@ -34,7 +34,9 @@ table.t{width:100%;border-collapse:collapse;background:var(--card);border:1px so
 .t td{padding:5px 8px;border-top:1px solid var(--line);white-space:nowrap;text-align:right}
 .t td.srv{font-weight:700}
 .t td.cost{font-weight:800;font-size:14.5px}
-.t th.my,.t td.my{background:#f6f2ea}
+.t th.my,.t td.my{background:repeating-linear-gradient(135deg,#f6f2ea 0 6px,#f1ece3 6px 12px);color:#a8a29e}
+.t th.my{color:#a8a29e}
+.t td.my.mine{background:none;color:var(--ink)}
 .t tr.up td.avg{color:var(--red);font-weight:700}
 .t tr.down td.avg{color:var(--green);font-weight:700}
 .t tr.up td.avg::after{content:" ▲";font-size:10px}
@@ -371,9 +373,9 @@ async function load(){
         ? `<td class="srv"><span class="srv-name">${esc(x.name)}</span><button type="button" class="curve-btn" data-server="${esc(x.name)}">曲線</button></td>`
         : `<td class="srv">${esc(x.name)}</td>`;
       return `<tr class="${esc(x.tag)}">${nameCell}<td>${esc(x.rate)}</td>`+
-        `<td class="low">${esc(x.low)}</td><td class="avg">${esc(x.avg)}</td><td class="my">${my?esc(my.avg):pend}</td>`+
-        `<td class="cost">${esc(x.cost)}</td><td class="my">${my?esc(my.cost):pend}</td><td class="my">${my?esc(my.p3):pend}</td>`+
-        `<td class="my">${my?esc(my.p4):pend}</td><td class="my">${my?esc(my.qty):pend}</td></tr>`;
+        `<td class="low">${esc(x.low)}</td><td class="avg">${esc(x.avg)}</td><td class="my${my?' mine':''}">${my?esc(my.avg):pend}</td>`+
+        `<td class="cost">${esc(x.cost)}</td><td class="my${my?' mine':''}">${my?esc(my.cost):pend}</td><td class="my${my?' mine':''}">${my?esc(my.p3):pend}</td>`+
+        `<td class="my${my?' mine':''}">${my?esc(my.p4):pend}</td><td class="my${my?' mine':''}">${my?esc(my.qty):pend}</td></tr>`;
     }).join('');
   }catch(e){
     const st=document.getElementById('status'); st.className='status bad'; st.textContent='讀不到資料：'+e;
