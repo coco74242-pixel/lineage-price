@@ -25,7 +25,7 @@ jobs:
           rm -f site/data.json   # 8591 頁面已移除
           # 價格曲線歷史與價格紀錄 CSV：live 有就蓋上去，沒有就保留 main 上的檔
           mkdir -p site/history site/dd373
-          for f in victory.json niuren.json mars.json hephaestus.json cupid.json medusa.json; do
+          for f in victory.json niuren.json mars.json hephaestus.json cupid.json medusa.json hades.json; do
             git show FETCH_HEAD:site/history/$f > /tmp/$f 2>/dev/null && mv /tmp/$f site/history/$f || true
           done
           git show FETCH_HEAD:site/dd373/price_log.csv > /tmp/price_log.csv 2>/dev/null && mv /tmp/price_log.csv site/dd373/price_log.csv || true

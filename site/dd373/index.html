@@ -249,7 +249,7 @@ footer{margin-top:8px;color:var(--muted);font-size:11.5px}
 const MYCOLS=['myavg','__cost__','mycost','my0.03','my0.04','myqty'];
 function esc(s){return String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
 const SEEN_KEY='dd373-seen-low';
-const curveSrv={'勝利女神雅典娜':1,'牛人彌諾陶洛斯':1,'戰神馬爾斯':1,'火神赫發斯特斯':1,'愛神邱比特':1,'蛇髮女墨杜沙':1};
+const curveSrv={'勝利女神雅典娜':1,'牛人彌諾陶洛斯':1,'戰神馬爾斯':1,'火神赫發斯特斯':1,'愛神邱比特':1,'蛇髮女墨杜沙':1,'冥王黑帝斯':1};
 function seenLoad(){
   try{const o=JSON.parse(localStorage.getItem(SEEN_KEY)||'{}');return o&&typeof o==='object'&&!Array.isArray(o)?o:{}}catch(e){return {}}
 }
