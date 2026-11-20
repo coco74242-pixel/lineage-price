@@ -156,6 +156,41 @@ footer{margin-top:8px;color:var(--muted);font-size:11.5px}
           <span class="seen-low-ts"></span>
         </label>
       </div>
+      <div class="seen-card">
+        <div class="seen-card-name">戰神馬爾斯</div>
+        <label class="seen-low-box">
+          <span class="seen-low-row"><input class="seen-low" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" placeholder="例如 1.0248" data-server="戰神馬爾斯" aria-label="戰神馬爾斯 我看過的最低價"><span class="unit">人民幣/萬</span></span>
+          <span class="seen-low-ts"></span>
+        </label>
+      </div>
+      <div class="seen-card">
+        <div class="seen-card-name">火神赫發斯特斯</div>
+        <label class="seen-low-box">
+          <span class="seen-low-row"><input class="seen-low" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" placeholder="例如 1.0248" data-server="火神赫發斯特斯" aria-label="火神赫發斯特斯 我看過的最低價"><span class="unit">人民幣/萬</span></span>
+          <span class="seen-low-ts"></span>
+        </label>
+      </div>
+      <div class="seen-card">
+        <div class="seen-card-name">愛神邱比特</div>
+        <label class="seen-low-box">
+          <span class="seen-low-row"><input class="seen-low" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" placeholder="例如 1.0248" data-server="愛神邱比特" aria-label="愛神邱比特 我看過的最低價"><span class="unit">人民幣/萬</span></span>
+          <span class="seen-low-ts"></span>
+        </label>
+      </div>
+      <div class="seen-card">
+        <div class="seen-card-name">蛇髮女墨杜沙</div>
+        <label class="seen-low-box">
+          <span class="seen-low-row"><input class="seen-low" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" placeholder="例如 1.0248" data-server="蛇髮女墨杜沙" aria-label="蛇髮女墨杜沙 我看過的最低價"><span class="unit">人民幣/萬</span></span>
+          <span class="seen-low-ts"></span>
+        </label>
+      </div>
+      <div class="seen-card">
+        <div class="seen-card-name">冥王黑帝斯</div>
+        <label class="seen-low-box">
+          <span class="seen-low-row"><input class="seen-low" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" placeholder="例如 1.0248" data-server="冥王黑帝斯" aria-label="冥王黑帝斯 我看過的最低價"><span class="unit">人民幣/萬</span></span>
+          <span class="seen-low-ts"></span>
+        </label>
+      </div>
     </div>
   </aside>
   <div class="table-col">
@@ -276,14 +311,34 @@ function seenCommit(inp,updateTime){
   const ts=inp.closest('.seen-low-box')&&inp.closest('.seen-low-box').querySelector('.seen-low-ts');
   if(ts) ts.textContent=(map[name]&&map[name].ts_ms)?fmtSeenTs(map[name].ts_ms):'';
 }
+const SEEN_HIST={'勝利女神雅典娜':'victory','牛人彌諾陶洛斯':'niuren','戰神馬爾斯':'mars','火神赫發斯特斯':'hephaestus','愛神邱比特':'cupid','蛇髮女墨杜沙':'medusa','冥王黑帝斯':'hades'};
 function seenFill(){
   const map=seenLoad();
   document.querySelectorAll('#seenPanel input.seen-low').forEach(function(inp){
-    const rec=map[inp.getAttribute('data-server')]||{};
+    const name=inp.getAttribute('data-server');
+    const rec=map[name]||{};
     inp.value=rec.price||'';
     const ts=inp.closest('.seen-low-box')&&inp.closest('.seen-low-box').querySelector('.seen-low-ts');
     if(ts) ts.textContent=rec.ts_ms?fmtSeenTs(rec.ts_ms):'';
+    if(!rec.price&&SEEN_HIST[name]) seenAuto(inp,ts,SEEN_HIST[name]);
   });
+}
+async function seenAuto(inp,ts,file){
+  // 沒填過的服：用曲線紀錄裡的最低價先填上（你自己改過就以你填的為準）
+  try{
+    const h=await (await fetch('../history/'+file+'.json?t='+Date.now(),{cache:'no-store'})).json();
+    let best=null;
+    (h.points||[]).forEach(function(p){if(typeof p.low==='number'&&p.low>0&&(!best||p.low<best.low))best=p});
+    if(!best||String(inp.value||'').trim()) return;
+    const map=seenLoad(),name=inp.getAttribute('data-server');
+    if(map[name]&&map[name].price) return;
+    const tsMs=typeof best.ts_ms==='number'?best.ts_ms:Date.parse(String(best.ts||'').slice(0,19).replace(' ','T')+'+08:00');
+    inp.value=String(best.low);
+    map[name]={price:String(best.low)};
+    if(isFinite(tsMs)) map[name].ts_ms=tsMs;
+    seenSaveAll(map);
+    if(ts) ts.textContent=isFinite(tsMs)?fmtSeenTs(tsMs).replace('記入','曲線最低'):'曲線最低';
+  }catch(e){}
 }
 const MY_SHEET='https://docs.google.com/spreadsheets/d/1zb0FjzX4ydx8QjdLOnJeamGTsMbNjyl14M2h9DiO-Tc/gviz/tq?tqx=out:csv&sheet='+encodeURIComponent('幣量成本');
 function csvRows(t){const out=[];let row=[],f='',q=false;for(let i=0;i<t.length;i++){const c=t[i];
