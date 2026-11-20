@@ -5,7 +5,11 @@
   var pageUrl = (script && script.getAttribute("data-url")) || "history/victory.json";
   var CURVES = {
     "勝利女神雅典娜": { title: "勝利女神雅典娜 價格曲線（每 30 分鐘）", url: "../history/victory.json" },
-    "牛人彌諾陶洛斯": { title: "牛人彌諾陶洛斯 價格曲線（每 30 分鐘）", url: "../history/niuren.json" }
+    "牛人彌諾陶洛斯": { title: "牛人彌諾陶洛斯 價格曲線（每 30 分鐘）", url: "../history/niuren.json" },
+    "戰神馬爾斯": { title: "戰神馬爾斯 價格曲線（每 30 分鐘）", url: "../history/mars.json" },
+    "火神赫發斯特斯": { title: "火神赫發斯特斯 價格曲線（每 30 分鐘）", url: "../history/hephaestus.json" },
+    "愛神邱比特": { title: "愛神邱比特 價格曲線（每 30 分鐘）", url: "../history/cupid.json" },
+    "蛇髮女墨杜沙": { title: "蛇髮女墨杜沙 價格曲線（每 30 分鐘）", url: "../history/medusa.json" }
   };
 
   function $(sel, root) { return (root || document).querySelector(sel); }

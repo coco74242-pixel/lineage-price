@@ -7,6 +7,7 @@ Also maintains site/dd373/price_log.csv (all servers, last 60 days) for the
 Google Sheet IMPORTDATA report.
 Stale or blocked values are stored as null; they are never recorded as new.
 勝利女神 history stays in victory.json (existing points kept intact).
+New servers start from price_log.csv rows when their history file is empty.
 """
 from __future__ import annotations
 
@@ -29,6 +30,22 @@ SERVERS = (
     {
         "name": "牛人彌諾陶洛斯",
         "path": ROOT / "site" / "history" / "niuren.json",
+    },
+    {
+        "name": "戰神馬爾斯",
+        "path": ROOT / "site" / "history" / "mars.json",
+    },
+    {
+        "name": "火神赫發斯特斯",
+        "path": ROOT / "site" / "history" / "hephaestus.json",
+    },
+    {
+        "name": "愛神邱比特",
+        "path": ROOT / "site" / "history" / "cupid.json",
+    },
+    {
+        "name": "蛇髮女墨杜沙",
+        "path": ROOT / "site" / "history" / "medusa.json",
     },
 )
 
@@ -147,12 +164,61 @@ def write_history(path: Path, hist: dict) -> None:
     tmp.replace(path)
 
 
+def num_cell(value) -> float | None:
+    if value is None or value == "":
+        return None
+    try:
+        f = float(str(value).replace(",", "").strip())
+    except (TypeError, ValueError):
+        return None
+    if f <= 0 or f != f:
+        return None
+    return f
+
+
+def points_from_price_log(server: str) -> list[dict]:
+    """Build history points from price_log.csv rows for one server (same schema)."""
+    points: list[dict] = []
+    seen: set[int] = set()
+    for r in load_price_log():
+        if len(r) < 2 or r[1] != server:
+            continue
+        dt = parse_ts(r[0])
+        if not dt:
+            continue
+        ms = int(dt.timestamp() * 1000)
+        if ms in seen:
+            continue
+        seen.add(ms)
+        cost = num_cell(r[3] if len(r) > 3 else "")
+        if cost is not None:
+            cost = round(cost, 2)
+        points.append(
+            {
+                "ts": iso_taipei(dt),
+                "ts_ms": ms,
+                "pdd373": cost,
+                "rate": num_cell(r[4] if len(r) > 4 else ""),
+                "low": num_cell(r[2] if len(r) > 2 else ""),
+            }
+        )
+    points.sort(key=lambda p: p["ts_ms"])
+    return points
+
+
 def record_server(server: str, path: Path, data: dict, now: datetime) -> str:
     hist = load_history(path, server)
+    seeded = 0
+    if not hist["points"]:
+        hist["points"] = points_from_price_log(server)
+        seeded = len(hist["points"])
     last = last_ts_ms(hist["points"])
     if last is not None and (now.timestamp() * 1000 - last) < (INTERVAL_SEC - GRACE_SEC) * 1000:
         age = (now.timestamp() * 1000 - last) / 1000
-        return f"HISTORY skip {server} (last point {age:.0f}s ago, need {INTERVAL_SEC}s)"
+        if seeded:
+            write_history(path, hist)
+        extra = f" seeded={seeded}" if seeded else ""
+        return f"HISTORY skip {server} (last point {age:.0f}s ago, need {INTERVAL_SEC}s){extra}"
 
     pdd, rate, low = price_dd373(data, server)
     point = {
@@ -165,9 +231,10 @@ def record_server(server: str, path: Path, data: dict, now: datetime) -> str:
     hist["points"] = prune(hist["points"], now)
     hist["points"].append(point)
     write_history(path, hist)
+    extra = f" seeded={seeded}" if seeded else ""
     return (
         f"HISTORY appended {server} {point['ts']} pdd373={pdd} low={low} rate={rate} "
-        f"n={len(hist['points'])}"
+        f"n={len(hist['points'])}{extra}"
     )
 
 
