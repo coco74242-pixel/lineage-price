@@ -139,7 +139,7 @@ footer{margin-top:8px;color:var(--muted);font-size:11.5px}
 <div class="wrap">
   <div class="top">
     <h1>DD373 即時價格</h1>
-    <span class="chip">匯率來源 <b id="rsrc">臺銀現金賣出</b></span>
+    <span class="chip">匯率 <b id="rsrc">臺銀現金賣出</b></span>
     <span class="chip">掃單預算 <b>5 萬台幣</b></span>
     <span class="chip">更新時間 <b id="upd">—</b>（台北時間）</span>
     <button type="button" class="refbtn" id="refBtn">更新</button><span class="refmsg" id="refMsg"></span>
@@ -230,14 +230,14 @@ footer{margin-top:8px;color:var(--muted);font-size:11.5px}
   </section>
   <table class="t">
     <thead><tr>
-      <th>遊戲服</th><th>匯率</th><th>最低價<span class="unit">人民幣/萬</span></th><th>均價</th>
+      <th>遊戲服</th><th>最低價<span class="unit">人民幣/萬</span></th><th>均價</th>
       <th class="my">我的成本均價</th>
       <th>成本 1台幣=多少金</th>
       <th class="my">我的1台幣成本</th>
       <th class="my">3% 1台幣=多少金</th><th class="my">4% 1台幣=多少金</th>
       <th class="my">幣量(萬金)</th>
     </tr></thead>
-    <tbody id="rows"><tr><td colspan="10" style="text-align:center;color:#78716c;padding:20px">載入中…</td></tr></tbody>
+    <tbody id="rows"><tr><td colspan="9" style="text-align:center;color:#78716c;padding:20px">載入中…</td></tr></tbody>
   </table>
   <div class="legend">
     <span>均價比上一輪 <span class="r">▲ 變貴</span>／<span class="g">▼ 變便宜</span></span>
@@ -409,7 +409,7 @@ async function load(){
       const nameCell=curveSrv[x.name]
         ? `<td class="srv"><span class="srv-name">${esc(x.name)}</span><button type="button" class="curve-btn" data-server="${esc(x.name)}">曲線</button></td>`
         : `<td class="srv">${esc(x.name)}</td>`;
-      return `<tr class="${esc(x.tag)}">${nameCell}<td>${esc(x.rate)}</td>`+
+      return `<tr class="${esc(x.tag)}">${nameCell}`+
         `<td class="low">${esc(x.low)}</td><td class="avg">${esc(x.avg)}</td><td class="my${my?' mine':''}">${my?esc(my.avg):pend}</td>`+
         `<td class="cost">${esc(x.cost)}</td><td class="my${my?' mine':''}">${my?esc(my.cost):pend}</td><td class="my${my?' mine':''}">${my?esc(my.p3):pend}</td>`+
         `<td class="my${my?' mine':''}">${my?esc(my.p4):pend}</td><td class="my${my?' mine':''}">${my?esc(my.qty):pend}</td></tr>`;
