@@ -407,10 +407,32 @@ async function load(){
         `<td class="cost">${esc(x.cost)}</td><td class="my${my?' mine':''}">${my?esc(my.cost):pend}</td><td class="my${my?' mine':''}">${my?esc(my.p3):pend}</td>`+
         `<td class="my${my?' mine':''}">${my?esc(my.p4):pend}</td><td class="my${my?' mine':''}">${my?esc(my.qty):pend}</td></tr>`;
     }).join('');
+    alignSeen();
   }catch(e){
     const st=document.getElementById('status'); st.className='status bad'; st.textContent='讀不到資料：'+e;
   }
 }
+
+// 寬螢幕：左邊「我看過的最低價」卡片照右表的伺服器順序排，並和同名那一列對齊（只改版面）
+function alignSeen(){
+  const panel=document.getElementById('seenPanel'),box=panel&&panel.querySelector('.seen-cards'),tb=document.getElementById('rows');
+  if(!box||!tb) return;
+  const cards={};box.querySelectorAll('.seen-card').forEach(function(c){const i=c.querySelector('input.seen-low');if(i) cards[i.dataset.server]=c;c.style.marginTop='';c.style.minHeight='';});
+  tb.querySelectorAll('tr').forEach(function(tr){tr.style.height=''});
+  if(!window.matchMedia('(min-width:1360px)').matches){panel.style.position='';box.style.gap='';return}
+  panel.style.position='static';box.style.gap='0';
+  const trs=[].slice.call(tb.querySelectorAll('tr')).filter(function(tr){const n=tr.querySelector('td.srv');return n&&cards[(n.querySelector('.srv-name')||n).textContent.trim()]});
+  trs.forEach(function(tr){const n=tr.querySelector('td.srv');box.appendChild(cards[(n.querySelector('.srv-name')||n).textContent.trim()])});
+  trs.forEach(function(tr){
+    const n=tr.querySelector('td.srv'),c=cards[(n.querySelector('.srv-name')||n).textContent.trim()];
+    const d=tr.getBoundingClientRect().top-c.getBoundingClientRect().top;
+    if(d>0) c.style.marginTop=d+'px';
+    const ch=c.getBoundingClientRect().height,th=tr.getBoundingClientRect().height;
+    if(ch>th) tr.style.height=ch+'px';
+    else c.style.minHeight=th+'px';
+  });
+}
+window.addEventListener('resize',function(){clearTimeout(window.__as);window.__as=setTimeout(alignSeen,150)});
 seenFill();
 load(); setInterval(load,60000);
 document.getElementById('seenPanel').addEventListener('input',function(e){const inp=e.target.closest&&e.target.closest('input.seen-low');if(inp) seenCommit(inp,false)});
