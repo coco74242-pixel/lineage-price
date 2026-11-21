@@ -12,7 +12,8 @@
     "蛇髮女墨杜沙": { title: "蛇髮女墨杜沙 價格曲線（每 30 分鐘）", url: "../history/medusa.json" },
     "冥王黑帝斯": { title: "冥王黑帝斯 價格曲線（每 30 分鐘）", url: "../history/hades.json" },
     "地獄犬刻耳柏洛斯": { title: "地獄犬刻耳柏洛斯 價格曲線（每 30 分鐘）", url: "../history/cerberus.json" },
-    "天后海拉": { title: "天后海拉 價格曲線（每 30 分鐘）", url: "../history/hera.json" }
+    "天后海拉": { title: "天后海拉 價格曲線（每 30 分鐘）", url: "../history/hera.json" },
+    "海神波塞頓": { title: "海神波塞頓 價格曲線（每 30 分鐘）", url: "../history/poseidon.json" }
   };
 
   function $(sel, root) { return (root || document).querySelector(sel); }
