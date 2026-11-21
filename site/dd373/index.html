@@ -126,6 +126,13 @@ footer{margin-top:8px;color:var(--muted);font-size:11.5px}
     .chart-list li .t{color:var(--ink)}
     .chart-list li .p{font-weight:700;text-align:right}
     .chart-list li .p .sub{display:block;font-weight:400;font-size:11px;color:var(--muted)}
+.inv{margin:0 0 10px;border:1px solid #e7e5e4;border-radius:10px;background:#fff;padding:8px 10px}
+.inv h3{margin:0 0 6px;font-size:15px}
+.inv table{border-collapse:collapse;width:100%;font-size:14px}
+.inv th,.inv td{padding:4px 8px;text-align:right;border-bottom:1px solid #f1f0ef;white-space:nowrap}
+.inv th:first-child,.inv td:first-child{text-align:left}
+.inv .tot td{font-weight:700;border-bottom:none}
+.inv .none{color:#78716c}
 </style>
 </head>
 <body>
@@ -202,6 +209,11 @@ footer{margin-top:8px;color:var(--muted);font-size:11.5px}
     </div>
   </aside>
   <div class="table-col">
+  <section class="inv" aria-label="當前庫存與平均成本">
+    <h3>當前庫存與平均成本 <span class="unit">讀成本表「幣量成本」分頁，有填幣量的服才列出</span></h3>
+    <table><thead><tr><th>伺服器</th><th>當前庫存(萬金)</th><th>平均成本<span class="unit">人民幣/萬</span></th><th>1台幣成本(金)</th></tr></thead>
+    <tbody id="invRows"><tr><td colspan="4" class="none">載入中…</td></tr></tbody></table>
+  </section>
   <table class="t">
     <thead><tr>
       <th>遊戲服</th><th>匯率</th><th>最低價<span class="unit">人民幣/萬</span></th><th>均價</th>
@@ -367,6 +379,10 @@ async function load(){
     const r=await fetch('data.json?t='+Date.now(),{cache:'no-store'});
     const d=await r.json();
     const mine=await mineP;
+    (function(){const b=document.getElementById('invRows');if(!b)return;const ks=Object.keys(mine);
+      if(!ks.length){b.innerHTML='<tr><td colspan="4" class="none">成本表目前沒有填幣量的服</td></tr>';return}
+      let tq=0;b.innerHTML=ks.map(function(k){const m=mine[k];tq+=myNum(m.qty);return '<tr><td>'+esc(k)+'</td><td>'+esc(m.qty)+'</td><td>'+esc(m.avg)+'</td><td>'+esc(m.cost)+'</td></tr>'}).join('')+
+        '<tr class="tot"><td>合計</td><td>'+Math.round(tq).toLocaleString('en-US')+'</td><td></td><td></td></tr>'})();
     document.getElementById('upd').textContent=d.updated_at||'—';
     if(d.rate_day) document.getElementById('rsrc').textContent='臺銀現金賣出 '+d.rate_text+'（'+d.rate_day+'）';
     const age=(Date.now()/1000-(d.updated_at_ts||0))/60;
