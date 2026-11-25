@@ -15,7 +15,7 @@ jobs:
     timeout-minutes: 5
     environment:
       name: github-pages
-      url: ${{ steps.deploy.outputs.page_url }}
+      url: ${{ steps.deploy3.outputs.page_url || steps.deploy2.outputs.page_url || steps.deploy1.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
       - name: overlay live data
@@ -33,5 +33,23 @@ jobs:
           python3 -c "import json;r=json.load(open('site/dd373/data.json')).get('rate');open('site/dd373/rate.csv','w').write(str(r) if isinstance(r,(int,float)) and 3<r<7 else '')"
       - uses: actions/upload-pages-artifact@v3
         with: {path: site}
-      - id: deploy
+      # 偶發「artifact 已上傳但 deploy-pages 找不到 github-pages」：稍等後重試，最多兩次
+      - id: deploy1
+        name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
+        continue-on-error: true
+      - name: Wait before retry 1
+        if: steps.deploy1.outcome == 'failure'
+        run: sleep 25
+      - id: deploy2
+        name: Deploy to GitHub Pages (retry 1)
+        if: steps.deploy1.outcome == 'failure'
+        uses: actions/deploy-pages@v4
+        continue-on-error: true
+      - name: Wait before retry 2
+        if: steps.deploy1.outcome == 'failure' && steps.deploy2.outcome == 'failure'
+        run: sleep 60
+      - id: deploy3
+        name: Deploy to GitHub Pages (retry 2)
+        if: steps.deploy1.outcome == 'failure' && steps.deploy2.outcome == 'failure'
         uses: actions/deploy-pages@v4
